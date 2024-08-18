@@ -3,8 +3,8 @@ import React from 'react'
 import SOUND from './test.mp3'
 
 // Import the GIFs
-import gif1 from './gif1.gif'
-import gif2 from './gif2.gif'
+import gif1 from './gif1.png'
+import gif2 from './gif2.png'
 
 export default function ExampleGame() {
   const _hue = React.useRef(0)
