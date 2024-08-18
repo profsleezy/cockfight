@@ -70,11 +70,10 @@ export const Recent = styled.button`
   align-items: center;
   gap: .5em;
   text-wrap: nowrap;
-  padding: 10px;
+  padding: 5px;
   color: unset;
   text-decoration: none;
   justify-content: space-between;
-  border-radius: 10px;
   background: #edebeb;
   &:hover {
     background: #c9c7c7;
