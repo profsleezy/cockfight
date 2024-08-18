@@ -3,13 +3,13 @@ import React from 'react'
 import SOUND from './test.mp3'
 
 // Import the chicken images
-import chicken1 from './gif1.png'
-import chicken2 from './gif2.png'
+import chicken1 from './gif1.png' // Black cock
+import chicken2 from './gif2.png' // White cock
 
 // Define the sides
 const SIDES = {
-  black: [2, 0],
-  white: [0, 2],
+  black: [2, 0], // Black cock's bet
+  white: [0, 2], // White cock's bet
 }
 
 export default function ExampleGame() {
@@ -97,15 +97,16 @@ export default function ExampleGame() {
 
   const endFight = async () => {
     // Simulate game play and result fetching
-    const result = await game.play({
+    await game.play({
       bet: SIDES[selectedChicken], // Use SIDES to determine the bet
       wager,
       metadata: [selectedChicken],
     })
 
-    const resultData = await game.result()
-    const actualWinner = resultData.resultIndex === 2 ? 'black' : 'white'
-    const win = resultData.payout > 0 && actualWinner === selectedChicken
+    const result = await game.result()
+    const actualWinner = result.resultIndex === 0 ? 'black' : 'white' // Map resultIndex to actual winner
+
+    const win = result.payout > 0 && actualWinner === selectedChicken
 
     // Determine the result message
     setResultMessage(win ? `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won!` : `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won!`)
