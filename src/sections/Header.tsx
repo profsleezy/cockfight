@@ -27,7 +27,7 @@ const StyledHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 10px;
+  padding: 5px;
   background: rgba(33, 34, 51, 0.9);
   position: fixed;
   background: #000000CC;
