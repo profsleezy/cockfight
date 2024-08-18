@@ -84,14 +84,46 @@ export default function ExampleGame() {
 
             // Draw the GIFs if they are loaded
             if (gif1Ref.current && gif2Ref.current) {
-              const gifWidth = size.width / 4; // Adjust the size of the GIFs as needed
-              const gifHeight = size.height / 4;
+              const maxGifWidth = size.width / 4; // Maximum width available for each GIF
+              const maxGifHeight = size.height / 4; // Maximum height available for each GIF
+
+              // Calculate the aspect ratio of each GIF
+              const gif1AspectRatio = gif1Ref.current.width / gif1Ref.current.height;
+              const gif2AspectRatio = gif2Ref.current.width / gif2Ref.current.height;
+
+              // Calculate the dimensions for the first GIF while maintaining aspect ratio
+              let gif1Width = maxGifWidth;
+              let gif1Height = maxGifWidth / gif1AspectRatio;
+              if (gif1Height > maxGifHeight) {
+                gif1Height = maxGifHeight;
+                gif1Width = maxGifHeight * gif1AspectRatio;
+              }
+
+              // Calculate the dimensions for the second GIF while maintaining aspect ratio
+              let gif2Width = maxGifWidth;
+              let gif2Height = maxGifWidth / gif2AspectRatio;
+              if (gif2Height > maxGifHeight) {
+                gif2Height = maxGifHeight;
+                gif2Width = maxGifHeight * gif2AspectRatio;
+              }
 
               // Draw the first GIF on the left side
-              ctx.drawImage(gif1Ref.current, size.width / 4 - gifWidth / 2, size.height - gifHeight - 20, gifWidth, gifHeight)
+              ctx.drawImage(
+                gif1Ref.current,
+                size.width / 4 - gif1Width / 2,
+                size.height - gif1Height - 20,
+                gif1Width,
+                gif1Height
+              );
 
               // Draw the second GIF on the right side
-              ctx.drawImage(gif2Ref.current, (3 * size.width) / 4 - gifWidth / 2, size.height - gifHeight - 20, gifWidth, gifHeight)
+              ctx.drawImage(
+                gif2Ref.current,
+                (3 * size.width) / 4 - gif2Width / 2,
+                size.height - gif2Height - 20,
+                gif2Width,
+                gif2Height
+              );
             }
           }}
         />
