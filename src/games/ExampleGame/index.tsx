@@ -10,10 +10,10 @@ export default function ExampleGame() {
   const [wager, setWager] = useWagerInput()
   const game = GambaUi.useGame()
   const sound = useSound({ test: SOUND })
-  
+
   const chicken1Ref = React.useRef()
   const chicken2Ref = React.useRef()
-  
+
   const [commentary, setCommentary] = React.useState([]) // To store the displayed commentary
   const [fightEnded, setFightEnded] = React.useState(false) // To track if the fight has ended
   const [winner, setWinner] = React.useState(null) // To track the winner
@@ -45,12 +45,22 @@ export default function ExampleGame() {
       "Black cock counters with a jab!"
     ]
 
+    // Randomly select three unique commentary lines
+    const selectedCommentary = []
+    while (selectedCommentary.length < 3) {
+      const randomIndex = Math.floor(Math.random() * possibleCommentary.length)
+      const selectedLine = possibleCommentary[randomIndex]
+      if (!selectedCommentary.includes(selectedLine)) {
+        selectedCommentary.push(selectedLine)
+      }
+    }
+
     let index = 0
 
     const displayNextCommentary = () => {
-      if (index < possibleCommentary.length) {
+      if (index < selectedCommentary.length) {
         // Update the commentary state with the next line
-        setCommentary(prev => [...prev, possibleCommentary[index]])
+        setCommentary(prev => [...prev, selectedCommentary[index]])
 
         // Play sound
         sound.play('test', { playbackRate: .75 + Math.random() * .5 })
