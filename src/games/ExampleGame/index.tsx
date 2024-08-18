@@ -6,6 +6,12 @@ import SOUND from './test.mp3'
 import chicken1 from './gif1.png'
 import chicken2 from './gif2.png'
 
+// Define the sides
+const SIDES = {
+  black: [2, 0],
+  white: [0, 2],
+}
+
 export default function ExampleGame() {
   const [wager, setWager] = useWagerInput()
   const game = GambaUi.useGame()
@@ -96,13 +102,13 @@ export default function ExampleGame() {
 
     // Simulate game play and result fetching
     const result = await game.play({
-      bet: [selectedChicken === 'black' ? 1 : 2], // Example bet values
+      bet: SIDES[selectedChicken], // Use SIDES to determine the bet
       wager,
       metadata: [selectedChicken],
     })
 
     const resultData = await game.result()
-    const win = (resultData.payout > 0) && (resultData.resultIndex === (selectedChicken === 'black' ? 1 : 2))
+    const win = (resultData.payout > 0) && (resultData.resultIndex === (selectedChicken === 'black' ? 2 : 0))
 
     setResultMessage(win ? `You ${selectedChicken === 'black' ? 'won' : 'lost'}!` : 'You lost!')
     setFightEnded(true)
