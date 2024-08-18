@@ -139,7 +139,6 @@ export default function Game() {
       ) : (
         <h1>Game not found! 👎</h1>
       )}
-      <GameSlider />
     </>
   )
 }
