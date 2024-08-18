@@ -34,48 +34,56 @@ export default function ExampleGame() {
   }, [])
 
   const click = () => {
-    if (fightEnded) return
-
-    const possibleCommentary = [
-      "White cock takes an uppercut!",
-      "Black cock dodges a takedown!",
-      "White cock delivers a powerful kick!",
-      "Black cock charges forward aggressively!",
-      "White cock evades with a swift move!",
-      "Black cock counters with a jab!"
-    ]
-
-    // Randomly select three unique commentary lines
-    const selectedCommentary = []
-    while (selectedCommentary.length < 4) {
-      const randomIndex = Math.floor(Math.random() * possibleCommentary.length)
-      const selectedLine = possibleCommentary[randomIndex]
-      if (!selectedCommentary.includes(selectedLine)) {
-        selectedCommentary.push(selectedLine)
-      }
+    if (fightEnded) {
+      // Reset the state to start a new fight
+      setCommentary([])
+      setFightEnded(false)
+      setWinner(null)
+      return
     }
 
-    let index = 0
+    if (commentary.length === 0) {
+      const possibleCommentary = [
+        "White cock takes an uppercut!",
+        "Black cock dodges a takedown!",
+        "White cock delivers a powerful kick!",
+        "Black cock charges forward aggressively!",
+        "White cock evades with a swift move!",
+        "Black cock counters with a jab!"
+      ]
 
-    const displayNextCommentary = () => {
-      if (index < selectedCommentary.length) {
-        // Update the commentary state with the next line
-        setCommentary(prev => [...prev, selectedCommentary[index]])
-
-        // Play sound
-        sound.play('test', { playbackRate: .75 + Math.random() * .5 })
-
-        // Move to the next commentary line after a delay
-        index++
-        setTimeout(displayNextCommentary, 2000) // 2-second delay
-      } else {
-        // End the fight after all commentary is displayed
-        endFight()
+      // Randomly select three unique commentary lines
+      const selectedCommentary = []
+      while (selectedCommentary.length < 3) {
+        const randomIndex = Math.floor(Math.random() * possibleCommentary.length)
+        const selectedLine = possibleCommentary[randomIndex]
+        if (!selectedCommentary.includes(selectedLine)) {
+          selectedCommentary.push(selectedLine)
+        }
       }
-    }
 
-    // Start displaying the commentary
-    displayNextCommentary()
+      let index = 0
+
+      const displayNextCommentary = () => {
+        if (index < selectedCommentary.length) {
+          // Update the commentary state with the next line
+          setCommentary(prev => [...prev, selectedCommentary[index]])
+
+          // Play sound
+          sound.play('test', { playbackRate: .75 + Math.random() * .5 })
+
+          // Move to the next commentary line after a delay
+          index++
+          setTimeout(displayNextCommentary, 2000) // 2-second delay
+        } else {
+          // End the fight after all commentary is displayed
+          endFight()
+        }
+      }
+
+      // Start displaying the commentary
+      displayNextCommentary()
+    }
   }
 
   const endFight = () => {
@@ -187,7 +195,7 @@ export default function ExampleGame() {
       <GambaUi.Portal target="controls">
         <GambaUi.WagerInput value={wager} onChange={setWager} />
         <GambaUi.Button onClick={click}>
-          Useless button
+          {fightEnded ? 'Replay' : 'Useless button'}
         </GambaUi.Button>
         <GambaUi.PlayButton onClick={play}>
           Double Or nothing
