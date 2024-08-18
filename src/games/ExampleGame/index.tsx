@@ -1,15 +1,22 @@
 import { GambaUi, useSound, useWagerInput } from 'gamba-react-ui-v2'
 import React from 'react'
 import SOUND from './test.mp3'
+import SOUND_WIN from './win.mp3'
+import SOUND_LOSE from './lose.mp3'
 
 // Import the chicken images
 import chicken1 from './gif1.png'
 import chicken2 from './gif2.png'
 
+const WINNING_CONDITION = {
+  black: 'Black cock won!',
+  white: 'White cock won!',
+}
+
 export default function ExampleGame() {
   const [wager, setWager] = useWagerInput()
   const game = GambaUi.useGame()
-  const sound = useSound({ test: SOUND })
+  const sound = useSound({ test: SOUND, win: SOUND_WIN, lose: SOUND_LOSE })
 
   const chicken1Ref = React.useRef()
   const chicken2Ref = React.useRef()
@@ -40,6 +47,7 @@ export default function ExampleGame() {
       setCommentary([])
       setFightEnded(false)
       setWinner(null)
+      setSelectedChicken('black')
       return
     }
 
@@ -87,10 +95,28 @@ export default function ExampleGame() {
     }
   }
 
-  const endFight = () => {
-    // Set the winner based on the selected chicken
+  const endFight = async () => {
+    // Simulate game play and result
+    await game.play({
+      wager,
+      bet: [2, 0], // Example bet, modify according to your game logic
+    })
+
+    const result = await game.result()
+
+    // Determine if the result matches the selected chicken
+    const win = (selectedChicken === 'black' && result.payout > 0) ||
+                (selectedChicken === 'white' && result.payout > 0)
+
     setWinner(selectedChicken)
     setFightEnded(true)
+
+    // Play win/lose sound based on result
+    if (win) {
+      sound.play('win')
+    } else {
+      sound.play('lose')
+    }
   }
 
   const toggleChicken = () => {
@@ -165,7 +191,7 @@ export default function ExampleGame() {
               ctx.font = '32px Arial'
               ctx.fillStyle = 'white'
               ctx.textAlign = 'center'
-              ctx.fillText(`${winner === 'black' ? 'Black' : 'White'} cock won!`, size.width / 2, size.height / 4)
+              ctx.fillText(WINNING_CONDITION[winner], size.width / 2, size.height / 4)
 
               // Draw the winning chicken centered
               if (winner === 'black' && chicken1Ref.current) {
