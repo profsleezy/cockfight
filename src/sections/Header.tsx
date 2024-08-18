@@ -28,7 +28,7 @@ const StyledHeader = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 7px;
-  background: rgba(219, 217, 217, 0.9);
+  background: rgba(219, 217, 217, 0.5);
   position: fixed;
   background: #dbd9d9;
   backdrop-filter: blur(20px);
