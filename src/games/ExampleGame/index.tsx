@@ -2,11 +2,33 @@ import { GambaUi, useSound, useWagerInput } from 'gamba-react-ui-v2'
 import React from 'react'
 import SOUND from './test.mp3'
 
+// Import the GIFs
+import gif1 from './gif1.gif'
+import gif2 from './gif2.gif'
+
 export default function ExampleGame() {
   const _hue = React.useRef(0)
   const [wager, setWager] = useWagerInput()
   const game = GambaUi.useGame()
   const sound = useSound({ test: SOUND })
+
+  const gif1Ref = React.useRef()
+  const gif2Ref = React.useRef()
+
+  React.useEffect(() => {
+    // Load the GIFs into Image objects
+    const gif1Image = new Image()
+    gif1Image.src = gif1
+    gif1Image.onload = () => {
+      gif1Ref.current = gif1Image
+    }
+
+    const gif2Image = new Image()
+    gif2Image.src = gif2
+    gif2Image.onload = () => {
+      gif2Ref.current = gif2Image
+    }
+  }, [])
 
   const click = () => {
     _hue.current = (_hue.current + 30) % 360
@@ -59,6 +81,18 @@ export default function ExampleGame() {
             ctx.fillText('HELLO', 0, 0)
 
             ctx.restore()
+
+            // Draw the GIFs if they are loaded
+            if (gif1Ref.current && gif2Ref.current) {
+              const gifWidth = size.width / 4; // Adjust the size of the GIFs as needed
+              const gifHeight = size.height / 4;
+
+              // Draw the first GIF on the left side
+              ctx.drawImage(gif1Ref.current, size.width / 4 - gifWidth / 2, size.height - gifHeight - 20, gifWidth, gifHeight)
+
+              // Draw the second GIF on the right side
+              ctx.drawImage(gif2Ref.current, (3 * size.width) / 4 - gifWidth / 2, size.height - gifHeight - 20, gifWidth, gifHeight)
+            }
           }}
         />
       </GambaUi.Portal>
