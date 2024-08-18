@@ -28,7 +28,8 @@ const StyledHeader = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 7px;
-  background: rgb(245, 245, 245);
+  background: rgb(219, 217, 217);
+  opacity: 0.5;
   position: fixed;
   top: 0;
   left: 0;
