@@ -55,7 +55,7 @@ export default function ExampleGame() {
 
       // Randomly select three unique commentary lines
       const selectedCommentary = []
-      while (selectedCommentary.length < 4) {
+      while (selectedCommentary.length < 3) {
         const randomIndex = Math.floor(Math.random() * possibleCommentary.length)
         const selectedLine = possibleCommentary[randomIndex]
         if (!selectedCommentary.includes(selectedLine)) {
@@ -93,7 +93,7 @@ export default function ExampleGame() {
     setFightEnded(true)
   }
 
-  const handleSwitchChange = () => {
+  const toggleChicken = () => {
     // Toggle between black and white cock
     setSelectedChicken(prev => (prev === 'black' ? 'white' : 'black'))
   }
@@ -148,7 +148,7 @@ export default function ExampleGame() {
                   size.height / 2 - chicken2Height / 2,
                   chicken2Width,
                   chicken2Height
-                );
+                )
               }
 
               // Draw the commentary text
@@ -194,11 +194,9 @@ export default function ExampleGame() {
         <GambaUi.Button onClick={click}>
           {fightEnded ? 'Replay' : 'Useless button'}
         </GambaUi.Button>
-        <GambaUi.Switch 
-          checked={selectedChicken === 'black'}
-          onChange={handleSwitchChange}
-          labels={{ checked: 'Black Cock', unchecked: 'White Cock' }}
-        />
+        <GambaUi.Button onClick={toggleChicken}>
+          {selectedChicken === 'black' ? 'Black Cock' : 'White Cock'}
+        </GambaUi.Button>
       </GambaUi.Portal>
     </>
   )
