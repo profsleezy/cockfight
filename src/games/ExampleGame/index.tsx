@@ -45,19 +45,27 @@ export default function ExampleGame() {
       "Black cock counters with a jab!"
     ]
 
-    // Pick a random commentary line
-    const randomCommentary = possibleCommentary[Math.floor(Math.random() * possibleCommentary.length)]
+    let index = 0
 
-    // Update the commentary state
-    setCommentary(prev => [...prev, randomCommentary])
+    const displayNextCommentary = () => {
+      if (index < possibleCommentary.length) {
+        // Update the commentary state with the next line
+        setCommentary(prev => [...prev, possibleCommentary[index]])
 
-    // Play sound
-    sound.play('test', { playbackRate: .75 + Math.random() * .5 })
+        // Play sound
+        sound.play('test', { playbackRate: .75 + Math.random() * .5 })
 
-    // If this is the third commentary, end the fight
-    if (commentary.length === 2) {
-      endFight()
+        // Move to the next commentary line after a delay
+        index++
+        setTimeout(displayNextCommentary, 2000) // 2-second delay
+      } else {
+        // End the fight after all commentary is displayed
+        endFight()
+      }
     }
+
+    // Start displaying the commentary
+    displayNextCommentary()
   }
 
   const endFight = () => {
