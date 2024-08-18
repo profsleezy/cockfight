@@ -1,22 +1,15 @@
 import { GambaUi, useSound, useWagerInput } from 'gamba-react-ui-v2'
 import React from 'react'
 import SOUND from './test.mp3'
-import SOUND_WIN from './win.mp3'
-import SOUND_LOSE from './lose.mp3'
 
 // Import the chicken images
 import chicken1 from './gif1.png'
 import chicken2 from './gif2.png'
 
-const WINNING_CONDITION = {
-  black: 'Black cock won!',
-  white: 'White cock won!',
-}
-
 export default function ExampleGame() {
   const [wager, setWager] = useWagerInput()
   const game = GambaUi.useGame()
-  const sound = useSound({ test: SOUND, win: SOUND_WIN, lose: SOUND_LOSE })
+  const sound = useSound({ test: SOUND })
 
   const chicken1Ref = React.useRef()
   const chicken2Ref = React.useRef()
@@ -25,6 +18,7 @@ export default function ExampleGame() {
   const [fightEnded, setFightEnded] = React.useState(false) // To track if the fight has ended
   const [winner, setWinner] = React.useState(null) // To track the winner
   const [selectedChicken, setSelectedChicken] = React.useState('black') // To track the selected chicken
+  const [resultMessage, setResultMessage] = React.useState('') // To display the result message
 
   React.useEffect(() => {
     // Load the chicken images into Image objects
@@ -41,13 +35,13 @@ export default function ExampleGame() {
     }
   }, [])
 
-  const click = () => {
+  const click = async () => {
     if (fightEnded) {
       // Reset the state to start a new fight
       setCommentary([])
       setFightEnded(false)
       setWinner(null)
-      setSelectedChicken('black')
+      setResultMessage('')
       return
     }
 
@@ -96,27 +90,22 @@ export default function ExampleGame() {
   }
 
   const endFight = async () => {
-    // Simulate game play and result
-    await game.play({
+    // Determine the winner and set the result message
+    const fightWinner = selectedChicken
+    setWinner(fightWinner)
+
+    // Simulate game play and result fetching
+    const result = await game.play({
+      bet: [selectedChicken === 'black' ? 1 : 2], // Example bet values
       wager,
-      bet: [2, 0], // Example bet, modify according to your game logic
+      metadata: [selectedChicken],
     })
 
-    const result = await game.result()
+    const resultData = await game.result()
+    const win = (resultData.payout > 0) && (resultData.resultIndex === (selectedChicken === 'black' ? 1 : 2))
 
-    // Determine if the result matches the selected chicken
-    const win = (selectedChicken === 'black' && result.payout > 0) ||
-                (selectedChicken === 'white' && result.payout > 0)
-
-    setWinner(selectedChicken)
+    setResultMessage(win ? `You ${selectedChicken === 'black' ? 'won' : 'lost'}!` : 'You lost!')
     setFightEnded(true)
-
-    // Play win/lose sound based on result
-    if (win) {
-      sound.play('win')
-    } else {
-      sound.play('lose')
-    }
   }
 
   const toggleChicken = () => {
@@ -191,7 +180,7 @@ export default function ExampleGame() {
               ctx.font = '32px Arial'
               ctx.fillStyle = 'white'
               ctx.textAlign = 'center'
-              ctx.fillText(WINNING_CONDITION[winner], size.width / 2, size.height / 4)
+              ctx.fillText(resultMessage, size.width / 2, size.height / 4)
 
               // Draw the winning chicken centered
               if (winner === 'black' && chicken1Ref.current) {
