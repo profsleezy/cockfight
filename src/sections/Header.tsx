@@ -27,10 +27,10 @@ const StyledHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 7px;
-  background: rgba(219, 217, 217, 0.5);
+  padding: 5px;
+  background: rgba(33, 34, 51, 0.9);
   position: fixed;
-  background: #dbd9d9;
+  background: #000000CC;
   backdrop-filter: blur(20px);
   top: 0;
   left: 0;
