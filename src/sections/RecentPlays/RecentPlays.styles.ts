@@ -74,6 +74,7 @@ export const Recent = styled.button`
   color: unset;
   text-decoration: none;
   justify-content: space-between;
+  border-radius: 5px;
   background: #edebeb;
   &:hover {
     background: #c9c7c7;
