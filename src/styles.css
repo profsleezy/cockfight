@@ -3,11 +3,11 @@
 }
 
 :root {
-  --background-color: #0b0b0e;
-  --text-color: #ffffff;
+  --background-color: #F5F5F5;
+  --text-color: #0e1111;
   --gamba-ui-primary-color: #9564ff;
 
-  --gamba-ui-border-radius: 10px;
+  --gamba-ui-border-radius: 6px;
 
   --gamba-ui-button-default-background: #0e0e16;
   --gamba-ui-button-default-background-hover: #11111d;
