@@ -17,6 +17,7 @@ export default function ExampleGame() {
   const [commentary, setCommentary] = React.useState([]) // To store the displayed commentary
   const [fightEnded, setFightEnded] = React.useState(false) // To track if the fight has ended
   const [winner, setWinner] = React.useState(null) // To track the winner
+  const [selectedChicken, setSelectedChicken] = React.useState('black') // To track the selected chicken
 
   React.useEffect(() => {
     // Load the chicken images into Image objects
@@ -54,7 +55,7 @@ export default function ExampleGame() {
 
       // Randomly select three unique commentary lines
       const selectedCommentary = []
-      while (selectedCommentary.length < 3) {
+      while (selectedCommentary.length < 4) {
         const randomIndex = Math.floor(Math.random() * possibleCommentary.length)
         const selectedLine = possibleCommentary[randomIndex]
         if (!selectedCommentary.includes(selectedLine)) {
@@ -87,18 +88,14 @@ export default function ExampleGame() {
   }
 
   const endFight = () => {
-    const randomWinner = Math.random() > 0.5 ? 'black' : 'white'
-    setWinner(randomWinner)
+    // Set the winner based on the selected chicken
+    setWinner(selectedChicken)
     setFightEnded(true)
   }
 
-  const play = async () => {
-    await game.play({
-      wager,
-      bet: [2, 0],
-    })
-    const result = await game.result()
-    console.log(result)
+  const handleSwitchChange = () => {
+    // Toggle between black and white cock
+    setSelectedChicken(prev => (prev === 'black' ? 'white' : 'black'))
   }
 
   return (
@@ -197,9 +194,11 @@ export default function ExampleGame() {
         <GambaUi.Button onClick={click}>
           {fightEnded ? 'Replay' : 'Useless button'}
         </GambaUi.Button>
-        <GambaUi.PlayButton onClick={play}>
-          Double Or nothing
-        </GambaUi.PlayButton>
+        <GambaUi.Switch 
+          checked={selectedChicken === 'black'}
+          onChange={handleSwitchChange}
+          labels={{ checked: 'Black Cock', unchecked: 'White Cock' }}
+        />
       </GambaUi.Portal>
     </>
   )
