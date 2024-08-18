@@ -96,10 +96,6 @@ export default function ExampleGame() {
   }
 
   const endFight = async () => {
-    // Determine the winner and set the result message
-    const fightWinner = selectedChicken
-    setWinner(fightWinner)
-
     // Simulate game play and result fetching
     const result = await game.play({
       bet: SIDES[selectedChicken], // Use SIDES to determine the bet
@@ -108,9 +104,12 @@ export default function ExampleGame() {
     })
 
     const resultData = await game.result()
-    const win = (resultData.payout > 0) && (resultData.resultIndex === (selectedChicken === 'black' ? 2 : 0))
+    const actualWinner = resultData.resultIndex === 2 ? 'black' : 'white'
+    const win = resultData.payout > 0 && actualWinner === selectedChicken
 
-    setResultMessage(win ? `You ${selectedChicken === 'black' ? 'won' : 'lost'}!` : 'You lost!')
+    // Determine the result message
+    setResultMessage(win ? `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won!` : `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won!`)
+    setWinner(actualWinner)
     setFightEnded(true)
   }
 
