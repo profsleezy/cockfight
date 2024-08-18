@@ -151,7 +151,9 @@ export default function ExampleGame() {
               ctx.fillStyle = 'white'
               ctx.textAlign = 'center'
               commentary.forEach((line, index) => {
-                ctx.fillText(line, size.width / 2, size.height / 2 + (index + 2) * 30)
+                if (line) { // Ensure line is defined
+                  ctx.fillText(line, size.width / 2, size.height / 2 + (index + 2) * 30)
+                }
               })
             } else {
               // Draw the end screen with the winner
