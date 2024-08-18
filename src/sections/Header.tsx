@@ -28,14 +28,11 @@ const StyledHeader = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 7px;
-  background: rgba(33, 34, 51, 0.9);
+  background: rgb(245, 245, 245);
   position: fixed;
-  background: #000000CC;
-  backdrop-filter: blur(500px);
   top: 0;
   left: 0;
   z-index: 1000;
-  backdrop-filter: blur(20px);
 `
 
 const Logo = styled(NavLink)`
