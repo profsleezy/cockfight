@@ -1,8 +1,6 @@
 import { GambaUi, useSound, useWagerInput } from 'gamba-react-ui-v2'
 import React from 'react'
 import SOUND from './test.mp3'
-import WIN_SOUND from './win.mp3'
-import LOSE_SOUND from './lose.mp3'
 
 // Import the chicken images
 import chicken1 from './gif1.png' // Black cock
@@ -17,11 +15,10 @@ const SIDES = {
 export default function ExampleGame() {
   const [wager, setWager] = useWagerInput()
   const game = GambaUi.useGame()
-  const sound = useSound({ test: SOUND, win: WIN_SOUND, lose: LOSE_SOUND })
+  const sound = useSound({ test: SOUND })
 
   const chicken1Ref = React.useRef()
   const chicken2Ref = React.useRef()
-  const canvasRef = React.useRef()
 
   const [commentary, setCommentary] = React.useState([]) // To store the displayed commentary
   const [fightEnded, setFightEnded] = React.useState(false) // To track if the fight has ended
@@ -64,7 +61,7 @@ export default function ExampleGame() {
         "Black cock counters with a jab!"
       ]
 
-      // Randomly select four unique commentary lines
+      // Randomly select three unique commentary lines
       const selectedCommentary = []
       while (selectedCommentary.length < 4) {
         const randomIndex = Math.floor(Math.random() * possibleCommentary.length)
@@ -83,9 +80,6 @@ export default function ExampleGame() {
 
           // Play sound
           sound.play('test', { playbackRate: .75 + Math.random() * .5 })
-
-          // Apply visual effects
-          applyVisualEffect()
 
           // Move to the next commentary line after a delay
           index++
@@ -114,9 +108,6 @@ export default function ExampleGame() {
 
     const win = result.payout > 0 && actualWinner === selectedChicken
 
-    // Play win or lose sound effect based on the result
-    sound.play(win ? 'win' : 'lose')
-
     // Determine the result message
     setResultMessage(win ? `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won!` : `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won!`)
     setWinner(actualWinner)
@@ -128,74 +119,10 @@ export default function ExampleGame() {
     setSelectedChicken(prev => (prev === 'black' ? 'white' : 'black'))
   }
 
-  const applyVisualEffect = () => {
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
-
-    // Randomly choose an effect: shake, zoom, or flash
-    const effects = ['shake', 'zoom', 'flash']
-    const effect = effects[Math.floor(Math.random() * effects.length)]
-
-    switch (effect) {
-      case 'shake':
-        shakeEffect(ctx, canvas)
-        break
-      case 'zoom':
-        zoomEffect(ctx, canvas)
-        break
-      case 'flash':
-        flashEffect(ctx, canvas)
-        break
-      default:
-        break
-    }
-  }
-
-  const shakeEffect = (ctx, canvas) => {
-    let dx = 0, dy = 0
-    const shake = setInterval(() => {
-      dx = Math.random() * 10 - 5
-      dy = Math.random() * 10 - 5
-      ctx.translate(dx, dy)
-      setTimeout(() => {
-        ctx.translate(-dx, -dy)
-      }, 50)
-    }, 50)
-    setTimeout(() => clearInterval(shake), 500) // Shake for 0.5 seconds
-  }
-
-  const zoomEffect = (ctx, canvas) => {
-    let scale = 1.0
-    const zoom = setInterval(() => {
-      scale += 0.1
-      ctx.scale(scale, scale)
-    }, 50)
-    setTimeout(() => {
-      clearInterval(zoom)
-      ctx.setTransform(1, 0, 0, 1, 0, 0) // Reset transformation
-    }, 500) // Zoom for 0.5 seconds
-  }
-
-  const flashEffect = (ctx, canvas) => {
-    ctx.save()
-    ctx.fillStyle = 'white'
-    const flash = setInterval(() => {
-      ctx.globalAlpha = 0.5
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      ctx.globalAlpha = 1.0
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-    }, 50)
-    setTimeout(() => {
-      clearInterval(flash)
-      ctx.restore()
-    }, 300) // Flash for 0.3 seconds
-  }
-
   return (
     <>
       <GambaUi.Portal target="screen">
         <GambaUi.Canvas
-          canvasRef={canvasRef} // Reference to the canvas element
           render={({ ctx, size }) => {
             // Clear the canvas
             ctx.clearRect(0, 0, size.width, size.height)
