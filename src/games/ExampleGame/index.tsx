@@ -268,7 +268,7 @@ export default function ExampleGame() {
               ctx.textAlign = 'center'
               ctx.fillStyle = 'white'
               if (winner === 'black') {
-                ctx.fillText('Black Cock Won!', size.width / 2, size.height / 2 - 40)
+                ctx.fillText(resultMessage, size.width / 2, size.height / 2 - 40)
                 if (chicken1Ref.current) {
                   ctx.drawImage(
                     chicken1Ref.current,
@@ -279,7 +279,7 @@ export default function ExampleGame() {
                   )
                 }
               } else if (winner === 'white') {
-                ctx.fillText('White Cock Won!', size.width / 2, size.height / 2 - 40)
+                ctx.fillText(resultMessage, size.width / 2, size.height / 2 - 40)
                 if (chicken2Ref.current) {
                   ctx.drawImage(
                     chicken2Ref.current,
