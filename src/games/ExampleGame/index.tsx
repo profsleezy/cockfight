@@ -134,7 +134,10 @@ export default function ExampleGame() {
         if (index < selectedCommentary.length) {
           // Update the commentary state with the next line
           setCommentary(prev => [...prev, selectedCommentary[index]])
-          setCommentaryAnimation(prev => [...prev, { index, opacity: 0 }]) // Initialize animation
+          setCommentaryAnimation(prev => [
+            ...prev,
+            { index, opacity: 0 } // Initialize animation with opacity 0
+          ]) 
 
           // Play sound
           sound.play('test', { playbackRate: .75 + Math.random() * .5 })
