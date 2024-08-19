@@ -126,11 +126,11 @@ export default function ExampleGame() {
         setEffect({ type: 'shake', duration: 500 })
         break
       case 1:
-        // Zoom effect
-        setEffect({ type: 'zoom', duration: 500 })
+        // Invert color effect
+        setEffect({ type: 'invert', duration: 500 })
         break
       case 2:
-        // Flash effect
+        // Flash effect (more intense)
         setEffect({ type: 'flash', duration: 500 })
         break
       default:
@@ -165,11 +165,11 @@ export default function ExampleGame() {
                   const offsetY = Math.random() * shakeMagnitude - shakeMagnitude / 2
                   ctx.translate(offsetX, offsetY)
                   break
-                case 'zoom':
-                  ctx.scale(1.2, 1.2)
+                case 'invert':
+                  ctx.filter = 'invert(100%)'
                   break
                 case 'flash':
-                  ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
+                  ctx.fillStyle = 'rgba(255, 255, 255, 0.9)' // Increased intensity
                   ctx.fillRect(0, 0, size.width, size.height)
                   break
                 default:
@@ -258,9 +258,10 @@ export default function ExampleGame() {
               }
             }
 
-            // Reset transformations if an effect was applied
+            // Reset transformations and filters if an effect was applied
             if (effect) {
               ctx.setTransform(1, 0, 0, 1, 0, 0) // Reset transformations after applying the effect
+              ctx.filter = 'none' // Reset filter after applying the effect
             }
           }}
         />
