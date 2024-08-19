@@ -292,7 +292,7 @@ export default function ExampleGame() {
               }
 
               // Draw the commentary text
-              ctx.font = '24px "Press Start 2P", cursive' // Updated font
+              ctx.font = '16px "Press Start 2P", cursive' // Updated font
               ctx.fillStyle = 'white'
               ctx.textAlign = 'center'
               commentary.forEach((line, index) => {
