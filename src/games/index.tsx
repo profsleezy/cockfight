@@ -12,3 +12,4 @@ export const GAMES: GameBundle[] = [
      },
      app: React.lazy(() => import('./ExampleGame')),
    },
+  ]
