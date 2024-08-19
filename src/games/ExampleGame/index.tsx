@@ -28,7 +28,6 @@ export default function ExampleGame() {
   const [effect, setEffect] = React.useState(null) // To track the current effect
   const [textAnimation, setTextAnimation] = React.useState(false) // To track text animation state
 
-
   React.useEffect(() => {
     // Load the chicken images into Image objects
     const chicken1Image = new Image()
@@ -74,7 +73,47 @@ export default function ExampleGame() {
         "White cock delivers a powerful kick!",
         "Black cock charges forward aggressively!",
         "White cock evades with a swift move!",
-        "Black cock counters with a jab!"
+        "Black cock counters with a jab!",
+        "White cocks uppercut lands with a jackhammer thud!",
+        "Black cock dodges like he’s dancing in the rain!",
+        "White cocks kick could smash a watermelon!",
+        "Black cock charges forward as if he’s late for lunch!",
+        "White cock evades smoothly, like butter on a hot pan!",
+        "Black cock counters with a jab faster than a cat’s swipe!",
+        "White cocks body slam shakes the arena!",
+        "Black cock sidesteps with impressive agility!",
+        "White cocks roundhouse kick is like a meteor impact!",
+        "Black cock rolls out of the way like a circus performer!",
+        "White cocks flying kick launches like a rocket!",
+        "Black cock pecks back with pinpoint precision!",
+        "White cocks aerial maneuver is a true showstopper!",
+        "Black cock sidesteps gracefully, like sliding on butter!",
+        "White cocks combo hits with jet-speed intensity!",
+        "Black cock dodges like lightning on a greased floor!",
+        "White cocks kick packs enough power to change the weather!",
+        "Black cock strikes back like he’s swatting mosquitoes!",
+        "White cocks high kick is more dramatic than a soap opera!",
+        "Black cock parries and responds with expert precision!",
+        "White cocks rapid strikes are delivered at sound-barrier speed!",
+        "Black cock spins away with the grace of a ballerina!",
+        "White cocks flying kick is launched like a catapult!",
+        "Black cock rolls out of the way with silky smoothness!",
+        "White cocks knee strike hits with earth-shaking force!",
+        "Black cock retaliates with a strike that’s full of zing!",
+        "White cocks punch could knock off anyone’s socks!",
+        "Black cock bounces back with the agility of a grasshopper!",
+        "White cocks rapid strikes come with squirrel-like speed!",
+        "Black cock flips like a superhero avoiding an attack!",
+        "White cocks aerial attack is precise as a laser!",
+        "Black cock sidesteps like a smooth jazz rhythm!",
+        "White cocks uppercut connects with rocket-fuel power!",
+        "Black cock counters with a jab as sharp as a pencil!",
+        "White cocks roundhouse kick could clear a whole room!",
+        "Black cock strikes back with Swiss-watch precision!",
+        "White cocks dramatic leap lands a solid hit!",
+        "Black cock dodges and strikes back with quick precision!",
+        "White cocks rapid attacks whip up a storm of force!",
+        "Black cock rolls and retaliates like a seasoned pro!"
       ]
 
       // Randomly select three unique commentary lines
@@ -189,26 +228,25 @@ export default function ExampleGame() {
             }
 
             if (!fightEnded) {
-
               // Draw the initial text above the chickens if the game hasn't started
               if (!textAnimation) {
-                ctx.font = '24px Arial'
+                ctx.font = '36px "Russo One", sans-serif' // Updated font
                 ctx.fillStyle = 'white'
                 ctx.textAlign = 'center'
                 ctx.fillText('Black Cock vs White Cock', size.width / 2, size.height / 6)
               }
-              
+
               // Animate text out of the canvas if animation is active
               if (textAnimation) {
                 ctx.save()
                 ctx.translate(0, -size.height) // Move the text up out of view
-                ctx.font = '24px Arial'
+                ctx.font = '36px "Russo One", sans-serif' // Updated font
                 ctx.fillStyle = 'white'
                 ctx.textAlign = 'center'
                 ctx.fillText('Black Cock vs White Cock', size.width / 2, size.height / 6)
                 ctx.restore()
               }
-              
+
               // Draw the chickens if the fight hasn't ended
               if (chicken1Ref.current && chicken2Ref.current) {
                 const maxChickenWidth = size.width / 4; // Maximum width available for each chicken
@@ -254,7 +292,7 @@ export default function ExampleGame() {
               }
 
               // Draw the commentary text
-              ctx.font = '24px Arial'
+              ctx.font = '24px "Press Start 2P", cursive' // Updated font
               ctx.fillStyle = 'white'
               ctx.textAlign = 'center'
               commentary.forEach((line, index) => {
@@ -264,7 +302,7 @@ export default function ExampleGame() {
               })
             } else {
               // Display the end screen with the winner
-              ctx.font = '32px Arial'
+              ctx.font = '32px "Russo One", sans-serif' // Updated font
               ctx.textAlign = 'center'
               ctx.fillStyle = 'white'
               if (winner === 'black') {
