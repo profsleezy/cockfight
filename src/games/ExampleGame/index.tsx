@@ -120,7 +120,7 @@ export default function ExampleGame() {
 
       // Randomly select three unique commentary lines
       const selectedCommentary = []
-      while (selectedCommentary.length < 4) {
+      while (selectedCommentary.length < 5) {
         const randomIndex = Math.floor(Math.random() * possibleCommentary.length)
         const selectedLine = possibleCommentary[randomIndex]
         if (!selectedCommentary.includes(selectedLine)) {
