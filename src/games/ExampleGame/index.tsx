@@ -263,29 +263,32 @@ export default function ExampleGame() {
                 }
               })
             } else {
-              // Draw the end screen with the winner
+              // Display the end screen with the winner
               ctx.font = '32px Arial'
-              ctx.fillStyle = 'white'
               ctx.textAlign = 'center'
-              ctx.fillText(resultMessage, size.width / 2, size.height / 4)
-
-              // Draw the winning chicken centered
-              if (winner === 'black' && chicken1Ref.current) {
-                ctx.drawImage(
-                  chicken1Ref.current,
-                  size.width / 2 - chicken1Ref.current.width / 2,
-                  size.height / 2 - chicken1Ref.current.height / 2,
-                  chicken1Ref.current.width,
-                  chicken1Ref.current.height
-                )
-              } else if (winner === 'white' && chicken2Ref.current) {
-                ctx.drawImage(
-                  chicken2Ref.current,
-                  size.width / 2 - chicken2Ref.current.width / 2,
-                  size.height / 2 - chicken2Ref.current.height / 2,
-                  chicken2Ref.current.width,
-                  chicken2Ref.current.height
-                )
+              ctx.fillStyle = 'white'
+              if (winner === 'black') {
+                ctx.fillText('Black Cock Won!', size.width / 2, size.height / 2 - 40)
+                if (chicken1Ref.current) {
+                  ctx.drawImage(
+                    chicken1Ref.current,
+                    size.width / 2 - chicken1Ref.current.width / 2,
+                    size.height / 2 + 10,
+                    chicken1Ref.current.width,
+                    chicken1Ref.current.height
+                  )
+                }
+              } else if (winner === 'white') {
+                ctx.fillText('White Cock Won!', size.width / 2, size.height / 2 - 40)
+                if (chicken2Ref.current) {
+                  ctx.drawImage(
+                    chicken2Ref.current,
+                    size.width / 2 - chicken2Ref.current.width / 2,
+                    size.height / 2 + 10,
+                    chicken2Ref.current.width,
+                    chicken2Ref.current.height
+                  )
+                }
               }
             }
 
