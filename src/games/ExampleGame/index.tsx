@@ -25,6 +25,7 @@ export default function ExampleGame() {
   const [winner, setWinner] = React.useState(null) // To track the winner
   const [selectedChicken, setSelectedChicken] = React.useState('black') // To track the selected chicken
   const [resultMessage, setResultMessage] = React.useState('') // To display the result message
+  const [effect, setEffect] = React.useState(null) // To track the current effect
 
   React.useEffect(() => {
     // Load the chicken images into Image objects
@@ -63,7 +64,7 @@ export default function ExampleGame() {
 
       // Randomly select three unique commentary lines
       const selectedCommentary = []
-      while (selectedCommentary.length < 4) {
+      while (selectedCommentary.length < 3) {
         const randomIndex = Math.floor(Math.random() * possibleCommentary.length)
         const selectedLine = possibleCommentary[randomIndex]
         if (!selectedCommentary.includes(selectedLine)) {
@@ -80,6 +81,9 @@ export default function ExampleGame() {
 
           // Play sound
           sound.play('test', { playbackRate: .75 + Math.random() * .5 })
+
+          // Trigger effects based on the commentary line
+          triggerEffect(index)
 
           // Move to the next commentary line after a delay
           index++
@@ -114,6 +118,31 @@ export default function ExampleGame() {
     setFightEnded(true)
   }
 
+  const triggerEffect = (index) => {
+    // Define effects based on the commentary line index
+    switch (index) {
+      case 0:
+        // Shake effect
+        setEffect({ type: 'shake', duration: 500 })
+        break
+      case 1:
+        // Zoom effect
+        setEffect({ type: 'zoom', duration: 500 })
+        break
+      case 2:
+        // Flash effect
+        setEffect({ type: 'flash', duration: 500 })
+        break
+      default:
+        setEffect(null)
+    }
+
+    // Clear the effect after its duration
+    setTimeout(() => {
+      setEffect(null)
+    }, 500)
+  }
+
   const toggleChicken = () => {
     // Toggle between black and white cock
     setSelectedChicken(prev => (prev === 'black' ? 'white' : 'black'))
@@ -126,6 +155,27 @@ export default function ExampleGame() {
           render={({ ctx, size }) => {
             // Clear the canvas
             ctx.clearRect(0, 0, size.width, size.height)
+
+            // Apply effects if any
+            if (effect) {
+              switch (effect.type) {
+                case 'shake':
+                  const shakeMagnitude = 5
+                  const offsetX = Math.random() * shakeMagnitude - shakeMagnitude / 2
+                  const offsetY = Math.random() * shakeMagnitude - shakeMagnitude / 2
+                  ctx.translate(offsetX, offsetY)
+                  break
+                case 'zoom':
+                  ctx.scale(1.2, 1.2)
+                  break
+                case 'flash':
+                  ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
+                  ctx.fillRect(0, 0, size.width, size.height)
+                  break
+                default:
+                  break
+              }
+            }
 
             if (!fightEnded) {
               // Draw the chickens if the fight hasn't ended
@@ -207,13 +257,18 @@ export default function ExampleGame() {
                 )
               }
             }
+
+            // Reset transformations if an effect was applied
+            if (effect) {
+              ctx.setTransform(1, 0, 0, 1, 0, 0) // Reset transformations after applying the effect
+            }
           }}
         />
       </GambaUi.Portal>
       <GambaUi.Portal target="controls">
         <GambaUi.WagerInput value={wager} onChange={setWager} />
         <GambaUi.Button onClick={click}>
-          {fightEnded ? 'Replay' : 'Useless button'}
+          {fightEnded ? 'Replay' : 'Start Fight'}
         </GambaUi.Button>
         <GambaUi.Button onClick={toggleChicken}>
           {selectedChicken === 'black' ? 'Black Cock' : 'White Cock'}
