@@ -130,8 +130,8 @@ export default function ExampleGame() {
         setEffect({ type: 'invert', duration: 500 })
         break
       case 2:
-        // Flash effect (more intense)
-        setEffect({ type: 'flash', duration: 500 })
+        // Second Shake effect (more intense or different timing)
+        setEffect({ type: 'shake', duration: 700 })
         break
       default:
         setEffect(null)
@@ -160,17 +160,13 @@ export default function ExampleGame() {
             if (effect) {
               switch (effect.type) {
                 case 'shake':
-                  const shakeMagnitude = 5
+                  const shakeMagnitude = 8 // Increased shake intensity for second shake effect
                   const offsetX = Math.random() * shakeMagnitude - shakeMagnitude / 2
                   const offsetY = Math.random() * shakeMagnitude - shakeMagnitude / 2
                   ctx.translate(offsetX, offsetY)
                   break
                 case 'invert':
                   ctx.filter = 'invert(100%)'
-                  break
-                case 'flash':
-                  ctx.fillStyle = 'rgba(255, 255, 255, 0.9)' // Increased intensity
-                  ctx.fillRect(0, 0, size.width, size.height)
                   break
                 default:
                   break
