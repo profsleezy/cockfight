@@ -28,6 +28,7 @@ export default function ExampleGame() {
   const [effect, setEffect] = React.useState(null) // To track the current effect
   const [textAnimation, setTextAnimation] = React.useState(false) // To track text animation state
 
+
   React.useEffect(() => {
     // Load the chicken images into Image objects
     const chicken1Image = new Image()
@@ -78,7 +79,7 @@ export default function ExampleGame() {
 
       // Randomly select three unique commentary lines
       const selectedCommentary = []
-      while (selectedCommentary.length < 3) {
+      while (selectedCommentary.length < 4) {
         const randomIndex = Math.floor(Math.random() * possibleCommentary.length)
         const selectedLine = possibleCommentary[randomIndex]
         if (!selectedCommentary.includes(selectedLine)) {
@@ -188,6 +189,7 @@ export default function ExampleGame() {
             }
 
             if (!fightEnded) {
+
               // Draw the initial text above the chickens if the game hasn't started
               if (!textAnimation) {
                 ctx.font = '24px Arial'
@@ -195,7 +197,7 @@ export default function ExampleGame() {
                 ctx.textAlign = 'center'
                 ctx.fillText('Black Cock vs White Cock', size.width / 2, size.height / 6)
               }
-
+              
               // Animate text out of the canvas if animation is active
               if (textAnimation) {
                 ctx.save()
@@ -206,7 +208,7 @@ export default function ExampleGame() {
                 ctx.fillText('Black Cock vs White Cock', size.width / 2, size.height / 6)
                 ctx.restore()
               }
-
+              
               // Draw the chickens if the fight hasn't ended
               if (chicken1Ref.current && chicken2Ref.current) {
                 const maxChickenWidth = size.width / 4; // Maximum width available for each chicken
@@ -248,35 +250,42 @@ export default function ExampleGame() {
                   size.height / 2 - chicken2Height / 2,
                   chicken2Width,
                   chicken2Height
-                );
+                )
               }
-            } else {
-              // Display the end screen with the winner
-              ctx.font = '32px Arial'
-              ctx.textAlign = 'center'
+
+              // Draw the commentary text
+              ctx.font = '24px Arial'
               ctx.fillStyle = 'white'
-              if (winner === 'black') {
-                ctx.fillText('Black Cock Won!', size.width / 2, size.height / 2 - 40)
-                if (chicken1Ref.current) {
-                  ctx.drawImage(
-                    chicken1Ref.current,
-                    size.width / 2 - chicken1Ref.current.width / 2,
-                    size.height / 2 + 10,
-                    chicken1Ref.current.width,
-                    chicken1Ref.current.height
-                  )
+              ctx.textAlign = 'center'
+              commentary.forEach((line, index) => {
+                if (line) { // Ensure line is defined
+                  ctx.fillText(line, size.width / 2, size.height / 2 + (index + 2) * 30)
                 }
-              } else if (winner === 'white') {
-                ctx.fillText('White Cock Won!', size.width / 2, size.height / 2 - 40)
-                if (chicken2Ref.current) {
-                  ctx.drawImage(
-                    chicken2Ref.current,
-                    size.width / 2 - chicken2Ref.current.width / 2,
-                    size.height / 2 + 10,
-                    chicken2Ref.current.width,
-                    chicken2Ref.current.height
-                  )
-                }
+              })
+            } else {
+              // Draw the end screen with the winner
+              ctx.font = '32px Arial'
+              ctx.fillStyle = 'white'
+              ctx.textAlign = 'center'
+              ctx.fillText(resultMessage, size.width / 2, size.height / 4)
+
+              // Draw the winning chicken centered
+              if (winner === 'black' && chicken1Ref.current) {
+                ctx.drawImage(
+                  chicken1Ref.current,
+                  size.width / 2 - chicken1Ref.current.width / 2,
+                  size.height / 2 - chicken1Ref.current.height / 2,
+                  chicken1Ref.current.width,
+                  chicken1Ref.current.height
+                )
+              } else if (winner === 'white' && chicken2Ref.current) {
+                ctx.drawImage(
+                  chicken2Ref.current,
+                  size.width / 2 - chicken2Ref.current.width / 2,
+                  size.height / 2 - chicken2Ref.current.height / 2,
+                  chicken2Ref.current.width,
+                  chicken2Ref.current.height
+                )
               }
             }
 
