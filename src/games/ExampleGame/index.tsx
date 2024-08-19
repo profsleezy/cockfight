@@ -27,6 +27,7 @@ export default function ExampleGame() {
   const [resultMessage, setResultMessage] = React.useState('') // To display the result message
   const [effect, setEffect] = React.useState(null) // To track the current effect
   const [textAnimation, setTextAnimation] = React.useState(false) // To track text animation state
+  const [commentaryAnimation, setCommentaryAnimation] = React.useState([]) // To track commentary animations
 
   React.useEffect(() => {
     // Load the chicken images into Image objects
@@ -47,6 +48,7 @@ export default function ExampleGame() {
     if (fightEnded) {
       // Reset the state to start a new fight
       setCommentary([])
+      setCommentaryAnimation([])
       setFightEnded(false)
       setWinner(null)
       setResultMessage('')
@@ -132,6 +134,7 @@ export default function ExampleGame() {
         if (index < selectedCommentary.length) {
           // Update the commentary state with the next line
           setCommentary(prev => [...prev, selectedCommentary[index]])
+          setCommentaryAnimation(prev => [...prev, { index, opacity: 0 }]) // Initialize animation
 
           // Play sound
           sound.play('test', { playbackRate: .75 + Math.random() * .5 })
@@ -291,15 +294,30 @@ export default function ExampleGame() {
                 )
               }
 
-              // Draw the commentary text
+              // Draw the commentary text with animation
               ctx.font = '16px "Press Start 2P", cursive' // Updated font
               ctx.fillStyle = 'white'
               ctx.textAlign = 'center'
+
               commentary.forEach((line, index) => {
-                if (line) { // Ensure line is defined
-                  ctx.fillText(line, size.width / 2, size.height / 2 + (index + 2) * 30)
+                const anim = commentaryAnimation.find(anim => anim.index === index)
+                if (line && anim) { // Ensure line and animation state are defined
+                  // Apply fade-in effect
+                  ctx.globalAlpha = anim.opacity
+
+                  // Apply slide-in effect if needed
+                  const slideOffset = 30 * (anim.index + 1) // Adjust the slide offset based on index
+                  ctx.fillText(line, size.width / 2, size.height / 2 + slideOffset + (index + 2) * 30)
+
+                  // Update opacity for fade-in effect
+                  if (anim.opacity < 1) {
+                    anim.opacity += 0.05 // Increment opacity
+                  }
                 }
               })
+
+              // Reset globalAlpha after drawing
+              ctx.globalAlpha = 1
             } else {
               // Display the end screen with the winner
               ctx.font = '32px "Russo One", sans-serif' // Updated font
