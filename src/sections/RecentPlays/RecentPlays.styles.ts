@@ -75,9 +75,9 @@ export const Recent = styled.button`
   text-decoration: none;
   justify-content: space-between;
   border-radius: 5px;
-  background: #edebeb;
+  background: #1E293B;
   &:hover {
-    background: #c9c7c7;
+    background: #677584;
   }
 `
 
