@@ -251,8 +251,14 @@ export default function ExampleGame() {
         <GambaUi.Button onClick={click}>
           {fightEnded ? 'Replay' : 'Start Fight'}
         </GambaUi.Button>
-        <GambaUi.Button onClick={toggleChicken}>
-          Bet on {selectedChicken === 'black' ? 'White Cock' : 'Black Cock'}
+        <GambaUi.Button
+          onClick={toggleChicken}
+          style={{
+            backgroundColor: selectedChicken === 'black' ? 'black' : 'white',
+            color: selectedChicken === 'black' ? 'white' : 'black',
+          }}
+        >
+          {selectedChicken === 'black' ? 'Black Cock' : 'White Cock'}
         </GambaUi.Button>
       </GambaUi.Portal>
     </>
