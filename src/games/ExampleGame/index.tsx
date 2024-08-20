@@ -96,23 +96,25 @@ export default function ExampleGame() {
   }
 
   const triggerEffect = () => {
-    // Function to trigger the effect with a delay
     const applyEffect = (timesLeft) => {
-        if (timesLeft > 0) {
-            setEffect({ type: 'invert', duration: 500 }) // Trigger the shake effect
-            setTimeout(() => {
-                setEffect(null) // Clear the effect after its duration
-                setTimeout(() => {
-                    applyEffect(timesLeft - 1) // Recursively apply the effect again after a short delay
-                }, 500) // Delay between each effect
-            }, 500) // Duration of each effect
-        }
-    }
-    
+      if (timesLeft > 0) {
+        // Alternate between shake and invert effects
+        const effectType = timesLeft % 2 === 0 ? 'shake' : 'invert';
+  
+        setEffect({ type: effectType, duration: 500 }); // Trigger the selected effect
+        setTimeout(() => {
+          setEffect(null); // Clear the effect after its duration
+          setTimeout(() => {
+            applyEffect(timesLeft - 1); // Recursively apply the next effect after a short delay
+          }, 200); // Delay between each effect
+        }, 500); // Duration of each effect
+      }
+    };
+  
     // Start the effect triggering sequence
-    applyEffect(3) // Trigger the effect 3 times
-}
-
+    applyEffect(3); // Trigger the effect 3 times
+  };
+  
   const toggleChicken = () => {
     // Toggle between black and white cock
     setSelectedChicken(prev => (prev === 'black' ? 'white' : 'black'))
