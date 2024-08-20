@@ -99,23 +99,15 @@ export default function ExampleGame() {
     // Function to trigger the effect with a delay
     const applyEffect = (timesLeft) => {
         if (timesLeft > 0) {
-            // Alternate between shake and invert effects
-            const isShake = timesLeft % 2 === 0; // Alternate based on whether timesLeft is even or odd
-
-            setEffect({ type: isShake ? 'shake' : 'invert', duration: 500 }); // Trigger either shake or invert effect
+            setEffect({ type: 'invert', duration: 500 }) // Trigger the shake effect
             setTimeout(() => {
-                setEffect(null); // Clear the effect after its duration
+                setEffect(null) // Clear the effect after its duration
                 setTimeout(() => {
-                    applyEffect(timesLeft - 1); // Recursively apply the effect again after a short delay
-                }, 200); // Delay between each effect
-            }, 500); // Duration of each effect
+                    applyEffect(timesLeft - 1) // Recursively apply the effect again after a short delay
+                }, 500) // Delay between each effect
+            }, 500) // Duration of each effect
         }
-    };
-
-    // Start the effect triggering sequence
-    applyEffect(3); // Trigger the effect 3 times
-};
-
+    }
     
     // Start the effect triggering sequence
     applyEffect(3) // Trigger the effect 3 times
@@ -134,7 +126,6 @@ export default function ExampleGame() {
             // Clear the canvas
             ctx.clearRect(0, 0, size.width, size.height)
 
-            // Apply effects if any
                // Apply effects if any
                if (effect) {
                 switch (effect.type) {
