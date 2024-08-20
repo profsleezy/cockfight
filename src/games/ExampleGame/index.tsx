@@ -73,6 +73,9 @@ export default function ExampleGame() {
         " ",
         " ",
         " ",
+        " ",
+        " ",
+        " "
       ]
 
       // Randomly select three unique commentary lines
