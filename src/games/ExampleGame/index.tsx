@@ -258,6 +258,13 @@ export default function ExampleGame() {
               }
             }
 
+            // Draw the selected cock text at the bottom of the canvas
+            ctx.font = '24px "Russo One", sans-serif'
+            ctx.textAlign = 'center'
+            ctx.fillStyle = 'white'
+            ctx.fillText(`I like...`, size.width / 2, size.height - 60)
+            ctx.fillText(`(${selectedChicken === 'black' ? 'Black Cock' : 'White Cock'})`, size.width / 2, size.height - 30)
+
             // Reset transformations and filters if an effect was applied
             if (effect) {
               ctx.setTransform(1, 0, 0, 1, 0, 0) // Reset transformations after applying the effect
