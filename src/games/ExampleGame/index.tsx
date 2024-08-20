@@ -20,12 +20,14 @@ export default function ExampleGame() {
   const chicken1Ref = React.useRef()
   const chicken2Ref = React.useRef()
 
+  const [commentary, setCommentary] = React.useState([]) // To store the displayed commentary
   const [fightEnded, setFightEnded] = React.useState(false) // To track if the fight has ended
   const [winner, setWinner] = React.useState(null) // To track the winner
   const [selectedChicken, setSelectedChicken] = React.useState('black') // To track the selected chicken
   const [resultMessage, setResultMessage] = React.useState('') // To display the result message
   const [effect, setEffect] = React.useState(null) // To track the current effect
   const [textAnimation, setTextAnimation] = React.useState(false) // To track text animation state
+  const [commentaryAnimation, setCommentaryAnimation] = React.useState([]) // To track commentary animations
 
   React.useEffect(() => {
     // Load the chicken images into Image objects
@@ -45,6 +47,8 @@ export default function ExampleGame() {
   const click = async () => {
     if (fightEnded) {
       // Reset the state to start a new fight
+      setCommentary([])
+      setCommentaryAnimation([])
       setFightEnded(false)
       setWinner(null)
       setResultMessage('')
@@ -64,16 +68,52 @@ export default function ExampleGame() {
   }
 
   const startFight = async () => {
-    // Start the fight without commentary
+    if (commentary.length === 0) {
+      const possibleCommentary = [
+        " ",
+        " ",
+        " ",
+      ]
 
-    // Play sound
-    sound.play('test', { playbackRate: 0.75 + Math.random() * 0.5 })
+      // Randomly select three unique commentary lines
+      const selectedCommentary = []
+      while (selectedCommentary.length < 5) {
+        const randomIndex = Math.floor(Math.random() * possibleCommentary.length)
+        const selectedLine = possibleCommentary[randomIndex]
+        if (!selectedCommentary.includes(selectedLine)) {
+          selectedCommentary.push(selectedLine)
+        }
+      }
 
-    // Trigger effects during the fight
-    triggerEffect()
+      let index = 0
 
-    // End the fight after the effects
-    setTimeout(endFight, 2000) // 2-second delay before ending the fight
+      const displayNextCommentary = () => {
+        if (index < selectedCommentary.length) {
+          // Update the commentary state with the next line
+          setCommentary(prev => [...prev, selectedCommentary[index]])
+          setCommentaryAnimation(prev => [
+            ...prev,
+            { index, opacity: 0 } // Initialize animation with opacity 0
+          ]) 
+
+          // Play sound
+          sound.play('test', { playbackRate: .75 + Math.random() * .5 })
+
+          // Trigger effects based on the commentary line
+          triggerEffect(index)
+
+          // Move to the next commentary line after a delay
+          index++
+          setTimeout(displayNextCommentary, 2000) // 2-second delay
+        } else {
+          // End the fight after all commentary is displayed
+          endFight()
+        }
+      }
+
+      // Start displaying the commentary
+      displayNextCommentary()
+    }
   }
 
   const endFight = async () => {
@@ -95,9 +135,24 @@ export default function ExampleGame() {
     setFightEnded(true)
   }
 
-  const triggerEffect = () => {
-    // Define an effect during the fight
-    setEffect({ type: 'shake', duration: 500 })
+  const triggerEffect = (index) => {
+    // Define effects based on the commentary line index
+    switch (index) {
+      case 0:
+        // Shake effect
+        setEffect({ type: 'shake', duration: 500 })
+        break
+      case 1:
+        // Invert color effect
+        setEffect({ type: 'invert', duration: 500 })
+        break
+      case 2:
+        // Second Shake effect (more intense or different timing)
+        setEffect({ type: 'shake', duration: 700 })
+        break
+      default:
+        setEffect(null)
+    }
 
     // Clear the effect after its duration
     setTimeout(() => {
@@ -122,10 +177,13 @@ export default function ExampleGame() {
             if (effect) {
               switch (effect.type) {
                 case 'shake':
-                  const shakeMagnitude = 8 // Shake intensity
+                  const shakeMagnitude = 8 // Increased shake intensity for second shake effect
                   const offsetX = Math.random() * shakeMagnitude - shakeMagnitude / 2
                   const offsetY = Math.random() * shakeMagnitude - shakeMagnitude / 2
                   ctx.translate(offsetX, offsetY)
+                  break
+                case 'invert':
+                  ctx.filter = 'invert(100%)'
                   break
                 default:
                   break
@@ -195,6 +253,31 @@ export default function ExampleGame() {
                   chicken2Height
                 )
               }
+
+              // Draw the commentary text with animation
+              ctx.font = '16px "Press Start 2P", cursive' // Updated font
+              ctx.fillStyle = 'white'
+              ctx.textAlign = 'center'
+
+              commentary.forEach((line, index) => {
+                const anim = commentaryAnimation.find(anim => anim.index === index)
+                if (line && anim) { // Ensure line and animation state are defined
+                  // Apply fade-in effect
+                  ctx.globalAlpha = anim.opacity
+
+                  // Apply slide-in effect if needed
+                  const slideOffset = 30 * (anim.index + 1) // Adjust the slide offset based on index
+                  ctx.fillText(line, size.width / 2, size.height / 2 + slideOffset + (index + 2) * 30)
+
+                  // Update opacity for fade-in effect
+                  if (anim.opacity < 1) {
+                    anim.opacity += 0.05 // Increment opacity
+                  }
+                }
+              })
+
+              // Reset globalAlpha after drawing
+              ctx.globalAlpha = 1
             } else {
               // Display the end screen with the winner
               ctx.font = '32px "Russo One", sans-serif' // Updated font
@@ -239,7 +322,7 @@ export default function ExampleGame() {
           {fightEnded ? 'Replay' : 'Start Fight'}
         </GambaUi.Button>
         <GambaUi.Button onClick={toggleChicken}>
-          Bet on {selectedChicken === 'black' ? 'White Cock' : 'Black Cock'}
+          {selectedChicken === 'black' ? 'Black Cock' : 'White Cock'}
         </GambaUi.Button>
       </GambaUi.Portal>
     </>
