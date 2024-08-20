@@ -135,18 +135,22 @@ export default function ExampleGame() {
             ctx.clearRect(0, 0, size.width, size.height)
 
             // Apply effects if any
-            if (effect) {
-              switch (effect.type) {
-                case 'shake':
-                  const shakeMagnitude = 8 // Shake intensity
-                  const offsetX = Math.random() * shakeMagnitude - shakeMagnitude / 2
-                  const offsetY = Math.random() * shakeMagnitude - shakeMagnitude / 2
-                  ctx.translate(offsetX, offsetY)
-                  break
-                default:
-                  break
+               // Apply effects if any
+               if (effect) {
+                switch (effect.type) {
+                  case 'shake':
+                    const shakeMagnitude = 8 // Increased shake intensity for second shake effect
+                    const offsetX = Math.random() * shakeMagnitude - shakeMagnitude / 2
+                    const offsetY = Math.random() * shakeMagnitude - shakeMagnitude / 2
+                    ctx.translate(offsetX, offsetY)
+                    break
+                  case 'invert':
+                    ctx.filter = 'invert(100%)'
+                    break
+                  default:
+                    break
+                }
               }
-            }
 
             if (!fightEnded) {
               // Draw the initial text above the chickens if the game hasn't started
