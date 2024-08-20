@@ -104,7 +104,7 @@ export default function ExampleGame() {
                 setEffect(null) // Clear the effect after its duration
                 setTimeout(() => {
                     applyEffect(timesLeft - 1) // Recursively apply the effect again after a short delay
-                }, 200) // Delay between each effect
+                }, 800) // Delay between each effect
             }, 500) // Duration of each effect
         }
     }
