@@ -128,22 +128,22 @@ export default function ExampleGame() {
             // Clear the canvas
             ctx.clearRect(0, 0, size.width, size.height)
 
-               // Apply effects if any
-               if (effect) {
-                switch (effect.type) {
-                  case 'shake':
-                    const shakeMagnitude = 8 // Increased shake intensity for second shake effect
-                    const offsetX = Math.random() * shakeMagnitude - shakeMagnitude / 2
-                    const offsetY = Math.random() * shakeMagnitude - shakeMagnitude / 2
-                    ctx.translate(offsetX, offsetY)
-                    break
-                  case 'invert':
-                    ctx.filter = 'invert(100%)'
-                    break
-                  default:
-                    break
-                }
+            // Apply effects if any
+            if (effect) {
+              switch (effect.type) {
+                case 'shake':
+                  const shakeMagnitude = 8 // Increased shake intensity for second shake effect
+                  const offsetX = Math.random() * shakeMagnitude - shakeMagnitude / 2
+                  const offsetY = Math.random() * shakeMagnitude - shakeMagnitude / 2
+                  ctx.translate(offsetX, offsetY)
+                  break
+                case 'invert':
+                  ctx.filter = 'invert(100%)'
+                  break
+                default:
+                  break
               }
+            }
 
             if (!fightEnded) {
               // Draw the initial text above the chickens if the game hasn't started
@@ -190,7 +190,17 @@ export default function ExampleGame() {
                   chicken2Width = maxChickenHeight * chicken2AspectRatio;
                 }
 
-                // Draw the first chicken on the left side
+                // Draw the first chicken on the left side with border if selected
+                if (selectedChicken === 'black') {
+                  ctx.strokeStyle = 'yellow'; // Border color for selected chicken
+                  ctx.lineWidth = 10; // Border width
+                  ctx.strokeRect(
+                    size.width / 4 - chicken1Width / 2 - 5,
+                    size.height / 2 - chicken1Height / 2 - 5,
+                    chicken1Width + 10,
+                    chicken1Height + 10
+                  );
+                }
                 ctx.drawImage(
                   chicken1Ref.current,
                   size.width / 4 - chicken1Width / 2,
@@ -199,7 +209,17 @@ export default function ExampleGame() {
                   chicken1Height
                 );
 
-                // Draw the second chicken on the right side
+                // Draw the second chicken on the right side with border if selected
+                if (selectedChicken === 'white') {
+                  ctx.strokeStyle = 'yellow'; // Border color for selected chicken
+                  ctx.lineWidth = 10; // Border width
+                  ctx.strokeRect(
+                    (3 * size.width) / 4 - chicken2Width / 2 - 5,
+                    size.height / 2 - chicken2Height / 2 - 5,
+                    chicken2Width + 10,
+                    chicken2Height + 10
+                  );
+                }
                 ctx.drawImage(
                   chicken2Ref.current,
                   (3 * size.width) / 4 - chicken2Width / 2,
@@ -251,13 +271,7 @@ export default function ExampleGame() {
         <GambaUi.Button onClick={click}>
           {fightEnded ? 'Replay' : 'Start Fight'}
         </GambaUi.Button>
-        <GambaUi.Button
-          onClick={toggleChicken}
-          style={{
-            backgroundColor: selectedChicken === 'black' ? 'black' : 'white',
-            color: selectedChicken === 'black' ? 'white' : 'black',
-          }}
-        >
+        <GambaUi.Button onClick={toggleChicken}>
           {selectedChicken === 'black' ? 'Black Cock' : 'White Cock'}
         </GambaUi.Button>
       </GambaUi.Portal>
