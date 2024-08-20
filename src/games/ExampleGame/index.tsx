@@ -70,12 +70,11 @@ export default function ExampleGame() {
   const startFight = async () => {
     if (commentary.length === 0) {
       const possibleCommentary = [
-        " ",
-        " ",
-        " ",
-        " ",
-        " ",
-        " "
+        "White cock takes an uppercut!",
+        "Black cock dodges a takedown!",
+        "White cock delivers a powerful kick!",
+        "Black cock charges forward aggressively!",
+        "Black cock rolls and retaliates like a seasoned pro!"
       ]
 
       // Randomly select three unique commentary lines
