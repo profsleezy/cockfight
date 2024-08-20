@@ -190,17 +190,7 @@ export default function ExampleGame() {
                   chicken2Width = maxChickenHeight * chicken2AspectRatio;
                 }
 
-                // Draw the first chicken on the left side with border if selected
-                if (selectedChicken === 'black') {
-                  ctx.strokeStyle = 'yellow'; // Border color for selected chicken
-                  ctx.lineWidth = 10; // Border width
-                  ctx.strokeRect(
-                    size.width / 4 - chicken1Width / 2 - 5,
-                    size.height / 2 - chicken1Height / 2 - 5,
-                    chicken1Width + 10,
-                    chicken1Height + 10
-                  );
-                }
+                // Draw the first chicken on the left side
                 ctx.drawImage(
                   chicken1Ref.current,
                   size.width / 4 - chicken1Width / 2,
@@ -209,17 +199,7 @@ export default function ExampleGame() {
                   chicken1Height
                 );
 
-                // Draw the second chicken on the right side with border if selected
-                if (selectedChicken === 'white') {
-                  ctx.strokeStyle = 'yellow'; // Border color for selected chicken
-                  ctx.lineWidth = 10; // Border width
-                  ctx.strokeRect(
-                    (3 * size.width) / 4 - chicken2Width / 2 - 5,
-                    size.height / 2 - chicken2Height / 2 - 5,
-                    chicken2Width + 10,
-                    chicken2Height + 10
-                  );
-                }
+                // Draw the second chicken on the right side
                 ctx.drawImage(
                   chicken2Ref.current,
                   (3 * size.width) / 4 - chicken2Width / 2,
@@ -228,6 +208,14 @@ export default function ExampleGame() {
                   chicken2Height
                 )
               }
+
+              // Draw the selected cock text at the bottom of the canvas
+              ctx.font = '24px "Russo One", sans-serif'
+              ctx.textAlign = 'center'
+              ctx.fillStyle = 'white'
+              ctx.fillText(`I like...`, size.width / 2, size.height - 60)
+              ctx.fillText(`(${selectedChicken === 'black' ? 'Black Cock' : 'White Cock'})`, size.width / 2, size.height - 30)
+
             } else {
               // Display the end screen with the winner
               ctx.font = '32px "Russo One", sans-serif' // Updated font
@@ -258,13 +246,6 @@ export default function ExampleGame() {
               }
             }
 
-            // Draw the selected cock text at the bottom of the canvas
-            ctx.font = '24px "Russo One", sans-serif'
-            ctx.textAlign = 'center'
-            ctx.fillStyle = 'white'
-            ctx.fillText(`I like...`, size.width / 2, size.height - 60)
-            ctx.fillText(`(${selectedChicken === 'black' ? 'Black Cock' : 'White Cock'})`, size.width / 2, size.height - 30)
-
             // Reset transformations and filters if an effect was applied
             if (effect) {
               ctx.setTransform(1, 0, 0, 1, 0, 0) // Reset transformations after applying the effect
@@ -278,7 +259,7 @@ export default function ExampleGame() {
         <GambaUi.Button onClick={click}>
           {fightEnded ? 'Replay' : 'Start Fight'}
         </GambaUi.Button>
-        <GambaUi.Button onClick={toggleChicken}>
+        <GambaUi.Button onClick={toggleChicken} style={{ backgroundColor: selectedChicken === 'black' ? 'black' : 'white', color: selectedChicken === 'black' ? 'white' : 'black' }}>
           {selectedChicken === 'black' ? 'Black Cock' : 'White Cock'}
         </GambaUi.Button>
       </GambaUi.Portal>
