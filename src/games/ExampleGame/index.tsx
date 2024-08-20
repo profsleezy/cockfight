@@ -207,15 +207,33 @@ export default function ExampleGame() {
                   chicken2Width,
                   chicken2Height
                 )
+
+                // Draw border around selected chicken
+                ctx.strokeStyle = 'red'; // Border color
+                ctx.lineWidth = 5; // Border width
+                if (selectedChicken === 'black') {
+                  ctx.strokeRect(
+                    size.width / 4 - chicken1Width / 2,
+                    size.height / 2 - chicken1Height / 2,
+                    chicken1Width,
+                    chicken1Height
+                  );
+                } else if (selectedChicken === 'white') {
+                  ctx.strokeRect(
+                    (3 * size.width) / 4 - chicken2Width / 2,
+                    size.height / 2 - chicken2Height / 2,
+                    chicken2Width,
+                    chicken2Height
+                  );
+                }
               }
 
-              // Draw the selected cock text at the bottom of the canvas
+              // Display selected chicken text at the bottom
               ctx.font = '24px "Russo One", sans-serif'
-              ctx.textAlign = 'center'
               ctx.fillStyle = 'white'
-              ctx.fillText(`I like...`, size.width / 2, size.height - 60)
-              ctx.fillText(`(${selectedChicken === 'black' ? 'Black Cock' : 'White Cock'})`, size.width / 2, size.height - 30)
-
+              ctx.textAlign = 'center'
+              ctx.fillText(`I like...`, size.width / 2, size.height - 40)
+              ctx.fillText(selectedChicken === 'black' ? 'Black Cock' : 'White Cock', size.width / 2, size.height - 10)
             } else {
               // Display the end screen with the winner
               ctx.font = '32px "Russo One", sans-serif' // Updated font
@@ -256,10 +274,16 @@ export default function ExampleGame() {
       </GambaUi.Portal>
       <GambaUi.Portal target="controls">
         <GambaUi.WagerInput value={wager} onChange={setWager} />
-        <GambaUi.Button onClick={click}>
+        <GambaUi.Button
+          onClick={click}
+          style={{
+            backgroundColor: selectedChicken === 'black' ? 'black' : 'white',
+            color: selectedChicken === 'black' ? 'white' : 'black'
+          }}
+        >
           {fightEnded ? 'Replay' : 'Start Fight'}
         </GambaUi.Button>
-        <GambaUi.Button onClick={toggleChicken} style={{ backgroundColor: selectedChicken === 'black' ? 'black' : 'white', color: selectedChicken === 'black' ? 'white' : 'black' }}>
+        <GambaUi.Button onClick={toggleChicken}>
           {selectedChicken === 'black' ? 'Black Cock' : 'White Cock'}
         </GambaUi.Button>
       </GambaUi.Portal>
