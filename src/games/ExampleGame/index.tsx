@@ -85,25 +85,29 @@ export default function ExampleGame() {
       wager,
       metadata: [selectedChicken],
     })
-
+  
     const result = await game.result()
     const actualWinner = result.resultIndex === 0 ? 'black' : 'white' // Map resultIndex to actual winner
-
+  
     const win = result.payout > 0 && actualWinner === selectedChicken
-    const payoutAmount = result.payout
-
+    const payoutAmount = result.payout / 1000000000; // Assuming payout is in the smallest unit and needs conversion
+  
+    // Format the payout amount to a fixed decimal place if needed
+    const formattedPayout = payoutAmount.toFixed(2);
+  
     // Determine the result message
     setResultMessage(
       win
-        ? `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${payoutAmount}`
-        : `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${payoutAmount}`
+        ? `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${formattedPayout}`
+        : `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${formattedPayout}`
     )
     setWinner(actualWinner)
     setFightEnded(true)
-
+  
     // Generate confetti effect
     generateConfetti()
   }
+  
 
   const triggerEffect = () => {
     const applyEffect = (timesLeft) => {
