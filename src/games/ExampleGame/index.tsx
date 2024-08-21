@@ -26,6 +26,7 @@ export default function ExampleGame() {
   const [resultMessage, setResultMessage] = React.useState('') // To display the result message
   const [effect, setEffect] = React.useState(null) // To track the current effect
   const [textAnimation, setTextAnimation] = React.useState(false) // To track text animation state
+  const [confetti, setConfetti] = React.useState([]) // To track confetti positions
 
   React.useEffect(() => {
     // Load the chicken images into Image objects
@@ -49,6 +50,7 @@ export default function ExampleGame() {
       setWinner(null)
       setResultMessage('')
       setTextAnimation(false) // Reset text animation
+      setConfetti([]) // Clear confetti
       return
     }
 
@@ -93,6 +95,9 @@ export default function ExampleGame() {
     setResultMessage(win ? `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won!` : `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won!`)
     setWinner(actualWinner)
     setFightEnded(true)
+
+    // Generate confetti effect
+    generateConfetti()
   }
 
   const triggerEffect = () => {
@@ -118,6 +123,18 @@ export default function ExampleGame() {
   const toggleChicken = () => {
     // Toggle between black and white cock
     setSelectedChicken(prev => (prev === 'black' ? 'white' : 'black'))
+  }
+
+  const generateConfetti = () => {
+    const newConfetti = Array.from({ length: 100 }).map(() => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      size: Math.random() * 5 + 2,
+      speedX: Math.random() * 4 - 2,
+      speedY: Math.random() * 4 - 2,
+      color: `hsl(${Math.random() * 360}, 100%, 50%)`
+    }))
+    setConfetti(newConfetti)
   }
 
   return (
@@ -151,7 +168,7 @@ export default function ExampleGame() {
                 ctx.font = '36px "VT323", monospace' // Updated font
                 ctx.fillStyle = 'white'
                 ctx.textAlign = 'center'
-                ctx.fillText('Pick a cock, Double or nothing you solana', size.width / 2, size.height / 6)
+                ctx.fillText('Pick a cock, Double or nothing your solana', size.width / 2, size.height / 6)
               }
 
               // Animate text out of the canvas if animation is active
@@ -161,7 +178,7 @@ export default function ExampleGame() {
                 ctx.font = '36px "VT323", monospace' // Updated font
                 ctx.fillStyle = 'white'
                 ctx.textAlign = 'center'
-                ctx.fillText('Pick a cock, Double or nothing you solana', size.width / 2, size.height / 6)
+                ctx.fillText('Pick a cock, Double or nothing your solana', size.width / 2, size.height / 6)
                 ctx.restore()
               }
 
@@ -262,6 +279,17 @@ export default function ExampleGame() {
                   )
                 }
               }
+
+              // Draw confetti
+              confetti.forEach((particle) => {
+                ctx.beginPath()
+                ctx.arc(particle.x, particle.y, particle.size, 0, 2 * Math.PI)
+                ctx.fillStyle = particle.color
+                ctx.fill()
+                particle.x += particle.speedX
+                particle.y += particle.speedY
+                particle.speedY += 0.1 // Gravity effect
+              })
             }
 
             // Reset transformations and filters if an effect was applied
