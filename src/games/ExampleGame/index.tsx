@@ -90,9 +90,14 @@ export default function ExampleGame() {
     const actualWinner = result.resultIndex === 0 ? 'black' : 'white' // Map resultIndex to actual winner
 
     const win = result.payout > 0 && actualWinner === selectedChicken
+    const payoutAmount = result.payout
 
     // Determine the result message
-    setResultMessage(win ? `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won!` : `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won!`)
+    setResultMessage(
+      win
+        ? `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${payoutAmount}`
+        : `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${payoutAmount}`
+    )
     setWinner(actualWinner)
     setFightEnded(true)
 
