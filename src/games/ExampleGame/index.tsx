@@ -297,4 +297,4 @@ export default function ExampleGame() {
       </GambaUi.Portal>
     </>
   )
-}  
+}   
