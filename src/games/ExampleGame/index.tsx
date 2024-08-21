@@ -90,22 +90,28 @@ export default function ExampleGame() {
     const actualWinner = result.resultIndex === 0 ? 'black' : 'white' // Map resultIndex to actual winner
   
     const win = result.payout > 0 && actualWinner === selectedChicken
-    const payoutAmount = result.payout / 1000000000; // Assuming payout is in the smallest unit and needs conversion
-    const formattedPayout = payoutAmount.toFixed(2)
+    const formattedWager = wager.toFixed(2); // Format the wager amount
   
     // Determine the result message
     if (win) {
-      setResultMessage(`You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won!`)
+      const payoutAmount = result.payout / 1000000000; // Assuming payout is in the smallest unit and needs conversion
+      const formattedPayout = payoutAmount.toFixed(2);
+      setResultMessage(
+        `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${formattedPayout}`
+      )
     } else {
-      const lossAmount = wager - (result.payout / 1000000000); // Assuming wager is in SOL and needs to be in the same unit
-      setResultMessage(`You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won! You lost: ${lossAmount.toFixed(2)}`)
+      setResultMessage(
+        `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won! Amount lost: ${formattedWager}`
+      )
     }
+    
     setWinner(actualWinner)
     setFightEnded(true)
   
     // Generate confetti effect
     generateConfetti()
   }
+  
   
   return (
     <>
