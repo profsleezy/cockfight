@@ -148,20 +148,20 @@ export default function ExampleGame() {
             if (!fightEnded) {
               // Draw the initial text above the chickens if the game hasn't started
               if (!textAnimation) {
-                ctx.font = '36px "Russo One", sans-serif' // Updated font
+                ctx.font = '36px "VT323", monospace' // Updated font
                 ctx.fillStyle = 'white'
                 ctx.textAlign = 'center'
-                ctx.fillText('Black Cock vs White Cock', size.width / 2, size.height / 6)
+                ctx.fillText('Pick a cock, Double or nothing you solana', size.width / 2, size.height / 6)
               }
 
               // Animate text out of the canvas if animation is active
               if (textAnimation) {
                 ctx.save()
                 ctx.translate(0, -size.height) // Move the text up out of view
-                ctx.font = '36px "Russo One", sans-serif' // Updated font
+                ctx.font = '36px "VT323", monospace' // Updated font
                 ctx.fillStyle = 'white'
                 ctx.textAlign = 'center'
-                ctx.fillText('Black Cock vs White Cock', size.width / 2, size.height / 6)
+                ctx.fillText('Pick a cock, Double or nothing you solana', size.width / 2, size.height / 6)
                 ctx.restore()
               }
 
@@ -229,14 +229,14 @@ export default function ExampleGame() {
               }
 
               // Display selected chicken text at the bottom
-              ctx.font = '24px "Russo One", sans-serif'
+              ctx.font = '24px "VT323", monospace'
               ctx.fillStyle = 'white'
               ctx.textAlign = 'center'
               ctx.fillText(`I like...`, size.width / 2, size.height - 40)
               ctx.fillText(selectedChicken === 'black' ? 'Black Cock' : 'White Cock', size.width / 2, size.height - 10)
             } else {
               // Display the end screen with the winner
-              ctx.font = '32px "Russo One", sans-serif' // Updated font
+              ctx.font = '32px "VT323", monospace' // Updated font
               ctx.textAlign = 'center'
               ctx.fillStyle = 'white'
               if (winner === 'black') {
