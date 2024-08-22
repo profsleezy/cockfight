@@ -264,10 +264,24 @@ export default function ExampleGame() {
       ctx.fillText(selectedChicken === 'black' ? 'Black Cock' : 'White Cock', size.width / 2, size.height - 10);
     } else {
       // Fight has ended, display the result
+
+      // Split the result message into text and value
+      const messageParts = resultMessage.split(/(\d+\.\d{2})/); // Split around the number with 2 decimal places
+      const [textPart, valuePart] = messageParts;
+
       ctx.font = '32px "VT323", monospace';
       ctx.textAlign = 'center';
-      ctx.fillStyle = winner === selectedChicken ? 'green' : 'red'; // Set text color based on win/loss
-      ctx.fillText(resultMessage, size.width / 2, size.height / 2 - 40);
+
+      // Render the non-value part of the message
+      ctx.fillStyle = 'white';
+      ctx.fillText(textPart, size.width / 2, size.height / 2 - 40);
+
+      // Measure the width of the text part to correctly position the value part
+      const textPartWidth = ctx.measureText(textPart).width;
+
+      // Render the value part of the message with the correct color
+      ctx.fillStyle = winner === selectedChicken ? 'green' : 'red';
+      ctx.fillText(valuePart, size.width / 2 + textPartWidth / 2, size.height / 2 - 40);
 
       // Draw the winning chicken
       if (winner === 'black' && chicken1Ref.current) {
@@ -307,6 +321,7 @@ export default function ExampleGame() {
     }
   }}
 />
+
 
       </GambaUi.Portal>
       <GambaUi.Portal target="controls">
