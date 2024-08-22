@@ -85,30 +85,63 @@ export default function ExampleGame() {
       wager,
       metadata: [selectedChicken],
     })
-  
+
     const result = await game.result()
     const actualWinner = result.resultIndex === 0 ? 'black' : 'white' // Map resultIndex to actual winner
-  
+
     const win = result.payout > 0 && actualWinner === selectedChicken
-    const payoutAmount = result.payout / 1000000000; // Assuming payout is in the smallest unit and needs conversion
-  
-    // Format the payout amount to a fixed decimal place if needed
-    const formattedPayout = payoutAmount.toFixed(2);
-  
+    const payoutAmount = result.payout
+
     // Determine the result message
     setResultMessage(
       win
-        ? `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${formattedPayout}`
-        : `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${formattedPayout}`
+        ? `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${payoutAmount}`
+        : `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${payoutAmount}`
     )
     setWinner(actualWinner)
     setFightEnded(true)
-  
+
     // Generate confetti effect
     generateConfetti()
   }
+
+  const triggerEffect = () => {
+    const applyEffect = (timesLeft) => {
+      if (timesLeft > 0) {
+        // Alternate between shake and invert effects
+        const effectType = timesLeft % 2 === 0 ? 'shake' : 'invert';
   
+        setEffect({ type: effectType, duration: 500 }); // Trigger the selected effect
+        setTimeout(() => {
+          setEffect(null); // Clear the effect after its duration
+          setTimeout(() => {
+            applyEffect(timesLeft - 1); // Recursively apply the next effect after a short delay
+          }, 200); // Delay between each effect
+        }, 500); // Duration of each effect
+      }
+    };
   
+    // Start the effect triggering sequence
+    applyEffect(3); // Trigger the effect 3 times
+  };
+  
+  const toggleChicken = () => {
+    // Toggle between black and white cock
+    setSelectedChicken(prev => (prev === 'black' ? 'white' : 'black'))
+  }
+
+  const generateConfetti = () => {
+    const newConfetti = Array.from({ length: 100 }).map(() => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      size: Math.random() * 5 + 2,
+      speedX: Math.random() * 4 - 2,
+      speedY: Math.random() * 4 - 2,
+      color: `hsl(${Math.random() * 360}, 100%, 50%)`
+    }))
+    setConfetti(newConfetti)
+  }
+
   return (
     <>
       <GambaUi.Portal target="screen">
@@ -116,7 +149,7 @@ export default function ExampleGame() {
           render={({ ctx, size }) => {
             // Clear the canvas
             ctx.clearRect(0, 0, size.width, size.height)
-  
+
             // Apply effects if any
             if (effect) {
               switch (effect.type) {
@@ -133,7 +166,7 @@ export default function ExampleGame() {
                   break
               }
             }
-  
+
             if (!fightEnded) {
               // Draw the initial text above the chickens if the game hasn't started
               if (!textAnimation) {
@@ -142,7 +175,7 @@ export default function ExampleGame() {
                 ctx.textAlign = 'center'
                 ctx.fillText('Pick a cock, Double or nothing your solana', size.width / 2, size.height / 6)
               }
-  
+
               // Animate text out of the canvas if animation is active
               if (textAnimation) {
                 ctx.save()
@@ -153,16 +186,16 @@ export default function ExampleGame() {
                 ctx.fillText('Pick a cock, Double or nothing your solana', size.width / 2, size.height / 6)
                 ctx.restore()
               }
-  
+
               // Draw the chickens if the fight hasn't ended
               if (chicken1Ref.current && chicken2Ref.current) {
                 const maxChickenWidth = size.width / 4; // Maximum width available for each chicken
                 const maxChickenHeight = size.height / 4; // Maximum height available for each chicken
-  
+
                 // Calculate the aspect ratio of each chicken
                 const chicken1AspectRatio = chicken1Ref.current.width / chicken1Ref.current.height;
                 const chicken2AspectRatio = chicken2Ref.current.width / chicken2Ref.current.height;
-  
+
                 // Calculate the dimensions for the first chicken while maintaining aspect ratio
                 let chicken1Width = maxChickenWidth;
                 let chicken1Height = maxChickenWidth / chicken1AspectRatio;
@@ -170,7 +203,7 @@ export default function ExampleGame() {
                   chicken1Height = maxChickenHeight;
                   chicken1Width = maxChickenHeight * chicken1AspectRatio;
                 }
-  
+
                 // Calculate the dimensions for the second chicken while maintaining aspect ratio
                 let chicken2Width = maxChickenWidth;
                 let chicken2Height = maxChickenWidth / chicken2AspectRatio;
@@ -178,7 +211,7 @@ export default function ExampleGame() {
                   chicken2Height = maxChickenHeight;
                   chicken2Width = maxChickenHeight * chicken2AspectRatio;
                 }
-  
+
                 // Draw the first chicken on the left side
                 ctx.drawImage(
                   chicken1Ref.current,
@@ -187,7 +220,7 @@ export default function ExampleGame() {
                   chicken1Width,
                   chicken1Height
                 );
-  
+
                 // Draw the second chicken on the right side
                 ctx.drawImage(
                   chicken2Ref.current,
@@ -196,7 +229,7 @@ export default function ExampleGame() {
                   chicken2Width,
                   chicken2Height
                 )
-  
+
                 // Draw border around selected chicken
                 ctx.strokeStyle = 'red'; // Border color
                 ctx.lineWidth = 5; // Border width
@@ -216,7 +249,7 @@ export default function ExampleGame() {
                   );
                 }
               }
-  
+
               // Display selected chicken text at the bottom
               ctx.font = '24px "VT323", monospace'
               ctx.fillStyle = 'white'
@@ -251,7 +284,7 @@ export default function ExampleGame() {
                   )
                 }
               }
-  
+
               // Draw confetti
               confetti.forEach((particle) => {
                 ctx.beginPath()
@@ -262,18 +295,8 @@ export default function ExampleGame() {
                 particle.y += particle.speedY
                 particle.speedY += 0.1 // Gravity effect
               })
-  
-              // Draw payout or loss amount in color
-              ctx.font = '24px "VT323", monospace'
-              ctx.textAlign = 'center'
-              if (win) {
-                ctx.fillStyle = 'neon-green'; // Neon green for win
-              } else {
-                ctx.fillStyle = 'neon-red'; // Neon red for loss
-              }
-              ctx.fillText(`Amount: ${formattedPayout}`, size.width / 2, size.height / 2 + 80)
             }
-  
+
             // Reset transformations and filters if an effect was applied
             if (effect) {
               ctx.setTransform(1, 0, 0, 1, 0, 0) // Reset transformations after applying the effect
@@ -299,4 +322,4 @@ export default function ExampleGame() {
       </GambaUi.Portal>
     </>
   )
-}   
+}
