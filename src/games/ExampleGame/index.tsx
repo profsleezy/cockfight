@@ -2,7 +2,7 @@ import { GambaUi, useSound, useWagerInput } from 'gamba-react-ui-v2'
 import React from 'react'
 import SOUND from './test.mp3'
 import WIN_SOUND from './win.mp3'    // Import win sound
-import LOSS_SOUND from './loss.mp3'  // Import loss sound
+import LOSS_SOUND from './lose.mp3'  // Import loss sound
 
 // Import the chicken images
 import chicken1 from './gif1.png' // Black cock
