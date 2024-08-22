@@ -151,169 +151,163 @@ export default function ExampleGame() {
   return (
     <>
       <GambaUi.Portal target="screen">
-        <GambaUi.Canvas
-          render={({ ctx, size }) => {
-            // Clear the canvas
-            ctx.clearRect(0, 0, size.width, size.height)
+      <GambaUi.Canvas
+  render={({ ctx, size }) => {
+    // Clear the canvas
+    ctx.clearRect(0, 0, size.width, size.height);
 
-            // Apply effects if any
-            if (effect) {
-              switch (effect.type) {
-                case 'shake':
-                  const shakeMagnitude = 8 // Increased shake intensity for second shake effect
-                  const offsetX = Math.random() * shakeMagnitude - shakeMagnitude / 2
-                  const offsetY = Math.random() * shakeMagnitude - shakeMagnitude / 2
-                  ctx.translate(offsetX, offsetY)
-                  break
-                case 'invert':
-                  ctx.filter = 'invert(100%)'
-                  break
-                default:
-                  break
-              }
-            }
+    // Apply effects if any
+    if (effect) {
+      switch (effect.type) {
+        case 'shake':
+          const shakeMagnitude = 8;
+          const offsetX = Math.random() * shakeMagnitude - shakeMagnitude / 2;
+          const offsetY = Math.random() * shakeMagnitude - shakeMagnitude / 2;
+          ctx.translate(offsetX, offsetY);
+          break;
+        case 'invert':
+          ctx.filter = 'invert(100%)';
+          break;
+        default:
+          break;
+      }
+    }
 
-            if (!fightEnded) {
-              // Draw the initial text above the chickens if the game hasn't started
-              if (!textAnimation) {
-                ctx.font = '36px "VT323", monospace' // Updated font
-                ctx.fillStyle = 'white'
-                ctx.textAlign = 'center'
-                ctx.fillText('Pick a cock, Double or nothing your solana', size.width / 2, size.height / 6)
-                ctx.font = '32px "VT323", monospace' // Updated font
-                ctx.textAlign = 'center'
-                ctx.fillStyle = winner === selectedChicken ? 'green' : 'red' // Green if won, red if lost
-                ctx.fillText(resultMessage, size.width / 2, size.height / 2 - 40)
-              }
+    if (!fightEnded) {
+      // Draw the initial text above the chickens if the game hasn't started
+      if (!textAnimation) {
+        ctx.font = '36px "VT323", monospace';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.fillText('Pick a cock, Double or nothing your solana', size.width / 2, size.height / 6);
+      }
 
-              // Animate text out of the canvas if animation is active
-              if (textAnimation) {
-                ctx.save()
-                ctx.translate(0, -size.height) // Move the text up out of view
-                ctx.font = '36px "VT323", monospace' // Updated font
-                ctx.fillStyle = 'white'
-                ctx.textAlign = 'center'
-                ctx.fillText('Pick a cock, Double or nothing your solana', size.width / 2, size.height / 6)
-                ctx.restore()
-              }
+      // Animate text out of the canvas if animation is active
+      if (textAnimation) {
+        ctx.save();
+        ctx.translate(0, -size.height); // Move the text up out of view
+        ctx.font = '36px "VT323", monospace';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.fillText('Pick a cock, Double or nothing your solana', size.width / 2, size.height / 6);
+        ctx.restore();
+      }
 
-              // Draw the chickens if the fight hasn't ended
-              if (chicken1Ref.current && chicken2Ref.current) {
-                const maxChickenWidth = size.width / 4; // Maximum width available for each chicken
-                const maxChickenHeight = size.height / 4; // Maximum height available for each chicken
+      // Draw the chickens
+      if (chicken1Ref.current && chicken2Ref.current) {
+        const maxChickenWidth = size.width / 4; // Maximum width available for each chicken
+        const maxChickenHeight = size.height / 4; // Maximum height available for each chicken
 
-                // Calculate the aspect ratio of each chicken
-                const chicken1AspectRatio = chicken1Ref.current.width / chicken1Ref.current.height;
-                const chicken2AspectRatio = chicken2Ref.current.width / chicken2Ref.current.height;
+        // Calculate the aspect ratio of each chicken
+        const chicken1AspectRatio = chicken1Ref.current.width / chicken1Ref.current.height;
+        const chicken2AspectRatio = chicken2Ref.current.width / chicken2Ref.current.height;
 
-                // Calculate the dimensions for the first chicken while maintaining aspect ratio
-                let chicken1Width = maxChickenWidth;
-                let chicken1Height = maxChickenWidth / chicken1AspectRatio;
-                if (chicken1Height > maxChickenHeight) {
-                  chicken1Height = maxChickenHeight;
-                  chicken1Width = maxChickenHeight * chicken1AspectRatio;
-                }
+        // Calculate the dimensions for the first chicken while maintaining aspect ratio
+        let chicken1Width = maxChickenWidth;
+        let chicken1Height = maxChickenWidth / chicken1AspectRatio;
+        if (chicken1Height > maxChickenHeight) {
+          chicken1Height = maxChickenHeight;
+          chicken1Width = maxChickenHeight * chicken1AspectRatio;
+        }
 
-                // Calculate the dimensions for the second chicken while maintaining aspect ratio
-                let chicken2Width = maxChickenWidth;
-                let chicken2Height = maxChickenWidth / chicken2AspectRatio;
-                if (chicken2Height > maxChickenHeight) {
-                  chicken2Height = maxChickenHeight;
-                  chicken2Width = maxChickenHeight * chicken2AspectRatio;
-                }
+        // Calculate the dimensions for the second chicken while maintaining aspect ratio
+        let chicken2Width = maxChickenWidth;
+        let chicken2Height = maxChickenWidth / chicken2AspectRatio;
+        if (chicken2Height > maxChickenHeight) {
+          chicken2Height = maxChickenHeight;
+          chicken2Width = maxChickenHeight * chicken2AspectRatio;
+        }
 
-                // Draw the first chicken on the left side
-                ctx.drawImage(
-                  chicken1Ref.current,
-                  size.width / 4 - chicken1Width / 2,
-                  size.height / 2 - chicken1Height / 2,
-                  chicken1Width,
-                  chicken1Height
-                );
+        // Draw the first chicken on the left side
+        ctx.drawImage(
+          chicken1Ref.current,
+          size.width / 4 - chicken1Width / 2,
+          size.height / 2 - chicken1Height / 2,
+          chicken1Width,
+          chicken1Height
+        );
 
-                // Draw the second chicken on the right side
-                ctx.drawImage(
-                  chicken2Ref.current,
-                  (3 * size.width) / 4 - chicken2Width / 2,
-                  size.height / 2 - chicken2Height / 2,
-                  chicken2Width,
-                  chicken2Height
-                )
+        // Draw the second chicken on the right side
+        ctx.drawImage(
+          chicken2Ref.current,
+          (3 * size.width) / 4 - chicken2Width / 2,
+          size.height / 2 - chicken2Height / 2,
+          chicken2Width,
+          chicken2Height
+        );
 
-                // Draw border around selected chicken
-                ctx.strokeStyle = 'red'; // Border color
-                ctx.lineWidth = 5; // Border width
-                if (selectedChicken === 'black') {
-                  ctx.strokeRect(
-                    size.width / 4 - chicken1Width / 2,
-                    size.height / 2 - chicken1Height / 2,
-                    chicken1Width,
-                    chicken1Height
-                  );
-                } else if (selectedChicken === 'white') {
-                  ctx.strokeRect(
-                    (3 * size.width) / 4 - chicken2Width / 2,
-                    size.height / 2 - chicken2Height / 2,
-                    chicken2Width,
-                    chicken2Height
-                  );
-                }
-              }
+        // Draw border around selected chicken
+        ctx.strokeStyle = 'red'; // Border color
+        ctx.lineWidth = 5; // Border width
+        if (selectedChicken === 'black') {
+          ctx.strokeRect(
+            size.width / 4 - chicken1Width / 2,
+            size.height / 2 - chicken1Height / 2,
+            chicken1Width,
+            chicken1Height
+          );
+        } else if (selectedChicken === 'white') {
+          ctx.strokeRect(
+            (3 * size.width) / 4 - chicken2Width / 2,
+            size.height / 2 - chicken2Height / 2,
+            chicken2Width,
+            chicken2Height
+          );
+        }
+      }
 
-              // Display selected chicken text at the bottom
-              ctx.font = '24px "VT323", monospace'
-              ctx.fillStyle = 'white'
-              ctx.textAlign = 'center'
-              ctx.fillText(`I like...`, size.width / 2, size.height - 40)
-              ctx.fillText(selectedChicken === 'black' ? 'Black Cock' : 'White Cock', size.width / 2, size.height - 10)
-            } else {
-              // Display the end screen with the winner
-              ctx.font = '32px "VT323", monospace' // Updated font
-              ctx.textAlign = 'center'
-              ctx.fillStyle = 'white'
-              if (winner === 'black') {
-                ctx.fillText(resultMessage, size.width / 2, size.height / 2 - 40)
-                if (chicken1Ref.current) {
-                  ctx.drawImage(
-                    chicken1Ref.current,
-                    size.width / 2 - chicken1Ref.current.width / 2,
-                    size.height / 2 + 10,
-                    chicken1Ref.current.width,
-                    chicken1Ref.current.height
-                  )
-                }
-              } else if (winner === 'white') {
-                ctx.fillText(resultMessage, size.width / 2, size.height / 2 - 40)
-                if (chicken2Ref.current) {
-                  ctx.drawImage(
-                    chicken2Ref.current,
-                    size.width / 2 - chicken2Ref.current.width / 2,
-                    size.height / 2 + 10,
-                    chicken2Ref.current.width,
-                    chicken2Ref.current.height
-                  )
-                }
-              }
+      // Display selected chicken text at the bottom
+      ctx.font = '24px "VT323", monospace';
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.fillText(`I like...`, size.width / 2, size.height - 40);
+      ctx.fillText(selectedChicken === 'black' ? 'Black Cock' : 'White Cock', size.width / 2, size.height - 10);
+    } else {
+      // Fight has ended, display the result
+      ctx.font = '32px "VT323", monospace';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = winner === selectedChicken ? 'green' : 'red'; // Set text color based on win/loss
+      ctx.fillText(resultMessage, size.width / 2, size.height / 2 - 40);
 
-              // Draw confetti
-              confetti.forEach((particle) => {
-                ctx.beginPath()
-                ctx.arc(particle.x, particle.y, particle.size, 0, 2 * Math.PI)
-                ctx.fillStyle = particle.color
-                ctx.fill()
-                particle.x += particle.speedX
-                particle.y += particle.speedY
-                particle.speedY += 0.1 // Gravity effect
-              })
-            }
+      // Draw the winning chicken
+      if (winner === 'black' && chicken1Ref.current) {
+        ctx.drawImage(
+          chicken1Ref.current,
+          size.width / 2 - chicken1Ref.current.width / 2,
+          size.height / 2 + 10,
+          chicken1Ref.current.width,
+          chicken1Ref.current.height
+        );
+      } else if (winner === 'white' && chicken2Ref.current) {
+        ctx.drawImage(
+          chicken2Ref.current,
+          size.width / 2 - chicken2Ref.current.width / 2,
+          size.height / 2 + 10,
+          chicken2Ref.current.width,
+          chicken2Ref.current.height
+        );
+      }
 
-            // Reset transformations and filters if an effect was applied
-            if (effect) {
-              ctx.setTransform(1, 0, 0, 1, 0, 0) // Reset transformations after applying the effect
-              ctx.filter = 'none' // Reset filter after applying the effect
-            }
-          }}
-        />
+      // Draw confetti
+      confetti.forEach((particle) => {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, 2 * Math.PI);
+        ctx.fillStyle = particle.color;
+        ctx.fill();
+        particle.x += particle.speedX;
+        particle.y += particle.speedY;
+        particle.speedY += 0.1; // Gravity effect
+      });
+    }
+
+    // Reset transformations and filters if an effect was applied
+    if (effect) {
+      ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transformations after applying the effect
+      ctx.filter = 'none'; // Reset filter after applying the effect
+    }
+  }}
+/>
+
       </GambaUi.Portal>
       <GambaUi.Portal target="controls">
         <GambaUi.WagerInput value={wager} onChange={setWager} />
