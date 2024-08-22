@@ -109,7 +109,6 @@ export default function ExampleGame() {
   }
   
   
-  
   return (
     <>
       <GambaUi.Portal target="screen">
