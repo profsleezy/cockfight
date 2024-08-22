@@ -99,8 +99,8 @@ export default function ExampleGame() {
   
     // Determine the result message
     const message = win
-      ? `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${formattedPayout}`
-      : `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won! You lost: ${formattedLoss}`
+      ? `${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won you  ${formattedPayout}`
+      : `loser! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} took  ${formattedLoss} from you!`
   
     setResultMessage(message)
     setWinner(actualWinner)
