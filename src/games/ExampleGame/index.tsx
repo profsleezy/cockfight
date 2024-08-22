@@ -115,7 +115,7 @@ export default function ExampleGame() {
     if (win) {
       sound.play('win')
     } else {
-      sound.play('lose')
+      sound.play('loss')
     }
   
     // Generate confetti effect
