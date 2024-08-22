@@ -91,23 +91,18 @@ export default function ExampleGame() {
   
     const win = result.payout > 0 && actualWinner === selectedChicken
     const payoutAmount = result.payout / 1000000000; // Assuming payout is in the smallest unit and needs conversion
+    const lossAmount = wager / 1000000000; // Convert wager to the appropriate unit if needed
   
-    // Format the payout amount to a fixed decimal place if needed
+    // Format the amounts to a fixed decimal place
     const formattedPayout = payoutAmount.toFixed(2);
+    const formattedLoss = lossAmount.toFixed(2);
   
     // Determine the result message
-    if (win) {
-      setResultMessage(
-        `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${formattedPayout}`
-      )
-    } else {
-      const lossAmount = wager / 1000000000; // Convert wager to the appropriate unit if needed
-      const formattedLoss = lossAmount.toFixed(2);
-      setResultMessage(
-        `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won! You lost: ${formattedLoss}`
-      )
-    }
+    const message = win
+      ? `You won! ${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won! Payout: ${formattedPayout}`
+      : `You lost! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} won! You lost: ${formattedLoss}`
   
+    setResultMessage(message)
     setWinner(actualWinner)
     setFightEnded(true)
   
@@ -185,6 +180,10 @@ export default function ExampleGame() {
                 ctx.fillStyle = 'white'
                 ctx.textAlign = 'center'
                 ctx.fillText('Pick a cock, Double or nothing your solana', size.width / 2, size.height / 6)
+                ctx.font = '32px "VT323", monospace' // Updated font
+                ctx.textAlign = 'center'
+                ctx.fillStyle = winner === selectedChicken ? 'green' : 'red' // Green if won, red if lost
+                ctx.fillText(resultMessage, size.width / 2, size.height / 2 - 40)
               }
 
               // Animate text out of the canvas if animation is active
