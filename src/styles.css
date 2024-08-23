@@ -62,7 +62,7 @@ body::-webkit-scrollbar-thumb {
   border-radius: 10px;
 }
 
-/* Ensures the header is positioned correctly without additional spacing issues */
+/* Ensure the header is properly styled */
 .header {
   position: fixed;
   top: 0;
@@ -72,7 +72,7 @@ body::-webkit-scrollbar-thumb {
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background-color: transparent; /* Remove background color if needed */
+  background-color: transparent; /* Ensure no background color if needed */
   margin: 0;
   box-shadow: none; /* Remove any shadow if present */
 }
@@ -89,20 +89,19 @@ body::-webkit-scrollbar-thumb {
 
 /* Styling for the progress bar itself */
 .progress-bar {
-  width: 200px;
-  height: 20px;
-  background-color: #ccc;
-  border-radius: 10px;
-  overflow: hidden;
+  width: 200px; /* Set width of the progress bar */
+  height: 20px; /* Set height of the progress bar */
+  background-color: #ccc; /* Background color of the progress bar */
+  border-radius: 10px; /* Rounded corners */
+  overflow: hidden; /* Hide overflow */
   position: relative; /* For absolute positioning of text */
 }
 
 /* Fill of the progress bar */
 .progress-bar-fill {
   height: 100%;
-  background-color: #4caf50;
-  transition: width 0.3s;
-  position: relative; /* Ensure text is positioned correctly */
+  background-color: #4caf50; /* Color of the progress bar fill */
+  transition: width 0.3s; /* Smooth transition */
 }
 
 /* Text inside the progress bar */
@@ -112,7 +111,8 @@ body::-webkit-scrollbar-thumb {
   left: 50%;
   transform: translate(-50%, -50%);
   color: rgba(0, 0, 0, 0.5); /* Semi-transparent text color */
-  font-size: 12px; /* Adjust text size as needed */
-  font-family: "Arial", sans-serif; /* Choose an appropriate font */
+  font-size: 12px; /* Adjust text size */
+  font-family: "Arial", sans-serif; /* Font family */
   white-space: nowrap; /* Prevent text from wrapping */
 }
+
