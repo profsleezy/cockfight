@@ -46,7 +46,6 @@ export default function ExampleGame() {
   const [effect, setEffect] = useState(null);
   const [textAnimation, setTextAnimation] = useState(false);
   const [confetti, setConfetti] = useState([]);
-  const [wager, setWager] = React.useState(WAGER_OPTIONS[0])
 
   // Commenting out mock results state and useEffect
   // const [mockResults, setMockResults] = useState(generateMockResults());
