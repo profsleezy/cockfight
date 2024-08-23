@@ -1,59 +1,27 @@
 import { GambaUi, useSound, useWagerInput } from 'gamba-react-ui-v2';
 import React from 'react';
 import SOUND from './test.mp3';
-import WIN_SOUND from './win.mp3';
-import LOSS_SOUND from './lose.mp3';
-import chicken1 from './gif1.png';
-import chicken2 from './gif2.png';
+import WIN_SOUND from './win.mp3';    // Import win sound
+import LOSS_SOUND from './lose.mp3';  // Import loss sound
+import chicken1 from './gif1.png'; // Black cock
+import chicken2 from './gif2.png'; // White cock
 
-// Define the sides
 const SIDES = {
   black: [2, 0],
   white: [0, 2],
 };
 
+// Function to generate mock results
 const generateMockResults = () => {
-  const results = [];
-  let blackWins = 0;
-  let whiteWins = 0;
+  const totalGames = 100;
+  const results = { black: 0, white: 0 };
 
-  for (let i = 0; i < 100; i++) {
-    if (Math.random() < 0.5) {
-      results.push('black');
-      blackWins++;
-    } else {
-      results.push('white');
-      whiteWins++;
-    }
-  }
-
-  // Adjust to balance the results slightly
-  if (blackWins > whiteWins) {
-    const excess = blackWins - whiteWins - 1;
-    for (let i = 0; i < excess; i++) {
-      results[results.indexOf('black')] = 'white';
-    }
-  } else if (whiteWins > blackWins) {
-    const excess = whiteWins - blackWins - 1;
-    for (let i = 0; i < excess; i++) {
-      results[results.indexOf('white')] = 'black';
-    }
+  for (let i = 0; i < totalGames; i++) {
+    const winner = Math.random() > 0.5 ? 'black' : 'white';
+    results[winner]++;
   }
 
   return results;
-};
-
-const Header = ({ results }) => {
-  const blackWins = results.filter(result => result === 'black').length;
-  const whiteWins = results.filter(result => result === 'white').length;
-
-  return (
-    <div style={{ padding: '10px', background: '#333', color: '#fff', textAlign: 'center' }}>
-      <h2>Last 100 Plays</h2>
-      <p>Black Cock: {blackWins} wins</p>
-      <p>White Cock: {whiteWins} wins</p>
-    </div>
-  );
 };
 
 export default function ExampleGame() {
@@ -67,6 +35,7 @@ export default function ExampleGame() {
 
   const chicken1Ref = React.useRef();
   const chicken2Ref = React.useRef();
+
   const [fightEnded, setFightEnded] = React.useState(false);
   const [winner, setWinner] = React.useState(null);
   const [selectedChicken, setSelectedChicken] = React.useState('black');
@@ -75,7 +44,7 @@ export default function ExampleGame() {
   const [textAnimation, setTextAnimation] = React.useState(false);
   const [confetti, setConfetti] = React.useState([]);
 
-  // Generate mock results for header
+  // Generate mock results
   const mockResults = generateMockResults();
 
   React.useEffect(() => {
@@ -179,14 +148,23 @@ export default function ExampleGame() {
       size: Math.random() * 5 + 2,
       speedX: Math.random() * 4 - 2,
       speedY: Math.random() * 4 - 2,
-      color: `hsl(${Math.random() * 360}, 100%, 50%)`
+      color: `hsl(${Math.random() * 360}, 100%, 50%)`,
     }));
     setConfetti(newConfetti);
   };
 
   return (
     <>
-      <Header results={mockResults} />
+      <header className="header">
+        <div className="header-item">
+          <span className="label">Black Cock Wins:</span>
+          <span>{mockResults.black}</span>
+        </div>
+        <div className="header-item">
+          <span className="label">White Cock Wins:</span>
+          <span>{mockResults.white}</span>
+        </div>
+      </header>
       <GambaUi.Portal target="screen">
         <GambaUi.Canvas
           render={({ ctx, size }) => {
@@ -247,6 +225,8 @@ export default function ExampleGame() {
                   chicken2Width = maxChickenHeight * chicken2AspectRatio;
                 }
 
+               
+                // Draw the first chicken on the left side
                 ctx.drawImage(
                   chicken1Ref.current,
                   size.width / 4 - chicken1Width / 2,
@@ -255,6 +235,7 @@ export default function ExampleGame() {
                   chicken1Height
                 );
 
+                // Draw the second chicken on the right side
                 ctx.drawImage(
                   chicken2Ref.current,
                   (3 * size.width) / 4 - chicken2Width / 2,
@@ -263,8 +244,9 @@ export default function ExampleGame() {
                   chicken2Height
                 );
 
-                ctx.strokeStyle = 'red'; // Border color
-                ctx.lineWidth = 5; // Border width
+                // Draw border around selected chicken
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = 5;
                 if (selectedChicken === 'black') {
                   ctx.strokeRect(
                     size.width / 4 - chicken1Width / 2,
@@ -288,11 +270,11 @@ export default function ExampleGame() {
               ctx.fillText(`I like...`, size.width / 2, size.height - 40);
               ctx.fillText(selectedChicken === 'black' ? 'Black Cock' : 'White Cock', size.width / 2, size.height - 10);
             } else {
-              const messageParts = resultMessage.split(/(\d+\.\d{2})/);
-              const [textPart, valuePart] = messageParts;
-
               ctx.font = '32px "VT323", monospace';
               ctx.textAlign = 'center';
+
+              const messageParts = resultMessage.split(/(\d+\.\d{2})/);
+              const [textPart, valuePart] = messageParts;
 
               ctx.fillStyle = 'white';
               ctx.fillText(textPart, size.width / 2, size.height / 2 - 40);

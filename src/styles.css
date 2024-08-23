@@ -61,3 +61,33 @@ body::-webkit-scrollbar-thumb {
   background: rgb(55, 57, 82);
   border-radius: 10px;
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--gamba-ui-primary-color); /* Or any other background color */
+  color: var(--text-color);
+  padding: 10px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.header-item {
+  display: flex;
+  align-items: center;
+}
+
+.header-item span {
+  margin: 0 10px;
+  font-size: 18px;
+  font-family: "VT323", monospace;
+}
+
+.header-item .label {
+  font-weight: bold;
+}
