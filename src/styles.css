@@ -1,7 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
 :root {
   --background-color: #0F172A;
   --text-color: #FFFFFF;
@@ -20,6 +16,9 @@
   --gamba-ui-input-background: #0e0e16;
   --gamba-ui-input-color: #ffffff;
   --gamba-ui-input-background-hover: #11111d;
+
+  /* Add shadow to the default button */
+  --gamba-ui-button-default-shadow: 4px 4px 8px #C8AC2D; /* Adjust shadow offset and blur as needed */
 }
 
 body, input, button, textarea, pre {
@@ -60,4 +59,8 @@ body::-webkit-scrollbar-thumb {
   font-weight: normal;
   background: rgb(55, 57, 82);
   border-radius: 10px;
+}
+
+.gamba-ui-button-default {
+  box-shadow: var(--gamba-ui-button-default-shadow);
 }
