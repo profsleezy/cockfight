@@ -1,8 +1,8 @@
 import { GambaUi, useSound, useWagerInput } from 'gamba-react-ui-v2';
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import SOUND from './test.mp3';
-import WIN_SOUND from './win.mp3';
-import LOSS_SOUND from './lose.mp3';
+import WIN_SOUND from './win.mp3';    // Import win sound
+import LOSS_SOUND from './lose.mp3';  // Import loss sound
 import chicken1 from './gif1.png'; // Black cock
 import chicken2 from './gif2.png'; // White cock
 
@@ -33,19 +33,34 @@ export default function ExampleGame() {
     loss: LOSS_SOUND,
   });
 
-  const chicken1Ref = useRef();
-  const chicken2Ref = useRef();
+  const chicken1Ref = React.useRef();
+  const chicken2Ref = React.useRef();
 
-  const [fightEnded, setFightEnded] = useState(false);
-  const [winner, setWinner] = useState(null);
-  const [selectedChicken, setSelectedChicken] = useState('black');
-  const [resultMessage, setResultMessage] = useState('');
-  const [effect, setEffect] = useState(null);
-  const [textAnimation, setTextAnimation] = useState(false);
-  const [confetti, setConfetti] = useState([]);
-  const [mockResults, setMockResults] = useState(generateMockResults());
+  const [fightEnded, setFightEnded] = React.useState(false);
+  const [winner, setWinner] = React.useState(null);
+  const [selectedChicken, setSelectedChicken] = React.useState('black');
+  const [resultMessage, setResultMessage] = React.useState('');
+  const [effect, setEffect] = React.useState(null);
+  const [textAnimation, setTextAnimation] = React.useState(false);
+  const [confetti, setConfetti] = React.useState([]);
 
-  useEffect(() => {
+  // State for progress bar
+  const [progress, setProgress] = React.useState(0);
+  const [mockResults, setMockResults] = React.useState(generateMockResults());
+
+  React.useEffect(() => {
+    // Generate random starting progress
+    setProgress(Math.random() * 100);
+    
+    // Generate mock results
+    const intervalId = setInterval(() => {
+      setMockResults(generateMockResults());
+    }, 5000); // Update mock results every 5 seconds
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  React.useEffect(() => {
     const chicken1Image = new Image();
     chicken1Image.src = chicken1;
     chicken1Image.onload = () => {
@@ -57,14 +72,6 @@ export default function ExampleGame() {
     chicken2Image.onload = () => {
       chicken2Ref.current = chicken2Image;
     };
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setMockResults(generateMockResults());
-    }, 5000); // Update mock results every 5 seconds
-
-    return () => clearInterval(interval); // Cleanup on component unmount
   }, []);
 
   const click = async () => {
@@ -166,9 +173,7 @@ export default function ExampleGame() {
           <div className="progress-bar">
             <div
               className="progress-bar-fill"
-              style={{
-                width: `${(mockResults.black / (mockResults.black + mockResults.white)) * 100}%`,
-              }}
+              style={{ width: `${progress}%` }}
             />
           </div>
         </div>
