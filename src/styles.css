@@ -101,13 +101,3 @@ body::-webkit-scrollbar-thumb {
   background-color: #a66c43; /* Change color if needed */
   transition: width 0.5s ease;
 }
-
-.header-item span {
-  margin: 0 10px;
-  font-size: 18px;
-  font-family: "VT323", monospace;
-}
-
-.header-item .label {
-  font-weight: bold;
-}
