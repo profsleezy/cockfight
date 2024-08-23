@@ -102,8 +102,8 @@ export default function ExampleGame() {
     const formattedLoss = lossAmount.toFixed(2);
   
     const message = win
-      ? `${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won you\n${formattedPayout}`
-      : `loser! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} took\n${formattedLoss}`;
+      ? `${selectedChicken === 'black' ? 'Black cock' : 'White cock'} won you\n${formattedPayout} SOL`
+      : `loser! ${actualWinner === 'black' ? 'Black cock' : 'White cock'} took\n${formattedLoss} SOL`;
   
     setResultMessage(message);
     setWinner(actualWinner);
@@ -111,11 +111,11 @@ export default function ExampleGame() {
   
     if (win) {
       sound.play('win');
+      generateConfetti();  // Generate confetti only if the player wins
     } else {
       sound.play('loss');
+      setConfetti([]);  // Clear confetti when the player loses
     }
-  
-    generateConfetti();
   };
   
 
