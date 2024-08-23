@@ -185,156 +185,161 @@ export default function ExampleGame() {
         </div>
       </header> */}
       <GambaUi.Portal target="screen">
-        <GambaUi.Canvas
-          render={({ ctx, size }) => {
-            ctx.clearRect(0, 0, size.width, size.height);
+      <GambaUi.Canvas
+  render={({ ctx, size }) => {
+    ctx.clearRect(0, 0, size.width, size.height);
 
-            if (effect) {
-              switch (effect.type) {
-                case 'shake':
-                  const shakeMagnitude = 8;
-                  const offsetX = Math.random() * shakeMagnitude - shakeMagnitude / 2;
-                  const offsetY = Math.random() * shakeMagnitude - shakeMagnitude / 2;
-                  ctx.translate(offsetX, offsetY);
-                  break;
-                case 'invert':
-                  ctx.filter = 'invert(100%)';
-                  break;
-                default:
-                  break;
-              }
-            }
+    // Calculate responsive font sizes based on canvas width
+    const baseFontSize = size.width * 0.05; // 5% of canvas width
+    const smallFontSize = baseFontSize * 0.6; // 60% of base font size
 
-            if (!fightEnded) {
-              if (!textAnimation) {
-                ctx.font = '36px "VT323", monospace';
-                ctx.fillStyle = 'white';
-                ctx.textAlign = 'center';
-                ctx.fillText('Pick a cock, Double or nothing your solana', size.width / 2, size.height / 6);
-              }
+    if (effect) {
+      switch (effect.type) {
+        case 'shake':
+          const shakeMagnitude = 8;
+          const offsetX = Math.random() * shakeMagnitude - shakeMagnitude / 2;
+          const offsetY = Math.random() * shakeMagnitude - shakeMagnitude / 2;
+          ctx.translate(offsetX, offsetY);
+          break;
+        case 'invert':
+          ctx.filter = 'invert(100%)';
+          break;
+        default:
+          break;
+      }
+    }
 
-              if (textAnimation) {
-                ctx.save();
-                ctx.translate(0, -size.height);
-                ctx.font = '36px "VT323", monospace';
-                ctx.fillStyle = 'white';
-                ctx.textAlign = 'center';
-                ctx.fillText('Pick a cock, Double or nothing your solana', size.width / 2, size.height / 6);
-                ctx.restore();
-              }
+    if (!fightEnded) {
+      if (!textAnimation) {
+        ctx.font = `${baseFontSize}px "VT323", monospace`;
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.fillText('Pick a cock, Double or nothing your solana', size.width / 2, size.height / 6);
+      }
 
-              if (chicken1Ref.current && chicken2Ref.current) {
-                const maxChickenWidth = size.width / 4;
-                const maxChickenHeight = size.height / 4;
+      if (textAnimation) {
+        ctx.save();
+        ctx.translate(0, -size.height);
+        ctx.font = `${baseFontSize}px "VT323", monospace`;
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.fillText('Pick a cock, Double or nothing your solana', size.width / 2, size.height / 6);
+        ctx.restore();
+      }
 
-                const chicken1AspectRatio = chicken1Ref.current.width / chicken1Ref.current.height;
-                const chicken2AspectRatio = chicken2Ref.current.width / chicken2Ref.current.height;
+      if (chicken1Ref.current && chicken2Ref.current) {
+        const maxChickenWidth = size.width / 4;
+        const maxChickenHeight = size.height / 4;
 
-                let chicken1Width = maxChickenWidth;
-                let chicken1Height = maxChickenWidth / chicken1AspectRatio;
-                if (chicken1Height > maxChickenHeight) {
-                  chicken1Height = maxChickenHeight;
-                  chicken1Width = maxChickenHeight * chicken1AspectRatio;
-                }
+        const chicken1AspectRatio = chicken1Ref.current.width / chicken1Ref.current.height;
+        const chicken2AspectRatio = chicken2Ref.current.width / chicken2Ref.current.height;
 
-                let chicken2Width = maxChickenWidth;
-                let chicken2Height = maxChickenWidth / chicken2AspectRatio;
-                if (chicken2Height > maxChickenHeight) {
-                  chicken2Height = maxChickenHeight;
-                  chicken2Width = maxChickenHeight * chicken2AspectRatio;
-                }
+        let chicken1Width = maxChickenWidth;
+        let chicken1Height = maxChickenWidth / chicken1AspectRatio;
+        if (chicken1Height > maxChickenHeight) {
+          chicken1Height = maxChickenHeight;
+          chicken1Width = maxChickenHeight * chicken1AspectRatio;
+        }
 
-                // Draw the first chicken on the left side
-                ctx.drawImage(
-                  chicken1Ref.current,
-                  size.width / 4 - chicken1Width / 2,
-                  size.height / 2 - chicken1Height / 2,
-                  chicken1Width,
-                  chicken1Height
-                );
+        let chicken2Width = maxChickenWidth;
+        let chicken2Height = maxChickenWidth / chicken2AspectRatio;
+        if (chicken2Height > maxChickenHeight) {
+          chicken2Height = maxChickenHeight;
+          chicken2Width = maxChickenHeight * chicken2AspectRatio;
+        }
 
-                // Draw the second chicken on the right side
-                ctx.drawImage(
-                  chicken2Ref.current,
-                  (3 * size.width) / 4 - chicken2Width / 2,
-                  size.height / 2 - chicken2Height / 2,
-                  chicken2Width,
-                  chicken2Height
-                );
+        // Draw the first chicken on the left side
+        ctx.drawImage(
+          chicken1Ref.current,
+          size.width / 4 - chicken1Width / 2,
+          size.height / 2 - chicken1Height / 2,
+          chicken1Width,
+          chicken1Height
+        );
 
-                // Draw border around selected chicken
-                ctx.strokeStyle = 'red';
-                ctx.lineWidth = 5;
-                if (selectedChicken === 'black') {
-                  ctx.strokeRect(
-                    size.width / 4 - chicken1Width / 2,
-                    size.height / 2 - chicken1Height / 2,
-                    chicken1Width,
-                    chicken1Height
-                  );
-                } else if (selectedChicken === 'white') {
-                  ctx.strokeRect(
-                    (3 * size.width) / 4 - chicken2Width / 2,
-                    size.height / 2 - chicken2Height / 2,
-                    chicken2Width,
-                    chicken2Height
-                  );
-                }
-              }
+        // Draw the second chicken on the right side
+        ctx.drawImage(
+          chicken2Ref.current,
+          (3 * size.width) / 4 - chicken2Width / 2,
+          size.height / 2 - chicken2Height / 2,
+          chicken2Width,
+          chicken2Height
+        );
 
-              ctx.font = '24px "VT323", monospace';
-              ctx.fillStyle = 'white';
-              ctx.textAlign = 'center';
-              ctx.fillText(`I like...`, size.width / 2, size.height - 40);
-              ctx.fillText(selectedChicken === 'black' ? 'Black Cock' : 'White Cock', size.width / 2, size.height - 10);
-            } else {
-              ctx.font = '32px "VT323", monospace';
-              ctx.textAlign = 'center';
+        // Draw border around selected chicken
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 5;
+        if (selectedChicken === 'black') {
+          ctx.strokeRect(
+            size.width / 4 - chicken1Width / 2,
+            size.height / 2 - chicken1Height / 2,
+            chicken1Width,
+            chicken1Height
+          );
+        } else if (selectedChicken === 'white') {
+          ctx.strokeRect(
+            (3 * size.width) / 4 - chicken2Width / 2,
+            size.height / 2 - chicken2Height / 2,
+            chicken2Width,
+            chicken2Height
+          );
+        }
+      }
 
-              const messageParts = resultMessage.split(/(\d+\.\d{2})/);
-              const [textPart, valuePart] = messageParts;
+      ctx.font = `${smallFontSize}px "VT323", monospace`;
+      ctx.fillStyle = 'white';
+      ctx.textAlign = 'center';
+      ctx.fillText(`I like...`, size.width / 2, size.height - 40);
+      ctx.fillText(selectedChicken === 'black' ? 'Black Cock' : 'White Cock', size.width / 2, size.height - 10);
+    } else {
+      ctx.font = `${baseFontSize * 0.8}px "VT323", monospace`;
+      ctx.textAlign = 'center';
 
-              ctx.fillStyle = 'white';
-              ctx.fillText(textPart, size.width / 2, size.height / 2 - 40);
+      const messageParts = resultMessage.split(/(\d+\.\d{2})/);
+      const [textPart, valuePart] = messageParts;
 
-              ctx.fillStyle = winner === selectedChicken ? 'green' : 'red';
-              ctx.fillText(`${valuePart} SOL`, size.width / 2, size.height / 2);
+      ctx.fillStyle = 'white';
+      ctx.fillText(textPart, size.width / 2, size.height / 2 - 40);
 
-              if (winner === 'black' && chicken1Ref.current) {
-                ctx.drawImage(
-                  chicken1Ref.current,
-                  size.width / 2 - chicken1Ref.current.width / 2,
-                  size.height / 2 + 30,
-                  chicken1Ref.current.width,
-                  chicken1Ref.current.height
-                );
-              } else if (winner === 'white' && chicken2Ref.current) {
-                ctx.drawImage(
-                  chicken2Ref.current,
-                  size.width / 2 - chicken2Ref.current.width / 2,
-                  size.height / 2 + 30,
-                  chicken2Ref.current.width,
-                  chicken2Ref.current.height
-                );
-              }
+      ctx.fillStyle = winner === selectedChicken ? 'green' : 'red';
+      ctx.fillText(`${valuePart} SOL`, size.width / 2, size.height / 2);
 
-              confetti.forEach((particle) => {
-                ctx.beginPath();
-                ctx.arc(particle.x, particle.y, particle.size, 0, 2 * Math.PI);
-                ctx.fillStyle = particle.color;
-                ctx.fill();
-                particle.x += particle.speedX;
-                particle.y += particle.speedY;
-                particle.speedY += 0.1;
-              });
-            }
+      if (winner === 'black' && chicken1Ref.current) {
+        ctx.drawImage(
+          chicken1Ref.current,
+          size.width / 2 - chicken1Ref.current.width / 2,
+          size.height / 2 + 30,
+          chicken1Ref.current.width,
+          chicken1Ref.current.height
+        );
+      } else if (winner === 'white' && chicken2Ref.current) {
+        ctx.drawImage(
+          chicken2Ref.current,
+          size.width / 2 - chicken2Ref.current.width / 2,
+          size.height / 2 + 30,
+          chicken2Ref.current.width,
+          chicken2Ref.current.height
+        );
+      }
 
-            if (effect) {
-              ctx.setTransform(1, 0, 0, 1, 0, 0);
-              ctx.filter = 'none';
-            }
-          }}
-        />
+      confetti.forEach((particle) => {
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, 2 * Math.PI);
+        ctx.fillStyle = particle.color;
+        ctx.fill();
+        particle.x += particle.speedX;
+        particle.y += particle.speedY;
+        particle.speedY += 0.1;
+      });
+    }
+
+    if (effect) {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.filter = 'none';
+    }
+  }}
+/>
+
       </GambaUi.Portal>
       <GambaUi.Portal target="controls">
         <GambaUi.WagerInput
