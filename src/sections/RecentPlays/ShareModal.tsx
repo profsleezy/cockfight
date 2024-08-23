@@ -59,16 +59,8 @@ export function ShareModal({ event, onClose }: {event: GambaTransaction<'GameSet
                 <img src={game?.meta?.image} width="100px" />
               </div>
             </div>
-            <div style={{ background: '#121217CC', color: '#ffffffcc', fontStyle: 'italic', display: 'flex', alignContent: 'center', gap: '10px', padding: '10px', borderRadius: '10px' }}>
-              <img src="/gamba.svg" height="25px" />
-            </div>
           </Content>
         </Inner>
-        <Flex>
-          <GambaUi.Button size="small" onClick={gotoGame}>
-            Play {game?.meta?.name}
-          </GambaUi.Button>
-        </Flex>
       </Container>
     </Modal>
   )
