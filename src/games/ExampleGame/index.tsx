@@ -6,23 +6,24 @@ import LOSS_SOUND from './lose.mp3';
 import chicken1 from './gif1.png'; // Black cock
 import chicken2 from './gif2.png'; // White cock
 
-const SIDES = {
-  black: [2, 0],
-  white: [0, 2],
-};
 
-// Function to generate mock results
-const generateMockResults = () => {
-  const totalGames = 100;
-  const results = { black: 0, white: 0 };
+ const SIDES = {
+   black: [2, 0],
+   white: [0, 2],
+ };
 
-  for (let i = 0; i < totalGames; i++) {
-    const winner = Math.random() > 0.5 ? 'black' : 'white';
-    results[winner]++;
-  }
+// // Function to generate mock results
+// const generateMockResults = () => {
+//   const totalGames = 100;
+//   const results = { black: 0, white: 0 };
 
-  return results;
-};
+//   for (let i = 0; i < totalGames; i++) {
+//     const winner = Math.random() > 0.5 ? 'black' : 'white';
+//     results[winner]++;
+//   }
+
+//   return results;
+// };
 
 export default function ExampleGame() {
   const [wager, setWager] = useWagerInput();
@@ -43,7 +44,9 @@ export default function ExampleGame() {
   const [effect, setEffect] = useState(null);
   const [textAnimation, setTextAnimation] = useState(false);
   const [confetti, setConfetti] = useState([]);
-  const [mockResults, setMockResults] = useState(generateMockResults());
+
+  // Commenting out mock results state and useEffect
+  // const [mockResults, setMockResults] = useState(generateMockResults());
 
   useEffect(() => {
     const chicken1Image = new Image();
@@ -59,13 +62,14 @@ export default function ExampleGame() {
     };
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setMockResults(generateMockResults());
-    }, 5000); // Update mock results every 5 seconds
+  // Commenting out the interval for updating mock results
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setMockResults(generateMockResults());
+  //   }, 5000); // Update mock results every 5 seconds
 
-    return () => clearInterval(interval); // Cleanup on component unmount
-  }, []);
+  //   return () => clearInterval(interval); // Cleanup on component unmount
+  // }, []);
 
   const click = async () => {
     if (fightEnded) {
@@ -161,7 +165,8 @@ export default function ExampleGame() {
 
   return (
     <>
-      <header className="header">
+      {/* Commenting out the progress bar and mock results display */}
+      {/* <header className="header">
         <div className="progress-container">
           <div className="progress-bar">
             <div
@@ -176,7 +181,7 @@ export default function ExampleGame() {
             <span>White Cock</span>
           </div>
         </div>
-      </header>
+      </header> */}
       <GambaUi.Portal target="screen">
         <GambaUi.Canvas
           render={({ ctx, size }) => {
