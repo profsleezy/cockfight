@@ -171,6 +171,10 @@ export default function ExampleGame() {
               }}
             />
           </div>
+          <div className="progress-labels">
+            <span>Black Cock</span>
+            <span>White Cock</span>
+          </div>
         </div>
       </header>
       <GambaUi.Portal target="screen">
@@ -242,7 +246,6 @@ export default function ExampleGame() {
                   chicken1Height
                 );
 
-                // Draw the second chicken on the right side
                 // Draw the second chicken on the right side
                 ctx.drawImage(
                   chicken2Ref.current,
