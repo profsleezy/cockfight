@@ -7,10 +7,11 @@
   --text-color: #FFFFFF;
   --gamba-ui-primary-color: #F4A200;
 
+  --gamba-ui-border-radius: 2px;
 
-  --gamba-ui-button-default-background: #FEDF57;
-  --gamba-ui-button-default-background-hover: #C8AC2D;
-  --gamba-ui-button-default-color: white;
+  --gamba-ui-button-default-background: #C8AC2D;
+  --gamba-ui-button-default-background-hover: #FEDF57;
+  --gamba-ui-button-default-color: black;
 
   --gamba-ui-button-main-background: #8851ff;
   --gamba-ui-button-main-color: white;
