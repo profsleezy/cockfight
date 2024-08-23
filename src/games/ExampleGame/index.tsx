@@ -159,24 +159,17 @@ export default function ExampleGame() {
 
   return (
     <>
-  <header className="header">
-    <div className="header-item">
-      <span className="label">Black Cock Wins:</span>
-      <span>{mockResults.black}</span>
+<header className="header">
+  <div className="progress-container">
+    <div className="progress-bar">
+      <div
+        className="progress-bar-fill"
+        style={{ width: `${(mockResults.black / (mockResults.black + mockResults.white)) * 100}%` }}
+      />
     </div>
-    <div className="progress-container">
-      <div className="progress-bar">
-        <div
-          className="progress-bar-fill"
-          style={{ width: `${(mockResults.black / (mockResults.black + mockResults.white)) * 100}%` }}
-        />
-      </div>
-    </div>
-      <div className="header-item">
-      <span className="label">White Cock Wins:</span>
-      <span>{mockResults.white}</span>
-    </div>
-  </header>
+  </div>
+</header>
+
 
       <GambaUi.Portal target="screen">
         <GambaUi.Canvas
