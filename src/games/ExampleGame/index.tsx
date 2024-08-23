@@ -1,8 +1,8 @@
 import { GambaUi, useSound, useWagerInput } from 'gamba-react-ui-v2';
 import React from 'react';
 import SOUND from './test.mp3';
-import WIN_SOUND from './win.mp3';    // Import win sound
-import LOSS_SOUND from './lose.mp3';  // Import loss sound
+import WIN_SOUND from './win.mp3';
+import LOSS_SOUND from './lose.mp3';
 import chicken1 from './gif1.png'; // Black cock
 import chicken2 from './gif2.png'; // White cock
 
@@ -54,11 +54,19 @@ export default function ExampleGame() {
 
     // Update mock results every 5 seconds
     const intervalId = setInterval(() => {
+      console.log('Updating mock results...');
       setMockResults(generateMockResults());
     }, 5000);
 
+    // Debugging the initial render and updates
+    console.log('Initial mock results:', mockResults);
+
     return () => clearInterval(intervalId);
   }, []);
+
+  React.useEffect(() => {
+    console.log('Mock results updated:', mockResults);
+  }, [mockResults]);
 
   React.useEffect(() => {
     const chicken1Image = new Image();
