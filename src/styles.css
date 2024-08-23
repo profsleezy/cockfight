@@ -18,7 +18,7 @@
   --gamba-ui-input-background-hover: #11111d;
 
   /* Add shadow to the default button */
-  --gamba-ui-button-default-shadow: 4px 4px 8px #C8AC2D; /* Adjust shadow offset and blur as needed */
+  --gamba-ui-button-default-shadow: 4px 4px 8px #ffffff; /* Adjust shadow offset and blur as needed */
 }
 
 body, input, button, textarea, pre {
