@@ -7,7 +7,7 @@ import { Modal } from './components/Modal'
 import { useToast } from './hooks/useToast'
 import { useUserStore } from './hooks/useUserStore'
 import Dashboard from './sections/Dashboard/Dashboard'
-import Game from './sections/Game/Game'
+import Game from './games/ExampleGame/index'
 import Header from './sections/Header'
 import RecentPlays from './sections/RecentPlays/RecentPlays'
 import Toasts from './sections/Toasts'
@@ -72,7 +72,7 @@ export default function App() {
       <Toasts />
       <MainWrapper>
         <Routes>
-          <Route path="/:gameId" element={<Game />} />
+          <Route path="/" element={<Game />} />
         </Routes>
         <h2 style={{ textAlign: 'center' }}>Recent Plays</h2>
         <RecentPlays />
