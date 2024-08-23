@@ -168,14 +168,16 @@ export default function ExampleGame() {
 
   return (
     <>
-<header className="header">
-  <div className="progress-container">
-    <div className="progress-bar">
-      <div className="progress-bar-fill" style={{ width: `${progress}%` }} />
-      <div className="progress-bar-text">Last Ten Plays</div>
-    </div>
-  </div>
-</header>
+      <header className="header">
+        <div className="progress-container">
+          <div className="progress-bar">
+            <div
+              className="progress-bar-fill"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+      </header>
       <GambaUi.Portal target="screen">
         <GambaUi.Canvas
           render={({ ctx, size }) => {

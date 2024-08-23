@@ -62,57 +62,52 @@ body::-webkit-scrollbar-thumb {
   border-radius: 10px;
 }
 
-/* Ensure the header is properly styled */
+/* Add to your CSS file or within a <style> tag */
 .header {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
+  background-color: transparent;
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* Stack header items vertically */
   align-items: center;
-  padding: 10px;
-  background-color: transparent; /* Ensure no background color if needed */
-  margin: 0;
-  box-shadow: none; /* Remove any shadow if present */
+  padding: 10px 0;
+  z-index: 1000;
+  border-bottom: 2px solid #ccc;
 }
 
-/* Container for the progress bar and text */
+.header-item {
+  color: white;
+  font-size: 16px;
+  margin: 5px 0; /* Add some space around header items */
+}
+
 .progress-container {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  width: 60%; /* Adjust the width as needed */
+  max-width: 600px;
+  margin: 10px 0; /* Space between header items */
 }
 
-/* Styling for the progress bar itself */
 .progress-bar {
-  width: 200px; /* Set width of the progress bar */
-  height: 20px; /* Set height of the progress bar */
-  background-color: #ccc; /* Background color of the progress bar */
-  border-radius: 10px; /* Rounded corners */
-  overflow: hidden; /* Hide overflow */
-  position: relative; /* For absolute positioning of text */
+  height: 20px; /* Smaller height for the progress bar */
+  background-color: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
-/* Fill of the progress bar */
 .progress-bar-fill {
   height: 100%;
-  background-color: #4caf50; /* Color of the progress bar fill */
-  transition: width 0.3s; /* Smooth transition */
+  background-color: #a66c43; /* Change color if needed */
+  transition: width 0.5s ease;
 }
 
-/* Text inside the progress bar */
-.progress-bar-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: rgba(0, 0, 0, 0.5); /* Semi-transparent text color */
-  font-size: 12px; /* Adjust text size */
-  font-family: "Arial", sans-serif; /* Font family */
-  white-space: nowrap; /* Prevent text from wrapping */
+.header-item span {
+  margin: 0 10px;
+  font-size: 18px;
+  font-family: "VT323", monospace;
 }
 
+.header-item .label {
+  font-weight: bold;
+}
