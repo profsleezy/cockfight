@@ -51,11 +51,11 @@ export default function ExampleGame() {
   React.useEffect(() => {
     // Generate random starting progress
     setProgress(Math.random() * 100);
-    
-    // Generate mock results
+
+    // Update mock results every 5 seconds
     const intervalId = setInterval(() => {
       setMockResults(generateMockResults());
-    }, 5000); // Update mock results every 5 seconds
+    }, 5000);
 
     return () => clearInterval(intervalId);
   }, []);
