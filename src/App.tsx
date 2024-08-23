@@ -72,7 +72,7 @@ export default function App() {
       <Toasts />
       <MainWrapper>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Game />} />
           <Route path="/:gameId" element={<Game />} />
         </Routes>
         <h2 style={{ textAlign: 'center' }}>Recent Plays</h2>
