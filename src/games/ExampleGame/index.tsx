@@ -49,22 +49,23 @@ export default function ExampleGame() {
   const [mockResults, setMockResults] = React.useState(generateMockResults());
 
   React.useEffect(() => {
+    // Generate random starting progress
+    setProgress(Math.random() * 100);
+
     // Update mock results every 5 seconds
     const intervalId = setInterval(() => {
+      console.log('Updating mock results...');
       setMockResults(generateMockResults());
     }, 5000);
+
+    // Debugging the initial render and updates
+    console.log('Initial mock results:', mockResults);
 
     return () => clearInterval(intervalId);
   }, []);
 
   React.useEffect(() => {
     console.log('Mock results updated:', mockResults);
-    
-    // Calculate progress as a percentage of total games
-    const totalGames = mockResults.black + mockResults.white;
-    const blackWinPercentage = (mockResults.black / totalGames) * 100;
-
-    setProgress(blackWinPercentage);
   }, [mockResults]);
 
   React.useEffect(() => {
@@ -239,7 +240,7 @@ export default function ExampleGame() {
                 }
 
                 let chicken2Width = maxChickenWidth;
-                let chicken2Height = chicken2Width / chicken2AspectRatio;
+                let chicken2Height = maxChickenWidth / chicken2AspectRatio;
                 if (chicken2Height > maxChickenHeight) {
                   chicken2Height = maxChickenHeight;
                   chicken2Width = maxChickenHeight * chicken2AspectRatio;
@@ -264,9 +265,8 @@ export default function ExampleGame() {
                 );
 
                 // Draw border around selected chicken
-                ctx.strokeStyle = 'yellow';
+                ctx.strokeStyle = 'red';
                 ctx.lineWidth = 5;
-
                 if (selectedChicken === 'black') {
                   ctx.strokeRect(
                     size.width / 4 - chicken1Width / 2,
@@ -274,7 +274,7 @@ export default function ExampleGame() {
                     chicken1Width,
                     chicken1Height
                   );
-                } else {
+                } else if (selectedChicken === 'white') {
                   ctx.strokeRect(
                     (3 * size.width) / 4 - chicken2Width / 2,
                     size.height / 2 - chicken2Height / 2,
@@ -283,34 +283,76 @@ export default function ExampleGame() {
                   );
                 }
               }
-            } else {
-              ctx.font = '48px "VT323", monospace';
+
+              ctx.font = '24px "VT323", monospace';
               ctx.fillStyle = 'white';
               ctx.textAlign = 'center';
-              ctx.fillText(resultMessage, size.width / 2, size.height / 2);
+              ctx.fillText(`I like...`, size.width / 2, size.height - 40);
+              ctx.fillText(selectedChicken === 'black' ? 'Black Cock' : 'White Cock', size.width / 2, size.height - 10);
+            } else {
+              ctx.font = '32px "VT323", monospace';
+              ctx.textAlign = 'center';
 
-              // Draw confetti
-              confetti.forEach((piece) => {
-                ctx.fillStyle = piece.color;
+              const messageParts = resultMessage.split(/(\d+\.\d{2})/);
+              const [textPart, valuePart] = messageParts;
+
+              ctx.fillStyle = 'white';
+              ctx.fillText(textPart, size.width / 2, size.height / 2 - 40);
+
+              ctx.fillStyle = winner === selectedChicken ? 'green' : 'red';
+              ctx.fillText(`${valuePart} SOL`, size.width / 2, size.height / 2);
+
+              if (winner === 'black' && chicken1Ref.current) {
+                ctx.drawImage(
+                  chicken1Ref.current,
+                  size.width / 2 - chicken1Ref.current.width / 2,
+                  size.height / 2 + 30,
+                  chicken1Ref.current.width,
+                  chicken1Ref.current.height
+                );
+              } else if (winner === 'white' && chicken2Ref.current) {
+                ctx.drawImage(
+                  chicken2Ref.current,
+                  size.width / 2 - chicken2Ref.current.width / 2,
+                  size.height / 2 + 30,
+                  chicken2Ref.current.width,
+                  chicken2Ref.current.height
+                );
+              }
+
+              confetti.forEach((particle) => {
                 ctx.beginPath();
-                ctx.arc(piece.x, piece.y, piece.size, 0, 2 * Math.PI);
+                ctx.arc(particle.x, particle.y, particle.size, 0, 2 * Math.PI);
+                ctx.fillStyle = particle.color;
                 ctx.fill();
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+                particle.speedY += 0.1;
               });
+            }
+
+            if (effect) {
+              ctx.setTransform(1, 0, 0, 1, 0, 0);
+              ctx.filter = 'none';
             }
           }}
         />
       </GambaUi.Portal>
-      <GambaUi.Buttons>
-        <GambaUi.Button onClick={toggleChicken}>
-          Switch Chicken
-        </GambaUi.Button>
+      <GambaUi.Portal target="controls">
+        <GambaUi.WagerInput value={wager} onChange={setWager} />
         <GambaUi.Button
-          color={fightEnded ? 'yellow' : 'purple'}
           onClick={click}
+          style={{
+            backgroundColor: selectedChicken === 'black' ? 'black' : 'white',
+            color: selectedChicken === 'black' ? 'white' : 'black'
+          }}
         >
-          {fightEnded ? 'Play Again' : 'Fight'}
+          {fightEnded ? 'Replay' : 'Start Fight'}
         </GambaUi.Button>
-      </GambaUi.Buttons>
+        <GambaUi.Button onClick={toggleChicken}>
+          {selectedChicken === 'black' ? 'Black Cock' : 'White Cock'}
+        </GambaUi.Button>
+      </GambaUi.Portal>
     </>
   );
 }
