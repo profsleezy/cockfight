@@ -12,7 +12,7 @@ import chicken2 from './gif2.png'; // White cock
    white: [0, 2],
  };
 
- const WAGER_OPTIONS = [1, 5, 10, 50, 100]
+ const WAGER_OPTIONS = [1, 3, 5, 10, 20, 40, 60, 80, 100]
 
 // // Function to generate mock results
 // const generateMockResults = () => {
