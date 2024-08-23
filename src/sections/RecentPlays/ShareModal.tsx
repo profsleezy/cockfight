@@ -61,14 +61,10 @@ export function ShareModal({ event, onClose }: {event: GambaTransaction<'GameSet
             </div>
             <div style={{ background: '#121217CC', color: '#ffffffcc', fontStyle: 'italic', display: 'flex', alignContent: 'center', gap: '10px', padding: '10px', borderRadius: '10px' }}>
               <img src="/gamba.svg" height="25px" />
-              <div>play on <b>{PLATFORM_SHARABLE_URL}</b></div>
             </div>
           </Content>
         </Inner>
         <Flex>
-          <GambaUi.Button size="small" onClick={() => window.open(`${EXPLORER_URL}/tx/${event.signature}`, '_blank')}>
-            Verify
-          </GambaUi.Button>
           <GambaUi.Button size="small" onClick={gotoGame}>
             Play {game?.meta?.name}
           </GambaUi.Button>
