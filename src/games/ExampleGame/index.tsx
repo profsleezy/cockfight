@@ -3,6 +3,7 @@ import React from 'react'
 import SOUND from './test.mp3'
 import WIN_SOUND from './win.mp3'    // Import win sound
 import LOSS_SOUND from './lose.mp3'  // Import loss sound
+import Header from './Header';
 
 // Import the chicken images
 import chicken1 from './gif1.png' // Black cock
@@ -33,6 +34,18 @@ export default function ExampleGame() {
   const [effect, setEffect] = React.useState(null) // To track the current effect
   const [textAnimation, setTextAnimation] = React.useState(false) // To track text animation state
   const [confetti, setConfetti] = React.useState([]) // To track confetti positions
+
+  const [blackWinRate, setBlackWinRate] = React.useState(0);
+  const [whiteWinRate, setWhiteWinRate] = React.useState(0);
+
+  React.useEffect(() => {
+    // Randomly generate win rates for black and white chickens
+    const blackRate = Math.random() * 50 + 25; // Between 25% and 75%
+    const whiteRate = 100 - blackRate; // Remaining percentage for white chicken
+    setBlackWinRate(blackRate);
+    setWhiteWinRate(whiteRate);
+  }, []);
+
 
   React.useEffect(() => {
     // Load the chicken images into Image objects
@@ -158,6 +171,7 @@ export default function ExampleGame() {
 
   return (
     <>
+      <Header blackWinRate={blackWinRate} whiteWinRate={whiteWinRate} /> {/* Add the Header here */}
       <GambaUi.Portal target="screen">
       <GambaUi.Canvas
   render={({ ctx, size }) => {
