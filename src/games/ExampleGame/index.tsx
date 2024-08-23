@@ -286,7 +286,7 @@ export default function ExampleGame() {
 
       // Render the value part of the message below the text part
       ctx.fillStyle = winner === selectedChicken ? 'green' : 'red';
-      ctx.fillText(valuePart, size.width / 2, size.height / 2);  // Position it slightly lower
+      ctx.fillText(`${valuePart} SOL`, size.width / 2, size.height / 2);  // Append " SOL" after the value
 
       // Draw the winning chicken
       if (winner === 'black' && chicken1Ref.current) {
@@ -326,7 +326,6 @@ export default function ExampleGame() {
     }
   }}
 />
-
 
 
       </GambaUi.Portal>
