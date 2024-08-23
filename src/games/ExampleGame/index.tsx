@@ -153,6 +153,10 @@ export default function ExampleGame() {
     setConfetti(newConfetti);
   };
 
+  const totalWins = mockResults.black + mockResults.white;
+  const blackWinPercentage = totalWins ? (mockResults.black / totalWins) * 100 : 0;
+  const whiteWinPercentage = totalWins ? (mockResults.white / totalWins) * 100 : 0;
+
   return (
     <>
       <header className="header">
@@ -165,11 +169,21 @@ export default function ExampleGame() {
           <span>{mockResults.white}</span>
         </div>
       </header>
+      
+      {/* Progress Bar */}
       <div className="progress-container">
         <div className="progress-bar">
-          <div className="progress-bar-fill" style={{ width: `${mockResults.black}%` }}></div>
+          <div 
+            className="progress-bar-fill" 
+            style={{ width: `${blackWinPercentage}%`, backgroundColor: 'black' }}
+          />
+          <div 
+            className="progress-bar-fill" 
+            style={{ width: `${whiteWinPercentage}%`, backgroundColor: 'white' }}
+          />
         </div>
       </div>
+
       <GambaUi.Portal target="screen">
         <GambaUi.Canvas
           render={({ ctx, size }) => {
