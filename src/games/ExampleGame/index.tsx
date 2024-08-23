@@ -164,11 +164,6 @@ export default function ExampleGame() {
           <span className="label">White Cock Wins:</span>
           <span>{mockResults.white}</span>
         </div>
-        <div className="progress-container">
-        <div className="progress-bar">
-          <div className="progress-bar-fill" style={{ width: `${results.black}%` }}></div>
-        </div>
-        </div>
       </header>
       <GambaUi.Portal target="screen">
         <GambaUi.Canvas
