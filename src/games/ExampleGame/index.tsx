@@ -165,6 +165,11 @@ export default function ExampleGame() {
           <span>{mockResults.white}</span>
         </div>
       </header>
+      <div className="progress-container">
+        <div className="progress-bar">
+          <div className="progress-bar-fill" style={{ width: `${mockResults.black}%` }}></div>
+        </div>
+      </div>
       <GambaUi.Portal target="screen">
         <GambaUi.Canvas
           render={({ ctx, size }) => {
@@ -225,7 +230,6 @@ export default function ExampleGame() {
                   chicken2Width = maxChickenHeight * chicken2AspectRatio;
                 }
 
-               
                 // Draw the first chicken on the left side
                 ctx.drawImage(
                   chicken1Ref.current,
