@@ -12,6 +12,8 @@ import chicken2 from './gif2.png'; // White cock
    white: [0, 2],
  };
 
+ const WAGER_OPTIONS = [1, 5, 10, 50, 100]
+
 // // Function to generate mock results
 // const generateMockResults = () => {
 //   const totalGames = 100;
@@ -44,6 +46,7 @@ export default function ExampleGame() {
   const [effect, setEffect] = useState(null);
   const [textAnimation, setTextAnimation] = useState(false);
   const [confetti, setConfetti] = useState([]);
+  const [wager, setWager] = React.useState(WAGER_OPTIONS[0])
 
   // Commenting out mock results state and useEffect
   // const [mockResults, setMockResults] = useState(generateMockResults());
@@ -335,7 +338,11 @@ export default function ExampleGame() {
         />
       </GambaUi.Portal>
       <GambaUi.Portal target="controls">
-        <GambaUi.WagerInput value={wager} onChange={setWager} />
+        <GambaUi.WagerInput
+          options={WAGER_OPTIONS}
+          value={wager}
+          onChange={setWager}
+        />
         <GambaUi.Button
           onClick={click}
           style={{
