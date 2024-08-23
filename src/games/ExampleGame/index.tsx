@@ -284,19 +284,16 @@ export default function ExampleGame() {
       ctx.fillStyle = 'white';
       ctx.fillText(textPart, size.width / 2, size.height / 2 - 40);
 
-      // Measure the width of the text part to correctly position the value part
-      const textPartWidth = ctx.measureText(textPart).width;
-
-      // Render the value part of the message with the correct color
+      // Render the value part of the message below the text part
       ctx.fillStyle = winner === selectedChicken ? 'green' : 'red';
-      ctx.fillText(valuePart, size.width / 2 + textPartWidth / 2, size.height / 2 - 40);
+      ctx.fillText(valuePart, size.width / 2, size.height / 2);  // Position it slightly lower
 
       // Draw the winning chicken
       if (winner === 'black' && chicken1Ref.current) {
         ctx.drawImage(
           chicken1Ref.current,
           size.width / 2 - chicken1Ref.current.width / 2,
-          size.height / 2 + 10,
+          size.height / 2 + 30,  // Adjusted position
           chicken1Ref.current.width,
           chicken1Ref.current.height
         );
@@ -304,7 +301,7 @@ export default function ExampleGame() {
         ctx.drawImage(
           chicken2Ref.current,
           size.width / 2 - chicken2Ref.current.width / 2,
-          size.height / 2 + 10,
+          size.height / 2 + 30,  // Adjusted position
           chicken2Ref.current.width,
           chicken2Ref.current.height
         );
@@ -329,6 +326,7 @@ export default function ExampleGame() {
     }
   }}
 />
+
 
 
       </GambaUi.Portal>
