@@ -45,6 +45,7 @@ export function ShareModal({ event, onClose }: {event: GambaTransaction<'GameSet
         <Inner>
           <Content ref={ref}>
             <div style={{ display: 'grid', gap: '5px', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center', padding: '10px' }}>
+              <img src={tokenMeta.image} style={{ borderRadius: '50%', height: '40px' }} />
               <div style={{ fontSize: '24px', color: percentChange >= 0 ? '#9bffad' : '#ff4f4f', padding: '10px' }}>
                 <b>
                   {profit >= 0 ? '+' : '-'}
@@ -55,7 +56,6 @@ export function ShareModal({ event, onClose }: {event: GambaTransaction<'GameSet
                 </div>
               </div>
               <div style={{ padding: '10px', textAlign: 'center' }}>
-                <img src={game?.meta?.image} width="100px" />
               </div>
             </div>
           </Content>
