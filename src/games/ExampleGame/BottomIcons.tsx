@@ -7,9 +7,9 @@ const BottomIcons: React.FC = () => {
   const [hoveredIcon, setHoveredIcon] = useState<number | null>(null);
 
   const iconLinks = [
-    { src: icon1, url: 'https://x.com/degencockfights' }, // Replace with your actual URLs
+    { src: icon1, url: 'https://www.example1.com' }, // Replace with your actual URLs
     { src: icon2, url: 'https://www.example2.com' },
-    { src: icon3, url: 'https://t.me/degencockfight' },
+    { src: icon3, url: 'https://www.example3.com' },
   ];
 
   return (
@@ -20,7 +20,7 @@ const BottomIcons: React.FC = () => {
           href={icon.url}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ textDecoration: 'none' }} // Prevent underline on hover
+          style={{ textDecoration: 'none' }}
         >
           <img
             src={icon.src}
@@ -56,6 +56,16 @@ const styles = {
   },
   iconHover: {
     filter: 'invert(50%)',
+  },
+  '@media (max-width: 768px)': {  // Mobile screen adjustments
+    container: {
+      left: 'unset',  // Unset left position
+      right: '2%',    // Move to the right
+    },
+    icon: {
+      width: '30px',  // Smaller size on mobile
+      height: '30px',
+    },
   },
 };
 
