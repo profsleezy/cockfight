@@ -7,7 +7,7 @@ export const GAMES: GameBundle[] = [
      meta: {
        background: '#00ffe1',
        name: 'CockFight',
-       image: '/games/favicon.png',
+       image: './games/favicon.png',
        description: 'bet on the right cock and win REAL cash',
      },
      app: React.lazy(() => import('./ExampleGame')),
