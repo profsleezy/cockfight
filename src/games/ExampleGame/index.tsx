@@ -5,7 +5,7 @@ import WIN_SOUND from './win.mp3';
 import LOSS_SOUND from './lose.mp3';
 import chicken1 from './gif1.png'; // Black cock
 import chicken2 from './gif2.png'; // White cock
-import Icon1 from './icon1.svg';
+import { ReactComponent as Icon1 } from './icon1.svg';
 import Icon2 from './icon2.svg';
 import Icon3 from './icon3.svg';
 
@@ -363,12 +363,7 @@ export default function ExampleGame() {
           {selectedChicken === 'black' ? 'Black Cock' : 'White Cock'}
         </GambaUi.Button>
       </GambaUi.Portal>
-      {/* SVG Icons in the Bottom Corner */}
-      <div className="icon-container">
-        <Icon1 className="bottom-icon" />
-        <Icon2 className="bottom-icon" />
-        <Icon3 className="bottom-icon" />
-      </div>
+      <BottomIcons />
     </>
   );
 }
