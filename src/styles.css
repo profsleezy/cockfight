@@ -108,3 +108,34 @@ body::-webkit-scrollbar-thumb {
   color: white;
   margin-top: 5px;
 }
+
+.icon-container {
+  position: fixed;
+  bottom: 2%;
+  right: 2%;
+  display: flex;
+  gap: 1vw;
+}
+
+.bottom-icon {
+  width: 5vw;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.bottom-icon:hover {
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .bottom-icon {
+    width: 7vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .bottom-icon {
+    width: 10vw;
+  }
+}
