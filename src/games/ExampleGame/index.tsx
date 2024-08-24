@@ -361,7 +361,6 @@ export default function ExampleGame() {
           {selectedChicken === 'black' ? 'Black Cock' : 'White Cock'}
         </GambaUi.Button>
       </GambaUi.Portal>
-      <BottomIcons />
     </>
   );
 }
