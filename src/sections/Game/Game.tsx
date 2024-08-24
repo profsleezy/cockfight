@@ -93,9 +93,6 @@ function CustomRenderer() {
             <IconButton onClick={() => setInfo(true)}>
               <Icon.Info />
             </IconButton>
-            <IconButton onClick={() => setProvablyFair(true)}>
-              <Icon.Fairness />
-            </IconButton>
             <IconButton onClick={() => soundStore.set(soundStore.volume ? 0 : .5)}>
               {soundStore.volume ? <Icon.Volume /> : <Icon.VolumeMuted />}
             </IconButton>
