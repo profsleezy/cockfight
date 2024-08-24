@@ -52,20 +52,6 @@ export default function App() {
   const set = useUserStore((state) => state.set)
   return (
     <>
-      {newcomer && (
-        <Modal>
-          <h1>Welcome</h1>
-          <TosWrapper>
-            <TosInner dangerouslySetInnerHTML={{ __html: TOS_HTML }} />
-          </TosWrapper>
-          <p>
-            By playing on our platform, you confirm your compliance.
-          </p>
-          <GambaUi.Button main onClick={() => set({ newcomer: false })}>
-            Acknowledge
-          </GambaUi.Button>
-        </Modal>
-      )}
       <ScrollToTop />
       <ErrorHandler />
       <Header />
