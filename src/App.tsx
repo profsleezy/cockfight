@@ -57,13 +57,10 @@ export default function App() {
       <Header />
       <Toasts />
       <MainWrapper>
-      <Routes>
-      {/* Redirect from "/" to "/cockfight" */}
-      <Route path="/" element={<Navigate to="/cockfight" replace />} />
-      
-      {/* The game route, where :gameId can be cockfight or any other game ID */}
-      <Route path="/:gameId" element={<Game />} />
-    </Routes>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/:gameId" element={<Game />} />
+        </Routes>
         <h2 style={{ textAlign: 'center' }}>Recent Plays</h2>
         <RecentPlays />
       </MainWrapper>
