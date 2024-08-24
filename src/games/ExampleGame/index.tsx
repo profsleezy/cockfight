@@ -5,7 +5,7 @@ import WIN_SOUND from './win.mp3';
 import LOSS_SOUND from './lose.mp3';
 import chicken1 from './gif1.png'; // Black cock
 import chicken2 from './gif2.png'; // White cock
-import BottomIcons from './BottomIcons';
+import{ BottomIcons } from './BottomIcons';
 
 
  const SIDES = {
@@ -168,6 +168,7 @@ export default function ExampleGame() {
 
   return (
     <>
+    <BottomIcons />
       {/* Commenting out the progress bar and mock results display */}
       {/* <header className="header">
         <div className="progress-container">

@@ -1,5 +1,7 @@
 // BottomIcons.tsx
 import React from 'react';
+import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 import Icon1 from './icon1.svg';
 import Icon2 from './icon2.svg';
 import Icon3 from './icon3.svg';
