@@ -39,6 +39,7 @@ export default function ExampleGame() {
 
   const chicken1Ref = useRef();
   const chicken2Ref = useRef();
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const [fightEnded, setFightEnded] = useState(false);
   const [winner, setWinner] = useState(null);
@@ -65,6 +66,63 @@ export default function ExampleGame() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleCanvasClick = (event: MouseEvent) => {
+      const canvas = canvasRef.current;
+      if (canvas && chicken1Ref.current && chicken2Ref.current) {
+        const rect = canvas.getBoundingClientRect();
+        const clickX = event.clientX - rect.left;
+        const clickY = event.clientY - rect.top;
+  
+        // Define the chickens' bounding boxes
+        const chicken1Box = {
+          x: canvas.width / 4 - chicken1Ref.current.width / 2,
+          y: canvas.height / 2 - chicken1Ref.current.height / 2,
+          width: chicken1Ref.current.width,
+          height: chicken1Ref.current.height,
+        };
+  
+        const chicken2Box = {
+          x: (3 * canvas.width) / 4 - chicken2Ref.current.width / 2,
+          y: canvas.height / 2 - chicken2Ref.current.height / 2,
+          width: chicken2Ref.current.width,
+          height: chicken2Ref.current.height,
+        };
+  
+        // Check if the click is within the first chicken's bounding box
+        if (
+          clickX >= chicken1Box.x &&
+          clickX <= chicken1Box.x + chicken1Box.width &&
+          clickY >= chicken1Box.y &&
+          clickY <= chicken1Box.y + chicken1Box.height
+        ) {
+          setSelectedChicken('black');
+        }
+  
+        // Check if the click is within the second chicken's bounding box
+        if (
+          clickX >= chicken2Box.x &&
+          clickX <= chicken2Box.x + chicken2Box.width &&
+          clickY >= chicken2Box.y &&
+          clickY <= chicken2Box.y + chicken2Box.height
+        ) {
+          setSelectedChicken('white');
+        }
+      }
+    };
+  
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.addEventListener('click', handleCanvasClick);
+    }
+  
+    return () => {
+      if (canvas) {
+        canvas.removeEventListener('click', handleCanvasClick);
+      }
+    };
+  }, [fightEnded]);
+  
   // Commenting out the interval for updating mock results
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -186,6 +244,7 @@ export default function ExampleGame() {
         </div>
       </header> */}
       <GambaUi.Portal target="screen">
+      <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
       <GambaUi.Canvas
   render={({ ctx, size }) => {
     ctx.clearRect(0, 0, size.width, size.height);
