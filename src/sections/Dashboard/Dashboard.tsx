@@ -44,8 +44,6 @@ export function GameGrid() {
 export default function Dashboard() {
   return (
     <>
-      <h2 style={{ textAlign: 'center' }}>Games</h2>
-      <GameGrid />
     </>
   )
 }
