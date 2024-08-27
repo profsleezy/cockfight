@@ -48,8 +48,8 @@ const Logo = styled(NavLink)`
 `;
 
 const ProgressBarContainer = styled.div`
-  width: 150px; /* Adjust width as needed */
-  height: 8px; /* Adjust height as needed */
+  width: 180px; /* Adjust width as needed */
+  height: 30px; /* Adjust height as needed */
   background-color: #8e9093; /* Default background color */
   display: flex;
   margin-left: 20px; /* Move it to the right */
