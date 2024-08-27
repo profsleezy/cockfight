@@ -52,7 +52,7 @@ const ProgressBarContainer = styled.div`
   height: 20px; /* Adjust height as needed */
   background-color: #8e9093; /* Default background color */
   display: flex;
-  margin-left: 25px; /* Move it to the right */
+  margin-left: 50px; /* Move it to the right */
 `;
 
 const ProgressBarFill = styled.div`
