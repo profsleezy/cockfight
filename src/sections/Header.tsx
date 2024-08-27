@@ -49,7 +49,7 @@ const Logo = styled(NavLink)`
 
 const ProgressBarContainer = styled.div`
   width: 280px;
-  height: 15px;
+  height: 18px;
   background-color: #8e9093;
   display: flex;
   position: relative;
