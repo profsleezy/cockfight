@@ -47,6 +47,21 @@ const Logo = styled(NavLink)`
   }
 `;
 
+const ProgressBarContainer = styled.div`
+  width: 100px; /* Adjust width as needed */
+  height: 10px; /* Adjust height as needed */
+  background-color: #8e9093; /* Default background color */
+  border-radius: 5px;
+  overflow: hidden;
+  display: flex;
+`;
+
+const ProgressBarFill = styled.div`
+  background-color: #58585a;
+  width: 50%; /* 50% width to fill half of the bar */
+  height: 100%;
+`;
+
 export default function Header() {
   const pool = useCurrentPool();
   const context = useGambaPlatformContext();
@@ -106,15 +121,18 @@ export default function Header() {
             <img alt="Gamba logo" src="/logo.png" />
           </Logo>
           <div style={{ color: 'white', fontSize: '16px', fontWeight: 'bold' }}>Latest Fights</div>
-          <div style={{ display: 'flex', gap: '5px' }}>
-          {fightImages.map((image, index) => (
-    <img
-      key={index}
-      src={image}
-      alt="fight"
-      style={{ height: '30px', width: 'auto' }} // Use 'auto' for width to maintain aspect ratio
-    />
-  ))}
+          <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
+            {fightImages.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt="fight"
+                style={{ height: '30px', width: 'auto' }} // Use 'auto' for width to maintain aspect ratio
+              />
+            ))}
+            <ProgressBarContainer>
+              <ProgressBarFill />
+            </ProgressBarContainer>
           </div>
         </div>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center', position: 'relative' }}>
