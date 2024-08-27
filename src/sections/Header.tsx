@@ -48,17 +48,27 @@ const Logo = styled(NavLink)`
 `;
 
 const ProgressBarContainer = styled.div`
-  width: 280px; /* Adjust width as needed */
-  height: 15px; /* Adjust height as needed */
-  background-color: #8e9093; /* Default background color */
+  width: 280px;
+  height: 15px;
+  background-color: #8e9093;
   display: flex;
-  margin-left: 65px; /* Move it to the right */
+  position: relative;
+  margin-left: 65px;
 `;
 
 const ProgressBarFill = styled.div`
   background-color: #58585a;
   width: 50%; /* 50% width to fill half of the bar */
   height: 100%;
+  position: relative;
+`;
+
+const Label = styled.span`
+  position: absolute;
+  top: -20px; /* Position above the progress bar */
+  font-size: 10px;
+  color: white;
+  font-weight: bold;
 `;
 
 export default function Header() {
@@ -130,7 +140,10 @@ export default function Header() {
               />
             ))}
             <ProgressBarContainer>
-              <ProgressBarFill />
+              <ProgressBarFill>
+                <Label style={{ left: '10px' }}>Black Cock</Label>
+              </ProgressBarFill>
+              <Label style={{ right: '10px' }}>White Cock</Label>
             </ProgressBarContainer>
           </div>
         </div>
