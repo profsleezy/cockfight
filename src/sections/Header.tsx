@@ -1,10 +1,12 @@
-import { GambaUi, TokenValue, useCurrentPool, useGambaPlatformContext, useUserBalance } from 'gamba-react-ui-v2'
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import styled from 'styled-components'
-import { Modal } from '../components/Modal'
-import TokenSelect from './TokenSelect'
-import { UserButton } from './UserButton'
+import { GambaUi, TokenValue, useCurrentPool, useGambaPlatformContext, useUserBalance } from 'gamba-react-ui-v2';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
+import { Modal } from '../components/Modal';
+import TokenSelect from './TokenSelect';
+import { UserButton } from './UserButton';
+import chicken1 from './chicken1.png'; // Replace with your actual image paths
+import chicken2 from './chicken2.png';
 
 const Bonus = styled.button`
   all: unset;
@@ -20,7 +22,7 @@ const Bonus = styled.button`
   &:hover {
     background: white;
   }
-`
+`;
 
 const StyledHeader = styled.div`
   display: flex;
@@ -35,7 +37,7 @@ const StyledHeader = styled.div`
   left: 0;
   z-index: 1000;
   backdrop-filter: blur(20px);
-`
+`;
 
 const Logo = styled(NavLink)`
   height: 35px;
@@ -43,14 +45,29 @@ const Logo = styled(NavLink)`
   & > img {
     height: 100%;
   }
-`
+`;
 
 export default function Header() {
-  const pool = useCurrentPool()
-  const context = useGambaPlatformContext()
-  const balance = useUserBalance()
-  const [bonusHelp, setBonusHelp] = React.useState(false)
-  const [jackpotHelp, setJackpotHelp] = React.useState(false)
+  const pool = useCurrentPool();
+  const context = useGambaPlatformContext();
+  const balance = useUserBalance();
+  const [bonusHelp, setBonusHelp] = React.useState(false);
+  const [jackpotHelp, setJackpotHelp] = React.useState(false);
+
+  const [fightImages, setFightImages] = React.useState([]);
+
+  React.useEffect(() => {
+    const images = [chicken1, chicken2];
+    const shuffledImages = [];
+
+    // Randomly pick an image and push it to the shuffledImages array
+    for (let i = 0; i < 10; i++) { // Adjust the number 10 to however many images you want to display
+      const randomIndex = Math.floor(Math.random() * images.length);
+      shuffledImages.push(images[randomIndex]);
+    }
+
+    setFightImages(shuffledImages);
+  }, []);
 
   return (
     <>
@@ -85,9 +102,15 @@ export default function Header() {
       )}
       <StyledHeader>
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-          <Logo>
+          <Logo to="/">
             <img alt="Gamba logo" src="/logo.png" />
           </Logo>
+          <div style={{ color: 'white', fontSize: '16px', fontWeight: 'bold' }}>Latest Fights</div>
+          <div style={{ display: 'flex', gap: '5px' }}>
+            {fightImages.map((image, index) => (
+              <img key={index} src={image} alt="fight" style={{ height: '30px', width: '30px' }} />
+            ))}
+          </div>
         </div>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center', position: 'relative' }}>
           {pool.jackpotBalance > 0 && (
@@ -105,5 +128,5 @@ export default function Header() {
         </div>
       </StyledHeader>
     </>
-  )
+  );
 }
