@@ -107,9 +107,14 @@ export default function Header() {
           </Logo>
           <div style={{ color: 'white', fontSize: '16px', fontWeight: 'bold' }}>Latest Fights</div>
           <div style={{ display: 'flex', gap: '5px' }}>
-            {fightImages.map((image, index) => (
-              <img key={index} src={image} alt="fight" style={{ height: '30px', width: '30px' }} />
-            ))}
+          {fightImages.map((image, index) => (
+    <img
+      key={index}
+      src={image}
+      alt="fight"
+      style={{ height: '30px', width: 'auto' }} // Use 'auto' for width to maintain aspect ratio
+    />
+  ))}
           </div>
         </div>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center', position: 'relative' }}>
