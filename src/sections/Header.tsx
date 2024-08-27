@@ -30,7 +30,7 @@ const StyledHeader = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 5px;
-  background: rgba(0, 0, 0, 0.9);
+  background: #272E34; /* Set background to #272E34 */
   position: fixed;
   backdrop-filter: blur(20px);
   top: 0;
@@ -65,10 +65,14 @@ const ProgressBarFill = styled.div`
 
 const Label = styled.span`
   position: absolute;
-  top: -20px; /* Position above the progress bar */
+  top: 0; /* Position it inside the bar */
   font-size: 10px;
   color: white;
   font-weight: bold;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
 `;
 
 export default function Header() {
