@@ -54,7 +54,7 @@ const ProgressBarContainer = styled.div`
   display: flex;
   position: relative;
   flex-shrink: 0;
-  margin-left: 5%; /* Add space between images and progress bar */
+  margin-left: 2%; /* Add space between images and progress bar */
 `;
 
 const ProgressBarFill = styled.div`
