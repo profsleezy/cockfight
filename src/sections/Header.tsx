@@ -53,7 +53,7 @@ const ProgressBarContainer = styled.div`
   background-color: #8e9093;
   display: flex;
   position: relative;
-  margin-left: 65px;
+  margin-left: 55px;
 `;
 
 const ProgressBarFill = styled.div`
