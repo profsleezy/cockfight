@@ -29,8 +29,8 @@ const StyledHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 5px 20px; /* Padding to create consistent space inside the header */
-  background: #272E34; /* Set background to #272E34 */
+  padding: 5px 20px;
+  background: #272E34;
   position: fixed;
   top: 0;
   left: 0;
@@ -41,7 +41,7 @@ const StyledHeader = styled.div`
 const Logo = styled(NavLink)`
   height: 35px;
   margin-right: 20px;
-  flex-shrink: 0; /* Prevent shrinking */
+  flex-shrink: 0;
   & > img {
     height: 100%;
   }
@@ -53,19 +53,20 @@ const ProgressBarContainer = styled.div`
   background-color: #E1F7FD;
   display: flex;
   position: relative;
-  flex-shrink: 0; /* Prevent the bar from shrinking */
+  flex-shrink: 0;
+  margin-left: 20px; /* Add space between images and progress bar */
 `;
 
 const ProgressBarFill = styled.div`
   background-color: #E8A63A;
-  width: 50%; /* 50% width to fill half of the bar */
+  width: 50%;
   height: 100%;
   position: relative;
 `;
 
 const Label = styled.span`
   position: absolute;
-  top: 0; /* Position it inside the bar */
+  top: 0;
   font-size: 10px;
   color: black; /* Set text color to black */
   font-weight: bold;
@@ -79,17 +80,15 @@ const FightContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  flex-shrink: 1;
   overflow: hidden;
+  flex-grow: 1;
 `;
 
-const HeaderContainer = styled.div`
-  width: 100%;
-  max-width: 1200px; /* Limit the maximum width for consistency */
-  margin: 0 auto; /* Center the header */
+const RightContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
 `;
 
 export default function Header() {
@@ -105,8 +104,7 @@ export default function Header() {
     const images = [chicken1, chicken2];
     const shuffledImages = [];
 
-    // Randomly pick an image and push it to the shuffledImages array
-    for (let i = 0; i < 10; i++) { // Adjust the number 10 to however many images you want to display
+    for (let i = 0; i < 10; i++) {
       const randomIndex = Math.floor(Math.random() * images.length);
       shuffledImages.push(images[randomIndex]);
     }
@@ -146,42 +144,40 @@ export default function Header() {
         </Modal>
       )}
       <StyledHeader>
-        <HeaderContainer>
-          <Logo to="/">
-            <img alt="Gamba logo" src="/logo.png" />
-          </Logo>
-          <FightContainer>
-            <div style={{ color: 'white', fontSize: '16px', fontWeight: 'bold' }}>Latest Fights</div>
-            {fightImages.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt="fight"
-                style={{ height: '30px', width: 'auto' }} // Use 'auto' for width to maintain aspect ratio
-              />
-            ))}
-            <ProgressBarContainer>
-              <ProgressBarFill>
-                <Label style={{ left: '15px' }}>Black Cock</Label>
-              </ProgressBarFill>
-              <Label style={{ right: '15px' }}>White Cock</Label>
-            </ProgressBarContainer>
-          </FightContainer>
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', position: 'relative' }}>
-            {pool.jackpotBalance > 0 && (
-              <Bonus onClick={() => setJackpotHelp(true)}>
-                💰 <TokenValue amount={pool.jackpotBalance} />
-              </Bonus>
-            )}
-            {balance.bonusBalance > 0 && (
-              <Bonus onClick={() => setBonusHelp(true)}>
-                ✨ <TokenValue amount={balance.bonusBalance} />
-              </Bonus>
-            )}
-            <TokenSelect />
-            <UserButton />
-          </div>
-        </HeaderContainer>
+        <Logo to="/">
+          <img alt="Gamba logo" src="/logo.png" />
+        </Logo>
+        <FightContainer>
+          <div style={{ color: 'white', fontSize: '16px', fontWeight: 'bold' }}>Latest Fights</div>
+          {fightImages.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt="fight"
+              style={{ height: '30px', width: 'auto' }}
+            />
+          ))}
+          <ProgressBarContainer>
+            <ProgressBarFill>
+              <Label style={{ left: '10px' }}>Black Cock</Label>
+            </ProgressBarFill>
+            <Label style={{ right: '10px' }}>White Cock</Label>
+          </ProgressBarContainer>
+        </FightContainer>
+        <RightContainer>
+          {pool.jackpotBalance > 0 && (
+            <Bonus onClick={() => setJackpotHelp(true)}>
+              💰 <TokenValue amount={pool.jackpotBalance} />
+            </Bonus>
+          )}
+          {balance.bonusBalance > 0 && (
+            <Bonus onClick={() => setBonusHelp(true)}>
+              ✨ <TokenValue amount={balance.bonusBalance} />
+            </Bonus>
+          )}
+          <TokenSelect />
+          <UserButton />
+        </RightContainer>
       </StyledHeader>
     </>
   );
