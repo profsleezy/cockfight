@@ -54,7 +54,9 @@ const ProgressBarContainer = styled.div`
   display: flex;
   position: relative;
   flex-shrink: 0;
-  margin-left: 20px; /* Add space between images and progress bar */
+  margin-left: 20px; /* Space between images and progress bar */
+  flex-grow: 1;
+  max-width: 280px;
 `;
 
 const ProgressBarFill = styled.div`
@@ -82,6 +84,7 @@ const FightContainer = styled.div`
   gap: 10px;
   overflow: hidden;
   flex-grow: 1;
+  max-width: 50%; /* Restrict maximum width to avoid overflow */
 `;
 
 const RightContainer = styled.div`
