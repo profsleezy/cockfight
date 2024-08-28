@@ -100,29 +100,30 @@ export default function Header() {
 
   const [fightImages, setFightImages] = React.useState([]);
 
-  React.useEffect(() => {
+  // Function to generate a random delay between 2 and 10 seconds
+  const getRandomDelay = () => Math.floor(Math.random() * (10000 - 2000 + 1)) + 2000;
+
+  // Function to update the images array with a random delay
+  const updateFightImages = React.useCallback(() => {
     const images = [chicken1, chicken2];
-    const shuffledImages = [];
+    const randomIndex = Math.floor(Math.random() * images.length);
+    const newImage = images[randomIndex];
 
-    for (let i = 0; i < 10; i++) {
-      const randomIndex = Math.floor(Math.random() * images.length);
-      shuffledImages.push(images[randomIndex]);
-    }
+    setFightImages((prevImages) => {
+      const updatedImages = [newImage, ...prevImages];
+      return updatedImages.slice(0, 10); // Keep the array length to 10
+    });
 
-    setFightImages(shuffledImages);
-
-    const intervalId = setInterval(() => {
-      const randomIndex = Math.floor(Math.random() * images.length);
-      const newImage = images[randomIndex];
-
-      setFightImages(prevImages => {
-        const updatedImages = [newImage, ...prevImages];
-        return updatedImages.slice(0, 10); // Keep the array length to 10
-      });
-    }, 2000); // Update interval set to 2 seconds
-
-    return () => clearInterval(intervalId); // Clean up the interval on component unmount
+    // Set a timeout for the next update
+    setTimeout(updateFightImages, getRandomDelay());
   }, []);
+
+  React.useEffect(() => {
+    // Initial setup with a random delay
+    setTimeout(updateFightImages, getRandomDelay());
+
+    return () => clearTimeout(updateFightImages); // Clean up on unmount
+  }, [updateFightImages]);
 
   return (
     <>
