@@ -29,10 +29,9 @@ const StyledHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 5px;
+  padding: 5px 20px; /* Add padding to create consistent space inside the header */
   background: #272E34; /* Set background to #272E34 */
   position: fixed;
-  backdrop-filter: blur(20px);
   top: 0;
   left: 0;
   z-index: 1000;
@@ -41,7 +40,7 @@ const StyledHeader = styled.div`
 
 const Logo = styled(NavLink)`
   height: 35px;
-  margin: 0 10px;
+  margin-right: 20px;
   & > img {
     height: 100%;
   }
@@ -53,7 +52,7 @@ const ProgressBarContainer = styled.div`
   background-color: #8e9093;
   display: flex;
   position: relative;
-  margin-left: 55px;
+  flex-shrink: 0; /* Prevent the bar from shrinking */
 `;
 
 const ProgressBarFill = styled.div`
@@ -73,6 +72,14 @@ const Label = styled.span`
   display: flex;
   align-items: center;
   padding: 0 5px;
+`;
+
+const FightContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 1;
+  overflow: hidden;
 `;
 
 export default function Header() {
@@ -129,28 +136,26 @@ export default function Header() {
         </Modal>
       )}
       <StyledHeader>
-        <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-          <Logo to="/">
-            <img alt="Gamba logo" src="/logo.png" />
-          </Logo>
+        <Logo to="/">
+          <img alt="Gamba logo" src="/logo.png" />
+        </Logo>
+        <FightContainer>
           <div style={{ color: 'white', fontSize: '16px', fontWeight: 'bold' }}>Latest Fights</div>
-          <div style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
-            {fightImages.map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt="fight"
-                style={{ height: '30px', width: 'auto' }} // Use 'auto' for width to maintain aspect ratio
-              />
-            ))}
-            <ProgressBarContainer>
-              <ProgressBarFill>
-                <Label style={{ left: '10px' }}>Black Cock</Label>
-              </ProgressBarFill>
-              <Label style={{ right: '10px' }}>White Cock</Label>
-            </ProgressBarContainer>
-          </div>
-        </div>
+          {fightImages.map((image, index) => (
+            <img
+              key={index}
+              src={image}
+              alt="fight"
+              style={{ height: '30px', width: 'auto' }} // Use 'auto' for width to maintain aspect ratio
+            />
+          ))}
+          <ProgressBarContainer>
+            <ProgressBarFill>
+              <Label style={{ left: '10px' }}>Black Cock</Label>
+            </ProgressBarFill>
+            <Label style={{ right: '10px' }}>White Cock</Label>
+          </ProgressBarContainer>
+        </FightContainer>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center', position: 'relative' }}>
           {pool.jackpotBalance > 0 && (
             <Bonus onClick={() => setJackpotHelp(true)}>
