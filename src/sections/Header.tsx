@@ -109,17 +109,26 @@ export default function Header() {
     const randomIndex = Math.floor(Math.random() * images.length);
     const newImage = images[randomIndex];
 
-    setFightImages((prevImages) => {
+    setFightImages(prevImages => {
       const updatedImages = [newImage, ...prevImages];
-      return updatedImages.slice(0, 10); // Keep the array length to 10
+      return updatedImages.slice(0, 10); // Ensure the array length remains 10
     });
 
-    // Set a timeout for the next update
+    // Set a timeout for the next update with a random delay
     setTimeout(updateFightImages, getRandomDelay());
   }, []);
 
   React.useEffect(() => {
-    // Initial setup with a random delay
+    // Initialize with 10 images
+    const images = [chicken1, chicken2];
+    const initialImages = [];
+    for (let i = 0; i < 10; i++) {
+      const randomIndex = Math.floor(Math.random() * images.length);
+      initialImages.push(images[randomIndex]);
+    }
+    setFightImages(initialImages);
+
+    // Start updating images at random intervals
     setTimeout(updateFightImages, getRandomDelay());
 
     return () => clearTimeout(updateFightImages); // Clean up on unmount
