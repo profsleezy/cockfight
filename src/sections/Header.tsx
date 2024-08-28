@@ -29,7 +29,7 @@ const StyledHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 5px 20px; /* Add padding to create consistent space inside the header */
+  padding: 5px 20px; /* Padding to create consistent space inside the header */
   background: #272E34; /* Set background to #272E34 */
   position: fixed;
   top: 0;
@@ -41,6 +41,7 @@ const StyledHeader = styled.div`
 const Logo = styled(NavLink)`
   height: 35px;
   margin-right: 20px;
+  flex-shrink: 0; /* Prevent shrinking */
   & > img {
     height: 100%;
   }
@@ -66,7 +67,7 @@ const Label = styled.span`
   position: absolute;
   top: 0; /* Position it inside the bar */
   font-size: 10px;
-  color: white;
+  color: black; /* Set text color to black */
   font-weight: bold;
   height: 100%;
   display: flex;
@@ -80,6 +81,15 @@ const FightContainer = styled.div`
   gap: 10px;
   flex-shrink: 1;
   overflow: hidden;
+`;
+
+const HeaderContainer = styled.div`
+  width: 100%;
+  max-width: 1200px; /* Limit the maximum width for consistency */
+  margin: 0 auto; /* Center the header */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export default function Header() {
@@ -136,40 +146,42 @@ export default function Header() {
         </Modal>
       )}
       <StyledHeader>
-        <Logo to="/">
-          <img alt="Gamba logo" src="/logo.png" />
-        </Logo>
-        <FightContainer>
-          <div style={{ color: 'white', fontSize: '16px', fontWeight: 'bold' }}>Latest Fights</div>
-          {fightImages.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt="fight"
-              style={{ height: '30px', width: 'auto' }} // Use 'auto' for width to maintain aspect ratio
-            />
-          ))}
-          <ProgressBarContainer>
-            <ProgressBarFill>
-              <Label style={{ left: '10px' }}>Black Cock</Label>
-            </ProgressBarFill>
-            <Label style={{ right: '10px' }}>White Cock</Label>
-          </ProgressBarContainer>
-        </FightContainer>
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', position: 'relative' }}>
-          {pool.jackpotBalance > 0 && (
-            <Bonus onClick={() => setJackpotHelp(true)}>
-              💰 <TokenValue amount={pool.jackpotBalance} />
-            </Bonus>
-          )}
-          {balance.bonusBalance > 0 && (
-            <Bonus onClick={() => setBonusHelp(true)}>
-              ✨ <TokenValue amount={balance.bonusBalance} />
-            </Bonus>
-          )}
-          <TokenSelect />
-          <UserButton />
-        </div>
+        <HeaderContainer>
+          <Logo to="/">
+            <img alt="Gamba logo" src="/logo.png" />
+          </Logo>
+          <FightContainer>
+            <div style={{ color: 'white', fontSize: '16px', fontWeight: 'bold' }}>Latest Fights</div>
+            {fightImages.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt="fight"
+                style={{ height: '30px', width: 'auto' }} // Use 'auto' for width to maintain aspect ratio
+              />
+            ))}
+            <ProgressBarContainer>
+              <ProgressBarFill>
+                <Label style={{ left: '15px' }}>Black Cock</Label>
+              </ProgressBarFill>
+              <Label style={{ right: '15px' }}>White Cock</Label>
+            </ProgressBarContainer>
+          </FightContainer>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', position: 'relative' }}>
+            {pool.jackpotBalance > 0 && (
+              <Bonus onClick={() => setJackpotHelp(true)}>
+                💰 <TokenValue amount={pool.jackpotBalance} />
+              </Bonus>
+            )}
+            {balance.bonusBalance > 0 && (
+              <Bonus onClick={() => setBonusHelp(true)}>
+                ✨ <TokenValue amount={balance.bonusBalance} />
+              </Bonus>
+            )}
+            <TokenSelect />
+            <UserButton />
+          </div>
+        </HeaderContainer>
       </StyledHeader>
     </>
   );
