@@ -110,6 +110,18 @@ export default function Header() {
     }
 
     setFightImages(shuffledImages);
+
+    const intervalId = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * images.length);
+      const newImage = images[randomIndex];
+
+      setFightImages(prevImages => {
+        const updatedImages = [newImage, ...prevImages];
+        return updatedImages.slice(0, 10); // Keep the array length to 10
+      });
+    }, 2000); // Update interval set to 2 seconds
+
+    return () => clearInterval(intervalId); // Clean up the interval on component unmount
   }, []);
 
   return (
