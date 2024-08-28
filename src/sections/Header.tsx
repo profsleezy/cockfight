@@ -58,10 +58,10 @@ const ProgressBarContainer = styled.div`
 `;
 
 const ProgressBarFill = styled.div`
-  background-color: #E8A63A;
-  width: 50%;
   height: 100%;
-  position: relative;
+  position: absolute;
+  display: flex;
+  align-items: center;
 `;
 
 const Label = styled.span`
@@ -99,6 +99,8 @@ export default function Header() {
   const [jackpotHelp, setJackpotHelp] = React.useState(false);
 
   const [fightImages, setFightImages] = React.useState([]);
+  const [chicken1Count, setChicken1Count] = React.useState(0);
+  const [chicken2Count, setChicken2Count] = React.useState(0);
 
   // Function to generate a random delay between 2 and 10 seconds
   const getRandomDelay = () => Math.floor(Math.random() * (10000 - 2000 + 1)) + 2000;
@@ -111,6 +113,12 @@ export default function Header() {
 
     setFightImages(prevImages => {
       const updatedImages = [newImage, ...prevImages];
+      const updatedChicken1Count = updatedImages.filter(img => img === chicken1).length;
+      const updatedChicken2Count = updatedImages.filter(img => img === chicken2).length;
+      
+      setChicken1Count(updatedChicken1Count);
+      setChicken2Count(updatedChicken2Count);
+
       return updatedImages.slice(0, 10); // Ensure the array length remains 10
     });
 
@@ -128,11 +136,20 @@ export default function Header() {
     }
     setFightImages(initialImages);
 
+    // Count initial images
+    setChicken1Count(initialImages.filter(img => img === chicken1).length);
+    setChicken2Count(initialImages.filter(img => img === chicken2).length);
+
     // Start updating images at random intervals
     setTimeout(updateFightImages, getRandomDelay());
 
     return () => clearTimeout(updateFightImages); // Clean up on unmount
   }, [updateFightImages]);
+
+  // Calculate the percentages for the progress bar
+  const totalImages = 10;
+  const chicken1Percentage = (chicken1Count / totalImages) * 100;
+  const chicken2Percentage = (chicken2Count / totalImages) * 100;
 
   return (
     <>
@@ -180,10 +197,12 @@ export default function Header() {
             />
           ))}
           <ProgressBarContainer>
-            <ProgressBarFill>
+            <ProgressBarFill style={{ width: `${chicken1Percentage}%`, backgroundColor: '#E8A63A' }}>
               <Label style={{ left: '10px' }}>Black Cock</Label>
             </ProgressBarFill>
-            <Label style={{ right: '10px' }}>White Cock</Label>
+            <ProgressBarFill style={{ width: `${chicken2Percentage}%`, backgroundColor: '#FFFFFF', left: `${chicken1Percentage}%` }}>
+              <Label style={{ right: '10px' }}>White Cock</Label>
+            </ProgressBarFill>
           </ProgressBarContainer>
         </FightContainer>
         <RightContainer>
