@@ -7,13 +7,12 @@ import chicken1 from './gif1.png';
 import chicken2 from './gif2.png'; 
 import BottomIcons from './BottomIcons';
 
+const SIDES = {
+  black: [2, 0],
+  white: [0, 2],
+};
 
- const SIDES = {
-   black: [2, 0],
-   white: [0, 2],
- };
-
- const WAGER_OPTIONS = [1, 3, 5, 10, 20, 40, 60, 80, 100]
+const WAGER_OPTIONS = [1, 3, 5, 10, 20, 40, 60, 80, 100];
 
 export default function ExampleGame() {
   const [wager, setWager] = useWagerInput();
@@ -24,17 +23,24 @@ export default function ExampleGame() {
     loss: LOSS_SOUND,
   });
 
-  const chicken1Ref = useRef();
-  const chicken2Ref = useRef();
+  const chicken1Ref = useRef<HTMLImageElement | null>(null);
+  const chicken2Ref = useRef<HTMLImageElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const [fightEnded, setFightEnded] = useState(false);
-  const [winner, setWinner] = useState(null);
-  const [selectedChicken, setSelectedChicken] = useState('black');
-  const [resultMessage, setResultMessage] = useState('');
-  const [effect, setEffect] = useState(null);
+  const [winner, setWinner] = useState<string | null>(null);
+  const [selectedChicken, setSelectedChicken] = useState<string>('black');
+  const [resultMessage, setResultMessage] = useState<string>('');
+  const [effect, setEffect] = useState<{ type: 'shake' | 'invert'; duration: number } | null>(null);
   const [textAnimation, setTextAnimation] = useState(false);
-  const [confetti, setConfetti] = useState([]);
+  const [confetti, setConfetti] = useState<Array<{
+    x: number;
+    y: number;
+    size: number;
+    speedX: number;
+    speedY: number;
+    color: string;
+  }>>([]);
 
   useEffect(() => {
     const chicken1Image = new Image();
@@ -57,49 +63,74 @@ export default function ExampleGame() {
         const rect = canvas.getBoundingClientRect();
         const clickX = event.clientX - rect.left;
         const clickY = event.clientY - rect.top;
-  
-        // Define the chickens' bounding boxes
-        const chicken1Box = {
-          x: canvas.width / 4 - chicken1Ref.current.width / 2,
-          y: canvas.height / 2 - chicken1Ref.current.height / 2,
-          width: chicken1Ref.current.width,
-          height: chicken1Ref.current.height,
-        };
-  
-        const chicken2Box = {
-          x: (3 * canvas.width) / 4 - chicken2Ref.current.width / 2,
-          y: canvas.height / 2 - chicken2Ref.current.height / 2,
-          width: chicken2Ref.current.width,
-          height: chicken2Ref.current.height,
-        };
-  
-        // Check if the click is within the first chicken's bounding box
-        if (
-          clickX >= chicken1Box.x &&
-          clickX <= chicken1Box.x + chicken1Box.width &&
-          clickY >= chicken1Box.y &&
-          clickY <= chicken1Box.y + chicken1Box.height
-        ) {
-          setSelectedChicken('black');
-        }
-  
-        // Check if the click is within the second chicken's bounding box
-        if (
-          clickX >= chicken2Box.x &&
-          clickX <= chicken2Box.x + chicken2Box.width &&
-          clickY >= chicken2Box.y &&
-          clickY <= chicken2Box.y + chicken2Box.height
-        ) {
-          setSelectedChicken('white');
+
+        if (chicken1Ref.current && chicken2Ref.current) {
+          const canvasWidth = canvas.width;
+          const canvasHeight = canvas.height;
+
+          // Define chicken dimensions and positions
+          const maxChickenWidth = canvasWidth / 4;
+          const maxChickenHeight = canvasHeight / 4;
+
+          const chicken1AspectRatio = chicken1Ref.current.width / chicken1Ref.current.height;
+          const chicken2AspectRatio = chicken2Ref.current.width / chicken2Ref.current.height;
+
+          let chicken1Width = maxChickenWidth;
+          let chicken1Height = maxChickenWidth / chicken1AspectRatio;
+          if (chicken1Height > maxChickenHeight) {
+            chicken1Height = maxChickenHeight;
+            chicken1Width = maxChickenHeight * chicken1AspectRatio;
+          }
+
+          let chicken2Width = maxChickenWidth;
+          let chicken2Height = maxChickenWidth / chicken2AspectRatio;
+          if (chicken2Height > maxChickenHeight) {
+            chicken2Height = maxChickenHeight;
+            chicken2Width = maxChickenHeight * chicken2AspectRatio;
+          }
+
+          const chicken1Box = {
+            x: canvasWidth / 4 - chicken1Width / 2,
+            y: canvasHeight / 2 - chicken1Height / 2,
+            width: chicken1Width,
+            height: chicken1Height,
+          };
+
+          const chicken2Box = {
+            x: (3 * canvasWidth) / 4 - chicken2Width / 2,
+            y: canvasHeight / 2 - chicken2Height / 2,
+            width: chicken2Width,
+            height: chicken2Height,
+          };
+
+          // Check if the click is within the first chicken's bounding box
+          if (
+            clickX >= chicken1Box.x &&
+            clickX <= chicken1Box.x + chicken1Box.width &&
+            clickY >= chicken1Box.y &&
+            clickY <= chicken1Box.y + chicken1Box.height
+          ) {
+            setSelectedChicken('black');
+          }
+
+          // Check if the click is within the second chicken's bounding box
+          if (
+            clickX >= chicken2Box.x &&
+            clickX <= chicken2Box.x + chicken2Box.width &&
+            clickY >= chicken2Box.y &&
+            clickY <= chicken2Box.y + chicken2Box.height
+          ) {
+            setSelectedChicken('white');
+          }
         }
       }
     };
-  
+
     const canvas = canvasRef.current;
     if (canvas) {
       canvas.addEventListener('click', handleCanvasClick);
     }
-  
+
     return () => {
       if (canvas) {
         canvas.removeEventListener('click', handleCanvasClick);
@@ -168,7 +199,7 @@ export default function ExampleGame() {
   };
 
   const triggerEffect = () => {
-    const applyEffect = (timesLeft) => {
+    const applyEffect = (timesLeft: number) => {
       if (timesLeft > 0) {
         const effectType = timesLeft % 2 === 0 ? 'shake' : 'invert';
         setEffect({ type: effectType, duration: 500 });
@@ -207,8 +238,9 @@ export default function ExampleGame() {
           render={({ ctx, size }) => {
             ctx.clearRect(0, 0, size.width, size.height);
 
-            const baseFontSize = size.width * 0.05; 
-            const smallFontSize = baseFontSize * 0.6; 
+            // Calculate responsive font sizes based on canvas width
+            const baseFontSize = size.width * 0.05; // 5% of canvas width
+            const smallFontSize = baseFontSize * 0.6; // 60% of base font size
 
             if (effect) {
               switch (effect.type) {
@@ -265,52 +297,118 @@ export default function ExampleGame() {
                   chicken2Width = maxChickenHeight * chicken2AspectRatio;
                 }
 
-                const chicken1X = size.width / 4 - chicken1Width / 2;
-                const chicken1Y = size.height / 2 - chicken1Height / 2;
+                // Draw the first chicken on the left side
+                ctx.drawImage(
+                  chicken1Ref.current,
+                  size.width / 4 - chicken1Width / 2,
+                  size.height / 2 - chicken1Height / 2,
+                  chicken1Width,
+                  chicken1Height
+                );
 
-                const chicken2X = (3 * size.width) / 4 - chicken2Width / 2;
-                const chicken2Y = size.height / 2 - chicken2Height / 2;
+                // Draw the second chicken on the right side
+                ctx.drawImage(
+                  chicken2Ref.current,
+                  (3 * size.width) / 4 - chicken2Width / 2,
+                  size.height / 2 - chicken2Height / 2,
+                  chicken2Width,
+                  chicken2Height
+                );
 
-                ctx.drawImage(chicken1Ref.current, chicken1X, chicken1Y, chicken1Width, chicken1Height);
-                ctx.drawImage(chicken2Ref.current, chicken2X, chicken2Y, chicken2Width, chicken2Height);
-
+                // Draw border around selected chicken
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = 5;
                 if (selectedChicken === 'black') {
-                  ctx.strokeStyle = 'red';
-                  ctx.lineWidth = 5;
-                  ctx.strokeRect(chicken1X, chicken1Y, chicken1Width, chicken1Height);
+                  ctx.strokeRect(
+                    size.width / 4 - chicken1Width / 2,
+                    size.height / 2 - chicken1Height / 2,
+                    chicken1Width,
+                    chicken1Height
+                  );
                 } else if (selectedChicken === 'white') {
-                  ctx.strokeStyle = 'red';
-                  ctx.lineWidth = 5;
-                  ctx.strokeRect(chicken2X, chicken2Y, chicken2Width, chicken2Height);
+                  ctx.strokeRect(
+                    (3 * size.width) / 4 - chicken2Width / 2,
+                    size.height / 2 - chicken2Height / 2,
+                    chicken2Width,
+                    chicken2Height
+                  );
                 }
               }
-            } else {
-              ctx.font = `${baseFontSize}px "VT323", monospace`;
-              ctx.fillStyle = winner === selectedChicken ? 'green' : 'red';
-              ctx.textAlign = 'center';
-              ctx.fillText(resultMessage, size.width / 2, size.height / 2);
 
-              if (confetti.length > 0) {
-                confetti.forEach((particle) => {
-                  ctx.fillStyle = particle.color;
-                  ctx.fillRect(particle.x, particle.y, particle.size, particle.size);
-                });
+              ctx.font = `${smallFontSize}px "VT323", monospace`;
+              ctx.fillStyle = 'white';
+              ctx.textAlign = 'center';
+              ctx.fillText(`I like...`, size.width / 2, size.height - 40);
+              ctx.fillText(selectedChicken === 'black' ? 'Black Cock' : 'White Cock', size.width / 2, size.height - 10);
+            } else {
+              ctx.font = `${baseFontSize * 0.8}px "VT323", monospace`;
+              ctx.textAlign = 'center';
+
+              const messageParts = resultMessage.split(/(\d+\.\d{2})/);
+              const [textPart, valuePart] = messageParts;
+
+              ctx.fillStyle = 'white';
+              ctx.fillText(textPart, size.width / 2, size.height / 2 - 40);
+
+              ctx.fillStyle = winner === selectedChicken ? 'green' : 'red';
+              ctx.fillText(`${valuePart} SOL`, size.width / 2, size.height / 2);
+
+              if (winner === 'black' && chicken1Ref.current) {
+                ctx.drawImage(
+                  chicken1Ref.current,
+                  size.width / 2 - chicken1Ref.current.width / 2,
+                  size.height / 2 + 30,
+                  chicken1Ref.current.width,
+                  chicken1Ref.current.height
+                );
+              } else if (winner === 'white' && chicken2Ref.current) {
+                ctx.drawImage(
+                  chicken2Ref.current,
+                  size.width / 2 - chicken2Ref.current.width / 2,
+                  size.height / 2 + 30,
+                  chicken2Ref.current.width,
+                  chicken2Ref.current.height
+                );
               }
+
+              confetti.forEach((particle) => {
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, 2 * Math.PI);
+                ctx.fillStyle = particle.color;
+                ctx.fill();
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+                particle.speedY += 0.1;
+              });
             }
 
-            ctx.resetTransform();
-            ctx.filter = 'none';
+            if (effect) {
+              ctx.setTransform(1, 0, 0, 1, 0, 0);
+              ctx.filter = 'none';
+            }
           }}
         />
       </GambaUi.Portal>
-      <GambaUi.WagerPicker value={wager} onChange={setWager} options={WAGER_OPTIONS} />
-      <BottomIcons
-        onClick={click}
-        fightEnded={fightEnded}
-        winner={winner}
-        selectedChicken={selectedChicken}
-        toggleChicken={toggleChicken}
-      />
+      <GambaUi.Portal target="controls">
+        <GambaUi.WagerInput
+          options={WAGER_OPTIONS}
+          value={wager}
+          onChange={setWager}
+        />
+        <GambaUi.Button
+          onClick={click}
+          style={{
+            backgroundColor: selectedChicken === 'black' ? 'black' : 'white',
+            color: selectedChicken === 'black' ? 'white' : 'black'
+          }}
+        >
+          {fightEnded ? 'Replay' : 'Start Fight'}
+        </GambaUi.Button>
+        <GambaUi.Button onClick={toggleChicken}>
+          {selectedChicken === 'black' ? 'Black Cock' : 'White Cock'}
+        </GambaUi.Button>
+      </GambaUi.Portal>
+      <BottomIcons />
     </>
   );
 }
