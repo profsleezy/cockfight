@@ -43,17 +43,16 @@ export default function ExampleGame() {
   }>>([]);
 
   useEffect(() => {
-    const chicken1Image = new Image();
-    chicken1Image.src = chicken1;
-    chicken1Image.onload = () => {
-      chicken1Ref.current = chicken1Image;
+    const loadImage = (src: string, ref: React.RefObject<HTMLImageElement>) => {
+      const image = new Image();
+      image.src = src;
+      image.onload = () => {
+        ref.current = image;
+      };
     };
 
-    const chicken2Image = new Image();
-    chicken2Image.src = chicken2;
-    chicken2Image.onload = () => {
-      chicken2Ref.current = chicken2Image;
-    };
+    loadImage(chicken1, chicken1Ref);
+    loadImage(chicken2, chicken2Ref);
   }, []);
 
   useEffect(() => {
@@ -64,64 +63,57 @@ export default function ExampleGame() {
         const clickX = event.clientX - rect.left;
         const clickY = event.clientY - rect.top;
 
-        if (chicken1Ref.current && chicken2Ref.current) {
-          const canvasWidth = canvas.width;
-          const canvasHeight = canvas.height;
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
 
-          // Define chicken dimensions and positions
-          const maxChickenWidth = canvasWidth / 4;
-          const maxChickenHeight = canvasHeight / 4;
+        const maxChickenWidth = canvasWidth / 4;
+        const maxChickenHeight = canvasHeight / 4;
 
-          const chicken1AspectRatio = chicken1Ref.current.width / chicken1Ref.current.height;
-          const chicken2AspectRatio = chicken2Ref.current.width / chicken2Ref.current.height;
+        const chicken1AspectRatio = chicken1Ref.current.width / chicken1Ref.current.height;
+        const chicken2AspectRatio = chicken2Ref.current.width / chicken2Ref.current.height;
 
-          let chicken1Width = maxChickenWidth;
-          let chicken1Height = maxChickenWidth / chicken1AspectRatio;
-          if (chicken1Height > maxChickenHeight) {
-            chicken1Height = maxChickenHeight;
-            chicken1Width = maxChickenHeight * chicken1AspectRatio;
-          }
+        let chicken1Width = maxChickenWidth;
+        let chicken1Height = maxChickenWidth / chicken1AspectRatio;
+        if (chicken1Height > maxChickenHeight) {
+          chicken1Height = maxChickenHeight;
+          chicken1Width = maxChickenHeight * chicken1AspectRatio;
+        }
 
-          let chicken2Width = maxChickenWidth;
-          let chicken2Height = maxChickenWidth / chicken2AspectRatio;
-          if (chicken2Height > maxChickenHeight) {
-            chicken2Height = maxChickenHeight;
-            chicken2Width = maxChickenHeight * chicken2AspectRatio;
-          }
+        let chicken2Width = maxChickenWidth;
+        let chicken2Height = maxChickenWidth / chicken2AspectRatio;
+        if (chicken2Height > maxChickenHeight) {
+          chicken2Height = maxChickenHeight;
+          chicken2Width = maxChickenHeight * chicken2AspectRatio;
+        }
 
-          const chicken1Box = {
-            x: canvasWidth / 4 - chicken1Width / 2,
-            y: canvasHeight / 2 - chicken1Height / 2,
-            width: chicken1Width,
-            height: chicken1Height,
-          };
+        const chicken1Box = {
+          x: canvasWidth / 4 - chicken1Width / 2,
+          y: canvasHeight / 2 - chicken1Height / 2,
+          width: chicken1Width,
+          height: chicken1Height,
+        };
 
-          const chicken2Box = {
-            x: (3 * canvasWidth) / 4 - chicken2Width / 2,
-            y: canvasHeight / 2 - chicken2Height / 2,
-            width: chicken2Width,
-            height: chicken2Height,
-          };
+        const chicken2Box = {
+          x: (3 * canvasWidth) / 4 - chicken2Width / 2,
+          y: canvasHeight / 2 - chicken2Height / 2,
+          width: chicken2Width,
+          height: chicken2Height,
+        };
 
-          // Check if the click is within the first chicken's bounding box
-          if (
-            clickX >= chicken1Box.x &&
-            clickX <= chicken1Box.x + chicken1Box.width &&
-            clickY >= chicken1Box.y &&
-            clickY <= chicken1Box.y + chicken1Box.height
-          ) {
-            setSelectedChicken('black');
-          }
-
-          // Check if the click is within the second chicken's bounding box
-          if (
-            clickX >= chicken2Box.x &&
-            clickX <= chicken2Box.x + chicken2Box.width &&
-            clickY >= chicken2Box.y &&
-            clickY <= chicken2Box.y + chicken2Box.height
-          ) {
-            setSelectedChicken('white');
-          }
+        if (
+          clickX >= chicken1Box.x &&
+          clickX <= chicken1Box.x + chicken1Box.width &&
+          clickY >= chicken1Box.y &&
+          clickY <= chicken1Box.y + chicken1Box.height
+        ) {
+          setSelectedChicken('black');
+        } else if (
+          clickX >= chicken2Box.x &&
+          clickX <= chicken2Box.x + chicken2Box.width &&
+          clickY >= chicken2Box.y &&
+          clickY <= chicken2Box.y + chicken2Box.height
+        ) {
+          setSelectedChicken('white');
         }
       }
     };
