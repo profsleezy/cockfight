@@ -28,7 +28,7 @@ const AirdropButton = styled.button`
   all: unset;
   cursor: pointer;
   color: black;
-  border-radius: 2px;
+  border-radius: 5px;
   background: #E8A63A;
   padding: 10px;
   font-size: 20px;
@@ -44,7 +44,7 @@ const AirdropButton = styled.button`
     background: rgba(0, 0, 0, 0.8);
     color: white;
     padding: 10px;
-    border-radius: 3px;
+    border-radius: 5px;
     font-size: 10px;
     white-space: nowrap;
     z-index: 1000;
@@ -100,7 +100,12 @@ const Label = styled.span`
   height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 5px;
+  /* Adjusted positioning to stay fixed */
+  left: 10px; /* For 'Black Cock' */
+  &:last-child {
+    right: 10px; /* For 'White Cock' */
+    left: auto;
+  }
 `;
 
 const FightContainer = styled.div`
@@ -235,12 +240,12 @@ export default function Header() {
           <ProgressBarWrapper>
             <ProgressBarContainer>
               <ProgressBarFill style={{ width: `${chicken1Percentage}%`, backgroundColor: '#E8A63A' }}>
-                <Label style={{ left: '10px' }}>Black Cock</Label>
+                <Label>Black Cock</Label>
               </ProgressBarFill>
               <ProgressBarFill
                 style={{ width: `${chicken2Percentage}%`, backgroundColor: '#FFFFFF', left: `${chicken1Percentage}%` }}
               >
-                <Label style={{ right: '10px' }}>White Cock</Label>
+                <Label>White Cock</Label>
               </ProgressBarFill>
             </ProgressBarContainer>
             {pool.jackpotBalance > 0 && (
