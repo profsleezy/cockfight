@@ -28,10 +28,10 @@ const AirdropButton = styled.button`
   all: unset;
   cursor: pointer;
   color: #ffffff;
-  border-radius: 10px;
+  border-radius: 8px;
   background: #0000ff;
-  padding: 2px 10px;
-  font-size: 12px;
+  padding: 10px;
+  font-size: 20px;
   text-transform: uppercase;
   font-weight: bold;
   position: relative;
