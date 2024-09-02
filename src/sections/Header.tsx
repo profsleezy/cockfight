@@ -27,9 +27,9 @@ const Bonus = styled.button`
 const AirdropButton = styled.button`
   all: unset;
   cursor: pointer;
-  color: #ffffff;
-  border-radius: 8px;
-  background: #0000ff;
+  color: black;
+  border-radius: 5px;
+  background: #E8A63A;
   padding: 10px;
   font-size: 20px;
   text-transform: uppercase;
@@ -44,7 +44,7 @@ const AirdropButton = styled.button`
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.8);
     color: white;
-    padding: 5px;
+    padding: 10px;
     border-radius: 5px;
     font-size: 10px;
     white-space: nowrap;
@@ -82,7 +82,6 @@ const ProgressBarContainer = styled.div`
   display: flex;
   position: relative;
   flex-shrink: 0;
-  margin-left: 2%; /* Add space between images and progress bar */
 `;
 
 const ProgressBarFill = styled.div`
@@ -119,6 +118,12 @@ const RightContainer = styled.div`
   flex-shrink: 0;
 `;
 
+const ProgressBarWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
 export default function Header() {
   const pool = useCurrentPool();
   const context = useGambaPlatformContext();
@@ -139,11 +144,11 @@ export default function Header() {
     const randomIndex = Math.floor(Math.random() * images.length);
     const newImage = images[randomIndex];
 
-    setFightImages(prevImages => {
+    setFightImages((prevImages) => {
       const updatedImages = [newImage, ...prevImages];
-      const updatedChicken1Count = updatedImages.filter(img => img === chicken1).length;
-      const updatedChicken2Count = updatedImages.filter(img => img === chicken2).length;
-      
+      const updatedChicken1Count = updatedImages.filter((img) => img === chicken1).length;
+      const updatedChicken2Count = updatedImages.filter((img) => img === chicken2).length;
+
       setChicken1Count(updatedChicken1Count);
       setChicken2Count(updatedChicken2Count);
 
@@ -165,8 +170,8 @@ export default function Header() {
     setFightImages(initialImages);
 
     // Count initial images
-    setChicken1Count(initialImages.filter(img => img === chicken1).length);
-    setChicken2Count(initialImages.filter(img => img === chicken2).length);
+    setChicken1Count(initialImages.filter((img) => img === chicken1).length);
+    setChicken2Count(initialImages.filter((img) => img === chicken2).length);
 
     // Start updating images at random intervals
     setTimeout(updateFightImages, getRandomDelay());
@@ -187,9 +192,7 @@ export default function Header() {
           <p>
             You have <b><TokenValue amount={balance.bonusBalance} /></b> worth of free plays. This bonus will be applied automatically when you play.
           </p>
-          <p>
-            Note that a fee is still needed from your wallet for each play.
-          </p>
+          <p>Note that a fee is still needed from your wallet for each play.</p>
         </Modal>
       )}
       {jackpotHelp && (
@@ -217,28 +220,27 @@ export default function Header() {
         <FightContainer>
           <div style={{ color: 'white', fontSize: '16px', fontWeight: 'bold' }}>Latest Fights</div>
           {fightImages.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt="fight"
-              style={{ height: '30px', width: 'auto' }}
-            />
+            <img key={index} src={image} alt="fight" style={{ height: '30px', width: 'auto' }} />
           ))}
-          <ProgressBarContainer>
-            <ProgressBarFill style={{ width: `${chicken1Percentage}%`, backgroundColor: '#E8A63A' }}>
-              <Label style={{ left: '10px' }}>Black Cock</Label>
-            </ProgressBarFill>
-            <ProgressBarFill style={{ width: `${chicken2Percentage}%`, backgroundColor: '#FFFFFF', left: `${chicken1Percentage}%` }}>
-              <Label style={{ right: '10px' }}>White Cock</Label>
-            </ProgressBarFill>
-          </ProgressBarContainer>
         </FightContainer>
         <RightContainer>
-          {pool.jackpotBalance > 0 && (
-            <Bonus onClick={() => setJackpotHelp(true)}>
-              💰 <TokenValue amount={pool.jackpotBalance} />
-            </Bonus>
-          )}
+          <ProgressBarWrapper>
+            <ProgressBarContainer>
+              <ProgressBarFill style={{ width: `${chicken1Percentage}%`, backgroundColor: '#E8A63A' }}>
+                <Label style={{ left: '10px' }}>Black Cock</Label>
+              </ProgressBarFill>
+              <ProgressBarFill
+                style={{ width: `${chicken2Percentage}%`, backgroundColor: '#FFFFFF', left: `${chicken1Percentage}%` }}
+              >
+                <Label style={{ right: '10px' }}>White Cock</Label>
+              </ProgressBarFill>
+            </ProgressBarContainer>
+            {pool.jackpotBalance > 0 && (
+              <Bonus onClick={() => setJackpotHelp(true)}>
+                💰 <TokenValue amount={pool.jackpotBalance} />
+              </Bonus>
+            )}
+          </ProgressBarWrapper>
           {balance.bonusBalance > 0 && (
             <Bonus onClick={() => setBonusHelp(true)}>
               ✨ <TokenValue amount={balance.bonusBalance} />
