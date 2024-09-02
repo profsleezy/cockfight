@@ -25,22 +25,15 @@ export default function ExampleGame() {
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  useEffect(() => {
-    const handleCanvasClick = (event: MouseEvent) => {
-      console.log('Canvas clicked at:', event.clientX, event.clientY);
-    };
-
+  const handleCanvasClick = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
     const canvas = canvasRef.current;
     if (canvas) {
-      canvas.addEventListener('click', handleCanvasClick);
+      const rect = canvas.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const clickY = event.clientY - rect.top;
+      console.log('Canvas clicked at:', clickX, clickY);
     }
-
-    return () => {
-      if (canvas) {
-        canvas.removeEventListener('click', handleCanvasClick);
-      }
-    };
-  }, []);
+  };
 
   const click = () => {
     console.log('Button clicked');
@@ -49,7 +42,11 @@ export default function ExampleGame() {
   return (
     <>
       <GambaUi.Portal target="screen">
-        <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
+        <canvas
+          ref={canvasRef}
+          style={{ width: '100%', height: '100%' }}
+          onClick={handleCanvasClick}
+        />
         <GambaUi.Canvas
           render={({ ctx, size }) => {
             ctx.clearRect(0, 0, size.width, size.height);
