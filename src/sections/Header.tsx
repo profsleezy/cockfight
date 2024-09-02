@@ -28,12 +28,11 @@ const AirdropButton = styled.button`
   all: unset;
   cursor: pointer;
   color: black;
-  border-radius: 5px;
+  border-radius: 2px;
   background: #E8A63A;
   padding: 10px;
   font-size: 20px;
   text-transform: uppercase;
-  font-weight: bold;
   position: relative;
 
   &:hover::after {
@@ -45,7 +44,7 @@ const AirdropButton = styled.button`
     background: rgba(0, 0, 0, 0.8);
     color: white;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 3px;
     font-size: 10px;
     white-space: nowrap;
     z-index: 1000;
@@ -82,6 +81,7 @@ const ProgressBarContainer = styled.div`
   display: flex;
   position: relative;
   flex-shrink: 0;
+  overflow: hidden; /* Ensure the content doesn't overflow the container */
 `;
 
 const ProgressBarFill = styled.div`
@@ -95,7 +95,7 @@ const Label = styled.span`
   position: absolute;
   top: 0;
   font-size: 10px;
-  color: black; /* Set text color to black */
+  color: black;
   font-weight: bold;
   height: 100%;
   display: flex;
@@ -109,6 +109,13 @@ const FightContainer = styled.div`
   gap: 10px;
   overflow: hidden;
   flex-grow: 1;
+`;
+
+const Divider = styled.div`
+  width: 1px;
+  height: 30px;
+  background-color: #ccc;
+  margin-left: 10px;
 `;
 
 const RightContainer = styled.div`
@@ -222,6 +229,7 @@ export default function Header() {
           {fightImages.map((image, index) => (
             <img key={index} src={image} alt="fight" style={{ height: '30px', width: 'auto' }} />
           ))}
+          <Divider /> {/* Vertical line divider after the fight images */}
         </FightContainer>
         <RightContainer>
           <ProgressBarWrapper>
