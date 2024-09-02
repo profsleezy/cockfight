@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Modal } from '../components/Modal';
 import TokenSelect from './TokenSelect';
 import { UserButton } from './UserButton';
-import chicken1 from './chicken1.png'; // Replace with your actual image paths
+import chicken1 from './chicken1.png';
 import chicken2 from './chicken2.png';
 
 const Bonus = styled.button`
@@ -21,6 +21,34 @@ const Bonus = styled.button`
   transition: background .2s;
   &:hover {
     background: white;
+  }
+`;
+
+const AirdropButton = styled.button`
+  all: unset;
+  cursor: pointer;
+  color: #ffffff;
+  border-radius: 10px;
+  background: #0000ff;
+  padding: 2px 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: bold;
+  position: relative;
+
+  &:hover::after {
+    content: 'Coming Soon';
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 10px;
+    white-space: nowrap;
+    z-index: 1000;
   }
 `;
 
@@ -216,6 +244,7 @@ export default function Header() {
               ✨ <TokenValue amount={balance.bonusBalance} />
             </Bonus>
           )}
+          <AirdropButton>AIRDROP</AirdropButton>
           <TokenSelect />
           <UserButton />
         </RightContainer>
